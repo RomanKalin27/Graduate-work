@@ -1,22 +1,11 @@
 <resources>
     <string name="app_name">Practicum-Android-Diploma</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <string name="text_team">Команда</string>
+    <string name="text_developer_worker">Над приложением работали</string>
+    <string name="text_developer_name_first">Никулин Никита Сергеевич</string>
+    <string name="text_developer_name_second">Куликов Герасим Александрович</string>
+    <string name="text_developer_name_third">Калин Роман Эдуардович</string>
+    <string name="text_developer_name_four">Позябин Юрий Олегович</string>
 
 
 </resources>
