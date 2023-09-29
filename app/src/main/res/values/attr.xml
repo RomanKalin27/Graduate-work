@@ -6,5 +6,4 @@
     <attr name="edit_text_search_background" format="reference"/>
     <attr name="color_in_image_card_view" format="reference"/>
     <attr name="outline_card_view_item_search" format="reference"/>
-
 </resources>

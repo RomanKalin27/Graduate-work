@@ -10,19 +10,26 @@
 
     <dimen name="margin_1">1dp</dimen>
     <dimen name="margin_4">4dp</dimen>
-    <dimen name="margin_16">16dp</dimen>
-    <dimen name="margin_19">19dp</dimen>
-    <dimen name="margin_43">43dp</dimen>
-    <dimen name="margin_32">32dp</dimen>
-    <dimen name="pic_size_48">48dp</dimen>
     <dimen name="margin_8">8dp</dimen>
-    <dimen name="margin_14">14dp</dimen>
-    <dimen name="margin_11">11dp</dimen>
+    <dimen name="margin_9">9dp</dimen>
     <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_11">11dp</dimen>
+    <dimen name="margin_14">14dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_18">18dp</dimen>
+    <dimen name="margin_19">19dp</dimen>
     <dimen name="margin_20">20dp</dimen>
+    <dimen name="margin_24">24dp</dimen>
     <dimen name="margin_27">27dp</dimen>
     <dimen name="margin_30">30dp</dimen>
-    <dimen name="margin_9">9dp</dimen>
+    <dimen name="margin_32">32dp</dimen>
+    <dimen name="margin_43">43dp</dimen>
+    <dimen name="margin_51">51dp</dimen>
+    <dimen name="margin_60">60dp</dimen>
+    <dimen name="margin_248">248dp</dimen>
+    <dimen name="margin_323">323dp</dimen>
+
+    <dimen name="pic_size_48">48dp</dimen>
 
     <dimen name="corner_radius_12">12dp</dimen>
     <dimen name="corner_radius_15">15dp</dimen>
