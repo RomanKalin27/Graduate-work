@@ -45,6 +45,7 @@
     <string name="phone">Телефон</string>
 
     <string name="developers">Над приложением работали</string>
+
     //Команда
     <string name="text_team">Команда</string>
     <string name="text_developer_worker">Над приложением работали</string>
@@ -52,4 +53,10 @@
     <string name="text_developer_name_second">Куликов Герасим Александрович</string>
     <string name="text_developer_name_third">Калин Роман Эдуардович</string>
     <string name="text_developer_name_four">Позябин Юрий Олегович</string>
+
+    //item
+    <string name="vacancy_placeholder">Разработчик на С++ в команду, Москва</string>
+    <string name="departament">Еда</string>
+    <string name="money">от 1 000 до 1 500 €</string>
+
 </resources>
