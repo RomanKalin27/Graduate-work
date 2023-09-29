@@ -40,5 +40,6 @@
     <dimen name="margin_3dp">3dp</dimen>
     <dimen name="text_size_16sp">16sp</dimen>
     <dimen name="size_12dp">12dp</dimen>
+    <dimen name="size_60dp">60dp</dimen>
 
 </resources>
