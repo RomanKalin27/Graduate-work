@@ -25,5 +25,12 @@
 
     <dimen name="corner_radius_12">12dp</dimen>
     <dimen name="corner_radius_15">15dp</dimen>
+    <dimen name="margin_8dp">8dp</dimen>
+    <dimen name="size_48dp">48dp</dimen>
+    <dimen name="margin_12dp">12dp</dimen>
+    <dimen name="text_size_22sp">22sp</dimen>
+    <dimen name="margin_3dp">3dp</dimen>
+    <dimen name="text_size_16sp">16sp</dimen>
+    <dimen name="size_12dp">12dp</dimen>
 
 </resources>

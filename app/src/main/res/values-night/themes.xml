@@ -12,5 +12,7 @@
         <item name="text_color">@color/yp_white</item>
         <item name="edit_text_search_background">@color/gray</item>
         <item name="text_hint_search">@color/yp_white</item>
+        <item name="color_in_image_card_view">@color/light_gray</item>
+        <item name="outline_card_view_item_search">@color/light_gray</item>
     </style>
 </resources>
