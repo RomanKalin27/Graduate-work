@@ -1,22 +1,49 @@
 <resources>
     <string name="app_name">Practicum-Android-Diploma</string>
+    //Поиск
+    <string name="search_vacancy">Поиск вакансий</string>
+    <string name="enter_request">Введите запрос</string>
+    <string name="no_vacansy">Таких вакансий нет</string>
+    <string name="list_empty">Список пуст</string>
 
+    <string name="similar_vacancies">Похожие вакансии</string>
 
+    //Меню
+    <string name="main">Главная</string>
+    <string name="favorites">Избранное</string>
+    <string name="team">Команда</string>
 
+    //Фильтры
+    <string name="set_filter">Настройка фильтрации</string>
+    <string name="select_job">Выбор места работы</string>
+    <string name="select_country">Выбор страны</string>
+    <string name="select_region">Выбор региона</string>
+    <string name="country">Страна</string>
+    <string name="region">Регион</string>
+    <string name="job">Место работы</string>
+    <string name="industry">Отрасль</string>
 
+    //Кнопки
+    <string name="select">Выбрать</string>
+    <string name="apply">Применить</string>
 
+    //Зарплата
+    <string name="expected_selary">Ожидаемая ЗП</string>
+    <string name="enter_amount">Введите сумму</string>
+    <string name="do_not_show_without_salary">Не показывать без ЗП</string>
 
+    //Детали выкансии
+    <string name="required_experience">Требуемый опыт</string>
+    <string name="vacancy_description">Описание Вакансии</string>
+    <string name="responsibilities">Обязанности</string>
+    <string name="requirements">Требования</string>
+    <string name="conditions">Условия</string>
+    <string name="key_skills">Ключевые навыки</string>
 
+    <string name="contacts">Контакты</string>
+    <string name="contact_person">Контактное лицо</string>
+    <string name="mail">E-mail</string>
+    <string name="phone">Телефон</string>
 
-
-
-
-
-
-
-
-
-
-
-
-</resources>
+    <string name="developers">Над приложением работали</string>
+    </resources>
