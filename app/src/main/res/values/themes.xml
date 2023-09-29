@@ -8,7 +8,8 @@
         <item name="colorSecondary">@color/blue</item>
         <item name="colorSecondaryVariant">@color/blue</item>
         <item name="colorOnSecondary">@color/white</item>
+        <item name="background">@color/yp_white</item>
+        <item name="text_color">@color/yp_black</item>
     </style>
-
     <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma" />
 </resources>

@@ -8,5 +8,7 @@
         <item name="colorSecondary">@color/blue</item>
         <item name="colorSecondaryVariant">@color/blue</item>
         <item name="colorOnSecondary">@color/white</item>
+        <item name="background">@color/yp_black</item>
+        <item name="text_color">@color/yp_white</item>
     </style>
 </resources>
