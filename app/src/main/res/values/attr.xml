@@ -2,5 +2,7 @@
 <resources>
     <attr name="text_color" format="reference"/>
     <attr name="background" format="reference"/>
+    <attr name="text_hint_search" format="reference"/>
+    <attr name="edit_text_search_background" format="reference"/>
 
 </resources>
