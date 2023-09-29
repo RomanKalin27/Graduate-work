@@ -22,6 +22,7 @@
     <dimen name="margin_20">20dp</dimen>
     <dimen name="margin_27">27dp</dimen>
     <dimen name="margin_30">30dp</dimen>
+    <dimen name="margin_9">9dp</dimen>
 
     <dimen name="corner_radius_12">12dp</dimen>
     <dimen name="corner_radius_15">15dp</dimen>
