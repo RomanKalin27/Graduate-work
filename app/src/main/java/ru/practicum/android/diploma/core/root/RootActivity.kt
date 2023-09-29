@@ -2,14 +2,21 @@ package ru.practicum.android.diploma.core.root
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+//import org.koin.android.BuildConfig
+//import ru.practicum.android.diploma.BuildConfig
+import ru.practicum.android.diploma.R
 
-class RootActivity : AppCompatActivity() {}
-   // private lateinit var binding: ActivityRootBinding
+class RootActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_root)
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        binding = ActivityRootBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-//        supportActionBar?.hide()
-//
-//}
+        // Пример использования access token для HeadHunter API
+//        networkRequestExample(accessToken = BuildConfig.HH_ACCESS_TOKEN)
+    }
+
+    private fun networkRequestExample(accessToken: String) {
+        // ...
+    }
+
+}
