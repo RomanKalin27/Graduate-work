@@ -14,5 +14,6 @@
         <item name="text_hint_search">@color/yp_white</item>
         <item name="color_in_image_card_view">@color/light_gray</item>
         <item name="outline_card_view_item_search">@color/light_gray</item>
+        <item name="filter_radio_button_color">@color/white</item>
     </style>
 </resources>
