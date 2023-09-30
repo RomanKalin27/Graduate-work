@@ -4,7 +4,9 @@ plugins {
     id("kotlin-kapt")
     id("ru.practicum.android.diploma.plugins.developproperties")
 }
-
+kotlin {
+    jvmToolchain(8)
+}
 android {
     namespace = "ru.practicum.android.diploma"
     compileSdk = 34

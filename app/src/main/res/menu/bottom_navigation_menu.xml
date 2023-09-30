@@ -5,12 +5,12 @@
         android:icon="@drawable/ic_main"
         android:title="@string/main" />
     <item
-        android:id="@+id/libraryFragment"
+        android:id="@+id/favoriteFragment"
         android:icon="@drawable/ic_favorites"
         android:title="@string/favorites" />
 
     <item
-        android:id="@+id/settingFragment"
+        android:id="@+id/teamFragment"
         android:icon="@drawable/ic_team"
         android:title="@string/team" />
 </menu>
