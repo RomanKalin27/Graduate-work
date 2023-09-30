@@ -5,7 +5,6 @@ plugins {
     id("ru.practicum.android.diploma.plugins.developproperties")
 }
 kotlin {
-    jvmToolchain(8)
 }
 android {
     namespace = "ru.practicum.android.diploma"
@@ -30,11 +29,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
