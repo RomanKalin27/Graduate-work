@@ -16,5 +16,4 @@
         <item name="android:drawableEnd">@drawable/arrow_forward</item>
         <item name="android:singleLine">true</item>
     </style>
-
-    </resources>
+</resources>
