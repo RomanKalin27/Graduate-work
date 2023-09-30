@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name">Job Search</string>
     //Поиск
     <string name="search_vacancy">Поиск вакансий</string>
     <string name="enter_request">Введите запрос</string>
