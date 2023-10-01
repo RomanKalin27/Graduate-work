@@ -1,4 +1,11 @@
 package ru.practicum.android.diploma.core.di
 
-class RepositoryModule {
+import org.koin.dsl.module
+import ru.practicum.android.diploma.search.data.impl.SearchRepositoryImpl
+import ru.practicum.android.diploma.search.domain.api.SearchRepository
+
+val repositoryModule = module {
+
+    single { SearchRepositoryImpl(get()) }
+
 }
