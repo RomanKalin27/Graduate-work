@@ -16,7 +16,7 @@
         android:textColor="?attr/text_color"
         android:layout_marginStart="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_19"
-        android:textFontWeight="500"
+        app:textFontWeight="500"
         android:textSize="@dimen/text_22sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"

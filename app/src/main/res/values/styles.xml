@@ -16,6 +16,41 @@
         <item name="android:drawableEnd">@drawable/arrow_forward</item>
         <item name="android:singleLine">true</item>
     </style>
+
+    //готовые блоки текстовых атрибутов для приложения
+    <style name="Text_Bold_32_700" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">@dimen/text_32sp</item>
+        <item name="fontWeight">700</item>
+        <item name="android:fontFamily">@font/ys_display_bold</item>
+    </style>
+    <style name="Text_Medium_22_500" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">@dimen/text_22sp</item>
+        <item name="fontWeight">500</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+    <style name="Text_Medium_16_500" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">@dimen/text_16sp</item>
+        <item name="fontWeight">500</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+    <style name="Text_Regular_16_400" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">@dimen/text_16sp</item>
+        <item name="fontWeight">400</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+    <style name="Text_Regular_12_400" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">@dimen/text_12sp</item>
+        <item name="fontWeight">400</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+    <style name="guideline">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="rounded_12">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/corner_radius_12</item>
+    </style>
     <style name="bottom_nav_text">
         <item name="android:textSize">@dimen/text_12sp</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>

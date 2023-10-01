@@ -30,14 +30,16 @@
     <string name="select">Выбрать</string>
     <string name="apply">Применить</string>
 
+
     //Зарплата
     <string name="expected_selary">Ожидаемая ЗП</string>
     <string name="enter_amount">Введите сумму</string>
     <string name="do_not_show_without_salary">Не показывать без ЗП</string>
 
     //Детали выкансии
+    <string name="vacancy">Вакансия</string>
     <string name="required_experience">Требуемый опыт</string>
-    <string name="vacancy_description">Описание Вакансии</string>
+    <string name="vacancy_description">Описание вакансии</string>
     <string name="responsibilities">Обязанности</string>
     <string name="requirements">Требования</string>
     <string name="conditions">Условия</string>
@@ -47,7 +49,7 @@
     <string name="contact_person">Контактное лицо</string>
     <string name="mail">E-mail</string>
     <string name="phone">Телефон</string>
-
+    <string name="comment">Коментарий</string>
     <string name="developers">Над приложением работали</string>
 
     //Команда
