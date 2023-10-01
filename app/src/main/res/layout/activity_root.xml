@@ -28,13 +28,15 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
+        style="@style/Widget.MaterialComponents.BottomNavigationView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/margin_56"
         app:backgroundTint="?attr/background"
         app:itemIconTint="@drawable/bottom_nav_color_selector"
-        app:itemTextColor="@drawable/bottom_nav_color_selector"
+        app:itemRippleColor="@null"
         app:itemTextAppearanceActive="@style/bottom_nav_text"
         app:itemTextAppearanceInactive="@style/bottom_nav_text"
+        app:itemTextColor="@drawable/bottom_nav_color_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
