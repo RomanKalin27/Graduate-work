@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.presentation.view_model.SearchViewModel
 
@@ -23,7 +25,9 @@ class SearchFragment: Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.iconFilter.setOnClickListener {
+            findNavController().navigate(R.id.action_searchFragment_to_filtersFragment)
+        }
         val queryParams = mapOf("text" to "Android Разработчик", "per_page" to "50")
         val TestApiRequest = viewModel.searchVacancies(queryParams)
         println(TestApiRequest)
