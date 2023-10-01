@@ -9,13 +9,14 @@ import ru.practicum.android.diploma.search.data.network.ApiService
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 
 class SearchRepositoryImpl(private val apiService: ApiService) : SearchRepository {
-    override suspend fun searchVacancies(queryParams: Map<String, String>): Flow<VacanciesResponse> = flow {
-        try {
-            val response = apiService.searchVacancies(queryParams)
-            emit(response)
-        } catch (e: Exception) {
-          println("ОШИБКА СЕТЕВОГО ЗАПРОСА!!!!")
-        }
-    }.flowOn(Dispatchers.IO)
+    override suspend fun searchVacancies(queryParams: Map<String, String>): Flow<VacanciesResponse> =
+        flow {
+            try {
+                val response = apiService.searchVacancies(queryParams)
+                emit(response)
+            } catch (e: Exception) {
+                println("ОШИБКА СЕТЕВОГО ЗАПРОСА!!!!")
+            }
+        }.flowOn(Dispatchers.IO)
 }
 

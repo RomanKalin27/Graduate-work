@@ -11,18 +11,19 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.presentation.view_model.SearchViewModel
 
-class SearchFragment: Fragment() {
+class SearchFragment : Fragment() {
     private val viewModel by viewModel<SearchViewModel>()
     private lateinit var binding: FragmentSearchBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.iconFilter.setOnClickListener {
