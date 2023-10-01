@@ -4,6 +4,5 @@ import org.koin.dsl.module
 import ru.practicum.android.diploma.search.domain.impl.SearchInteractor
 
 val domainModule = module {
-
-        factory { SearchInteractor(get()) }
+        single { SearchInteractor(get()) }
     }
