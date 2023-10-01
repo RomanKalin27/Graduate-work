@@ -6,6 +6,6 @@ import ru.practicum.android.diploma.search.domain.api.SearchRepository
 
 val repositoryModule = module {
 
-    single { SearchRepositoryImpl(get()) }
+    factory<SearchRepository> { SearchRepositoryImpl(get()) }
 
 }
