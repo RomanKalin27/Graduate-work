@@ -31,12 +31,42 @@
         app:layout_constraintStart_toEndOf="@+id/btn_back"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/country_edit_text"
-        style="@style/filterEditText"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/country_text_field"
+        style="@style/filterTextField"
         android:hint="@string/country"
-        android:textFontWeight="400"
+        app:boxBackgroundMode="none"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/country_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="0dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_country"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_60"
+        android:layout_marginTop="@dimen/margin_80"
+        android:backgroundTint="@color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/country_clear_btn"
+        android:layout_width="@dimen/margin_24"
+        android:layout_height="@dimen/margin_24"
+        android:layout_marginHorizontal="@dimen/margin_14"
+        android:layout_marginTop="@dimen/margin_98"
+        android:background="@null"
+        android:src="@drawable/arrow_forward"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -46,7 +76,7 @@
         android:hint="@string/region"
         android:textFontWeight="400"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/country_edit_text" />
+        app:layout_constraintTop_toBottomOf="@+id/country_text_field" />
 
     <Button
         android:layout_width="match_parent"

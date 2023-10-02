@@ -1,9 +1,13 @@
 package ru.practicum.android.diploma.filters.presentation.ui
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageButton
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -35,7 +39,7 @@ class ChoosePlaceWorkFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
-        binding.countryEditText.setOnClickListener {
+        binding.btnCountry.setOnClickListener {
             findNavController().navigate(R.id.action_choosePlaceWorkFragment_to_chooseCountryFragment)
         }
         binding.regionEditText.setOnClickListener {
@@ -43,14 +47,43 @@ class ChoosePlaceWorkFragment : Fragment() {
         }
     }
 
-    private fun setFilters(){
+    private fun setFilters() {
         requireActivity().supportFragmentManager.setFragmentResultListener(KEY, this)
         { key, bundle ->
             val country = bundle.getString(BUNDLE_KEY).orEmpty()
             if (!country.isNullOrEmpty()) {
                 binding.countryEditText.setText(country)
             }
+            setClearBtn()
         }
+    }
+
+    private fun setClearBtn() {
+        if (!binding.countryEditText.text.isNullOrEmpty()) {
+            binding.countryTextField.setPadding(
+                0, requireContext().resources.getDimension(R.dimen.margin_14).toInt(),
+                requireContext().resources.getDimension(R.dimen.margin_24).toInt(), 0
+            )
+            binding.countryTextField.setHintTextAppearance(R.style.Text_Regular_12_400)
+            binding.countryClearBtn.setImageDrawable(requireContext().getDrawable(R.drawable.ic_clear))
+            binding.countryClearBtn.setOnClickListener {
+                binding.countryEditText.text?.clear()
+                setClearBtn()
+            }
+        } else {
+            binding.countryTextField.setPadding(
+                0, requireContext().resources.getDimension(R.dimen.margin_4).toInt(),
+                requireContext().resources.getDimension(R.dimen.margin_24).toInt(), 0
+            )
+            binding.countryTextField.setHintTextAppearance(R.style.Text_Regular_16_400)
+            binding.countryClearBtn.setImageDrawable(requireContext().getDrawable(R.drawable.arrow_forward))
+            binding.countryClearBtn.setOnClickListener {
+                findNavController().navigate(R.id.action_choosePlaceWorkFragment_to_chooseCountryFragment)
+            }
+        }
+    }
+
+
         /* val country = requireArguments().getString(ARGS_COUNTRY).orEmpty()
         val region = requireArguments().getString(ARGS_REGION).orEmpty()
         if (!country.isNullOrEmpty()) {
@@ -59,8 +92,6 @@ class ChoosePlaceWorkFragment : Fragment() {
         if (!region.isNullOrEmpty()){
             binding.regionEditText.setText(region)
         }*/
-    }
-
     companion object {
         private const val ARGS_COUNTRY = "args_country"
         private const val ARGS_REGION = "args_region"
