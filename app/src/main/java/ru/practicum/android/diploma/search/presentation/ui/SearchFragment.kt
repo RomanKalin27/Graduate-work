@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
+import ru.practicum.android.diploma.search.domain.models.SearchResult
 import ru.practicum.android.diploma.search.presentation.view_model.SearchViewModel
 
 class SearchFragment : Fragment() {
@@ -29,9 +30,27 @@ class SearchFragment : Fragment() {
         binding.iconFilter.setOnClickListener {
             findNavController().navigate(R.id.action_searchFragment_to_filtersFragment)
         }
-        val queryParams = mapOf("text" to "Android Разработчик", "per_page" to "50")
-        val TestApiRequest = viewModel.searchVacancies(queryParams)
-        println(TestApiRequest)
-        println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        // Для отправки запроса нужно передать в queryParams текст вместо Android
+        // per_page - количество результатов
+       val queryParams = mapOf("text" to "Android", "per_page" to "20")
+
+        // Отправка запроса
+        // viewModel.searchVacancies(queryParams)
+
+        viewModel.searchResult.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is SearchResult.Success -> {
+                    val response = result.response
+                    // Вывод в консоль имя первой вакансии из сервера
+                    println(response.items[0].name)
+                }
+                is SearchResult.Error -> {
+                    val exception = result.exception
+                    binding.searchPlaceholder.visibility = View.VISIBLE
+                    binding.chip.visibility = View.VISIBLE
+
+                }
+            }
+        }
     }
 }
