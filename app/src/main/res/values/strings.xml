@@ -65,12 +65,12 @@
     <string name="departament">Еда</string>
     <string name="money">от 1 000 до 1 500 €</string>
 
-    //Плейсхолдеры
+    //Плейсхолдеры ошибок
     <string name="error_no_internet">Нет интернета</string>
     <string name="error_no_vacancies">Не удалось получить список вакансий</string>
-    <string name="error_wrong_region">Такого региона нет</string>
     <string name="error_get_list">Не удалось получить список</string>
-    <string name="error_server">Ошибка сервера</string>
+    <string name="error_wrong_region">Такого региона нет</string>
+    <string name="server_error">Ошибка сервера</string>
 
     <plurals name="search_result_number">
         <item quantity="zero">Найдено %d вакансий</item>
