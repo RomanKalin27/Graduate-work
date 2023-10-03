@@ -79,6 +79,7 @@
         app:layout_constraintTop_toBottomOf="@+id/country_text_field" />
 
     <Button
+        android:id = "@+id/btn_choose"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_60"
         android:layout_marginHorizontal="@dimen/margin_16"

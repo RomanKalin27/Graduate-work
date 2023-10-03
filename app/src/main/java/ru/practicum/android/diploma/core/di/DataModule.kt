@@ -7,11 +7,11 @@ import ru.practicum.android.diploma.search.data.network.ApiService
 
 
 val dataModule = module {
-        single {
-            Retrofit.Builder()
-                .baseUrl("https://api.hh.ru")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(ApiService::class.java)
-        }
+    single {
+        Retrofit.Builder()
+            .baseUrl("https://api.hh.ru")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ApiService::class.java)
+    }
 }

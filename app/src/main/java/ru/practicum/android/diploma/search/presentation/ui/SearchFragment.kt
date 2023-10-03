@@ -32,7 +32,7 @@ class SearchFragment : Fragment() {
         }
         // Для отправки запроса нужно передать в queryParams текст вместо Android
         // per_page - количество результатов
-       val queryParams = mapOf("text" to "Android", "per_page" to "20")
+        val queryParams = mapOf("text" to "Android", "per_page" to "20")
 
         // Отправка запроса
         // viewModel.searchVacancies(queryParams)
@@ -44,6 +44,7 @@ class SearchFragment : Fragment() {
                     // Вывод в консоль имя первой вакансии из сервера
                     println(response.items[0].name)
                 }
+
                 is SearchResult.Error -> {
                     val exception = result.exception
                     binding.searchPlaceholder.visibility = View.VISIBLE

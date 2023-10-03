@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
-import ru.practicum.android.diploma.search.data.dto.response_models.Area
 
 class FiltersFragment : Fragment() {
     private lateinit var binding: FragmentFilterBinding
@@ -24,14 +24,22 @@ class FiltersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setPlaceWork()
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
         binding.jobEditText.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_filtersFragment_to_choosePlaceWorkFragment,
-                ChoosePlaceWorkFragment.createArgs(Area.emptyArea, Area.emptyArea)
-            )
+            findNavController().navigate(R.id.action_filtersFragment_to_choosePlaceWorkFragment)
+        }
+        binding.industryEditText.setOnClickListener {
+            findNavController().navigate(R.id.action_filtersFragment_to_chooseIndustry)
+        }
+    }
+
+    private fun setPlaceWork() {
+        setFragmentResultListener("key_choose")
+        { _, bundle ->
+            binding.jobEditText.setText(bundle.getString("place_work").orEmpty())
         }
     }
 }

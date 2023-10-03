@@ -1,24 +1,25 @@
 package ru.practicum.android.diploma.filters.presentation.ui
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSelectLocationBinding
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.BUNDLE_KEY
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.KEY
-import ru.practicum.android.diploma.search.data.dto.response_models.Area
+import ru.practicum.android.diploma.filters.presentation.ui.ChooseRegionFragment.Companion.KEY_R
+import ru.practicum.android.diploma.filters.presentation.ui.ChooseRegionFragment.Companion.REGION_KEY
 
 class ChoosePlaceWorkFragment : Fragment() {
     private lateinit var binding: FragmentSelectLocationBinding
+    private lateinit var country: String
+    private lateinit var region: String
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,18 +46,29 @@ class ChoosePlaceWorkFragment : Fragment() {
         binding.regionEditText.setOnClickListener {
             findNavController().navigate(R.id.action_choosePlaceWorkFragment_to_chooseRegionFragment)
         }
+        binding.btnChoose.setOnClickListener {
+            chooseFilters()
+        }
     }
 
     private fun setFilters() {
         requireActivity().supportFragmentManager.setFragmentResultListener(KEY, this)
-        { key, bundle ->
-            val country = bundle.getString(BUNDLE_KEY).orEmpty()
+        { _, bundle ->
+            country = bundle.getString(BUNDLE_KEY).orEmpty()
             if (!country.isNullOrEmpty()) {
                 binding.countryEditText.setText(country)
             }
             setClearBtn()
         }
+        setFragmentResultListener(KEY_R)
+        { _, bundle ->
+            region = bundle.getString(REGION_KEY).orEmpty()
+            if (!region.isNullOrEmpty()) {
+                binding.regionEditText.setText(region)
+            }
+        }
     }
+
 
     private fun setClearBtn() {
         if (!binding.countryEditText.text.isNullOrEmpty()) {
@@ -83,19 +95,29 @@ class ChoosePlaceWorkFragment : Fragment() {
         }
     }
 
-
-        /* val country = requireArguments().getString(ARGS_COUNTRY).orEmpty()
-        val region = requireArguments().getString(ARGS_REGION).orEmpty()
-        if (!country.isNullOrEmpty()) {
-            binding.countryEditText.setText(country)
+    private fun chooseFilters() {
+        if (country.isNullOrEmpty()) {
+            binding.btnChoose.visibility = View.GONE
+        } else {
+            binding.btnChoose.visibility = View.VISIBLE
+            if (region.isNullOrEmpty()) {
+                setFragmentResult(
+                    KEY_CHOOSE,
+                    bundleOf(PLACE_WORK to country)
+                )
+            } else {
+                val result = "$country,$region"
+                setFragmentResult(
+                    KEY_CHOOSE,
+                    bundleOf(PLACE_WORK to result)
+                )
+            }
         }
-        if (!region.isNullOrEmpty()){
-            binding.regionEditText.setText(region)
-        }*/
+        findNavController().navigateUp()
+    }
+
     companion object {
-        private const val ARGS_COUNTRY = "args_country"
-        private const val ARGS_REGION = "args_region"
-        fun createArgs(country: Area, region: Area): Bundle =
-            bundleOf(ARGS_COUNTRY to country.name, ARGS_REGION to region.name)
+        private const val KEY_CHOOSE = "key_choose"
+        private const val PLACE_WORK = "place_work"
     }
 }
