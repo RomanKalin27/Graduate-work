@@ -19,6 +19,7 @@ class RegionAdapter(private val clickListener: RegionClickListener) :
         holder.bind(regionList[position])
         holder.itemView.setOnClickListener {
             clickListener.onTrackClick(regionList[position])
+            holder.radioButton.isChecked = !holder.radioButton.isChecked
         }
     }
 }
