@@ -35,18 +35,13 @@
         android:id="@+id/country_text_field"
         style="@style/filterTextField"
         android:hint="@string/country"
-        app:boxBackgroundMode="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/country_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="0dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp" />
+            style="@style/filterEditText2" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -79,7 +74,7 @@
         app:layout_constraintTop_toBottomOf="@+id/country_text_field" />
 
     <Button
-        android:id = "@+id/btn_choose"
+        android:id="@+id/btn_choose"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_60"
         android:layout_marginHorizontal="@dimen/margin_16"

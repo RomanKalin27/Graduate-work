@@ -58,7 +58,6 @@ class ChoosePlaceWorkFragment : Fragment() {
             if (!country.isNullOrEmpty()) {
                 binding.countryEditText.setText(country)
             }
-            setClearBtn()
         }
         setFragmentResultListener(KEY_R)
         { _, bundle ->
@@ -67,26 +66,29 @@ class ChoosePlaceWorkFragment : Fragment() {
                 binding.regionEditText.setText(region)
             }
         }
+        changeTextField()
     }
 
 
-    private fun setClearBtn() {
+    private fun changeTextField() {
         if (!binding.countryEditText.text.isNullOrEmpty()) {
             binding.countryTextField.setPadding(
                 0, requireContext().resources.getDimension(R.dimen.margin_14).toInt(),
                 requireContext().resources.getDimension(R.dimen.margin_24).toInt(), 0
             )
+            binding.countryTextField.isEnabled = true
             binding.countryTextField.setHintTextAppearance(R.style.Text_Regular_12_400)
             binding.countryClearBtn.setImageDrawable(requireContext().getDrawable(R.drawable.ic_clear))
             binding.countryClearBtn.setOnClickListener {
                 binding.countryEditText.text?.clear()
-                setClearBtn()
+                changeTextField()
             }
         } else {
             binding.countryTextField.setPadding(
                 0, requireContext().resources.getDimension(R.dimen.margin_4).toInt(),
                 requireContext().resources.getDimension(R.dimen.margin_24).toInt(), 0
             )
+            binding.countryTextField.isEnabled = false
             binding.countryTextField.setHintTextAppearance(R.style.Text_Regular_16_400)
             binding.countryClearBtn.setImageDrawable(requireContext().getDrawable(R.drawable.arrow_forward))
             binding.countryClearBtn.setOnClickListener {
