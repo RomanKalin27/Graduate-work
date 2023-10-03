@@ -9,4 +9,5 @@ class RegionViewHolder(private val binding: ItemRegionBinding) :
     fun bind(country: Area) {
         binding.region.text = country.name
     }
+    val radioButton = binding.radioButton
 }

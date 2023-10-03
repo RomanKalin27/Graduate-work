@@ -51,7 +51,6 @@ class ChooseRegionFragment : Fragment() {
             KEY_R,
             bundleOf(REGION_KEY to regionName)
         )
-        findNavController().navigateUp()
     }
 
     companion object {

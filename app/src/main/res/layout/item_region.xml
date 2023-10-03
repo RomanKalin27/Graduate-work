@@ -24,6 +24,7 @@
 
     <RadioButton
         android:id="@+id/radioButton"
+        android:clickable="false"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
