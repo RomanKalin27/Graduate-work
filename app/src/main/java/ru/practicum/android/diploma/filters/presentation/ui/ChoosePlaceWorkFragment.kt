@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
@@ -33,6 +34,7 @@ class ChoosePlaceWorkFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         setFilters()
+        showChooseBtn()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,17 +54,17 @@ class ChoosePlaceWorkFragment : Fragment() {
     }
 
     private fun setFilters() {
-        requireActivity().supportFragmentManager.setFragmentResultListener(KEY, this)
+        setFragmentResultListener(KEY)
         { _, bundle ->
             country = bundle.getString(BUNDLE_KEY).orEmpty()
-            if (!country.isNullOrEmpty()) {
+            if (country.isNotEmpty()) {
                 binding.countryEditText.setText(country)
             }
         }
         setFragmentResultListener(KEY_R)
         { _, bundle ->
             region = bundle.getString(REGION_KEY).orEmpty()
-            if (!region.isNullOrEmpty()) {
+            if (region.isNotEmpty()) {
                 binding.regionEditText.setText(region)
             }
         }
@@ -98,28 +100,32 @@ class ChoosePlaceWorkFragment : Fragment() {
     }
 
     private fun chooseFilters() {
-        if (country.isNullOrEmpty()) {
-            binding.btnChoose.visibility = View.GONE
+        /*  if (country.isNullOrEmpty()) {
+              binding.btnChoose.visibility = View.GONE
+          } else {
+              binding.btnChoose.visibility = View.VISIBLE*/
+        if (region.isNullOrEmpty()) {
+            setFragmentResult(
+                KEY_CHOOSE,
+                bundleOf(PLACE_WORK to country)
+            )
         } else {
-            binding.btnChoose.visibility = View.VISIBLE
-            if (region.isNullOrEmpty()) {
-                setFragmentResult(
-                    KEY_CHOOSE,
-                    bundleOf(PLACE_WORK to country)
-                )
-            } else {
-                val result = "$country,$region"
-                setFragmentResult(
-                    KEY_CHOOSE,
-                    bundleOf(PLACE_WORK to result)
-                )
-            }
+            val result = "$country,$region"
+            setFragmentResult(
+                KEY_CHOOSE,
+                bundleOf(PLACE_WORK to result)
+            )
         }
         findNavController().navigateUp()
     }
 
+    private fun showChooseBtn() {
+        region = binding.regionEditText.text.toString()
+        binding.btnChoose.isVisible = !binding.countryEditText.text.isNullOrEmpty()
+    }
+
     companion object {
-        private const val KEY_CHOOSE = "key_choose"
-        private const val PLACE_WORK = "place_work"
+        const val KEY_CHOOSE = "key_choose"
+        const val PLACE_WORK = "place_work"
     }
 }

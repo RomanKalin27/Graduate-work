@@ -54,7 +54,7 @@ class ChooseRegionFragment : Fragment() {
     }
 
     companion object {
-        const val KEY_R = "KEY"
+        const val KEY_R = "KEY_R"
         const val REGION_KEY = "REGION_KEY"
     }
 }

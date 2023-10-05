@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import ru.practicum.android.diploma.databinding.FragmentSelectCountryBinding
 import ru.practicum.android.diploma.filters.presentation.rv.CountryAdapter
@@ -49,7 +50,7 @@ class ChooseCountryFragment : Fragment() {
     }
 
     private fun setResult(countryName: String?) {
-        requireActivity().supportFragmentManager.setFragmentResult(
+        setFragmentResult(
             KEY,
             bundleOf(BUNDLE_KEY to countryName)
         )

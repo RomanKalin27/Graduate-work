@@ -29,6 +29,7 @@
     //Кнопки
     <string name="select">Выбрать</string>
     <string name="apply">Применить</string>
+    <string name="reset">Сбросить</string>
 
 
     //Зарплата
