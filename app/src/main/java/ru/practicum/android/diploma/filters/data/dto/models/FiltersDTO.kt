@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filters.data.dto.models
 
-class FiltersDTO {
     data class FiltersDto(
         val countryName:String?,
         val countryId:String?,
@@ -11,4 +10,3 @@ class FiltersDTO {
         val salary:Int,
         val onlyWithSalary: Boolean
     )
-}
