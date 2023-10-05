@@ -5,26 +5,28 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.search.data.network.ApiService
+import ru.practicum.android.diploma.search.data.network.ConnectivityHelper
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
-import ru.practicum.android.diploma.search.domain.models.SearchResult
+import ru.practicum.android.diploma.search.domain.models.SearchVacancyResult
 
-class SearchRepositoryImpl(private val apiService: ApiService) : SearchRepository {
-    override suspend fun searchVacancies(queryParams: Map<String, String>): Flow<SearchResult> =
-        flow {
-            try {
-                val response = apiService.searchVacancies(queryParams)
-                emit(SearchResult.Success(response))
-            } catch (e: Exception) {
-                emit(SearchResult.Error(e))
+class SearchRepositoryImpl(private val apiService: ApiService, private val networkControl: ConnectivityHelper) : SearchRepository {
+override suspend fun searchVacancies(queryParams: Map<String, String>): Flow<SearchVacancyResult> =
+    flow {
+        try {
+            if (!networkControl.isInternetAvailable()) {
+                emit(SearchVacancyResult.NoInternet)
+                return@flow
             }
-        }.flowOn(Dispatchers.IO)
+            val response = apiService.searchVacancies(queryParams)
 
-
-
-
-
-
-
-
+            if (response.items.isEmpty()) {
+                emit(SearchVacancyResult.EmptyResult)
+            } else {
+                emit(SearchVacancyResult.Success(response))
+            }
+        } catch (e: Exception) {
+            emit(SearchVacancyResult.Error(e))
+        }
+    }.flowOn(Dispatchers.IO)
 }
 

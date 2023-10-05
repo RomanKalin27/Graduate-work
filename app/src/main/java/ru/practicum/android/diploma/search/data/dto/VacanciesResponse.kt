@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.search.data.dto
 
 import ru.practicum.android.diploma.search.data.dto.response_models.VacancyItem
 
+
 data class VacanciesResponse(
     val found: Int,
     val items: List<VacancyItem>,
