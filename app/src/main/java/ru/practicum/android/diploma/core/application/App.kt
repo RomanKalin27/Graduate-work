@@ -21,4 +21,8 @@ class App : Application() {
         }
 
     }
+
+    companion object {
+        const val SHARED_PREFS = "SHARED_PREFS"
+    }
 }
