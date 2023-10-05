@@ -2,10 +2,10 @@ package ru.practicum.android.diploma.search.domain.impl
 
 import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
-import ru.practicum.android.diploma.search.domain.models.SearchResult
+import ru.practicum.android.diploma.search.domain.models.SearchVacancyResult
 
 class SearchInteractor(private val searchRepository: SearchRepository) {
-    suspend fun execute(queryParams: Map<String, String>): Flow<SearchResult> {
+    suspend fun execute(queryParams: Map<String, String>): Flow<SearchVacancyResult> {
         return searchRepository.searchVacancies(queryParams)
     }
 }

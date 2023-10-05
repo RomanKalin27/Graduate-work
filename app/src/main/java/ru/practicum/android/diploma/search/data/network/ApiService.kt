@@ -42,11 +42,9 @@ interface ApiService {
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
         "HH-User-Agent: HH_vacancy_search (g-926@ya.ru)"
     )
-
     @GET("/areas")
     suspend fun getAreas(
     ): List<AreasDTO>
-
 
     @Headers(
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",

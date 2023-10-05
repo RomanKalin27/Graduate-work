@@ -8,6 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.core.application.App.Companion.SHARED_PREFS
 import ru.practicum.android.diploma.search.data.network.ApiService
+import ru.practicum.android.diploma.search.data.network.ConnectivityHelper
 
 
 val dataModule = module {
@@ -21,4 +22,6 @@ val dataModule = module {
     single<SharedPreferences> {
         androidContext().getSharedPreferences(SHARED_PREFS, Application.MODE_PRIVATE)
     }
+
+    single {ConnectivityHelper(get())}
 }
