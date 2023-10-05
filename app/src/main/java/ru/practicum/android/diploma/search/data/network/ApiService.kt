@@ -43,9 +43,9 @@ interface ApiService {
         "HH-User-Agent: HH_vacancy_search (g-926@ya.ru)"
     )
 
-@GET("/areas")
-suspend fun getAreas(
-): List<AreasDTO>
+    @GET("/areas")
+    suspend fun getAreas(
+    ): List<AreasDTO>
 
 
     @Headers(
