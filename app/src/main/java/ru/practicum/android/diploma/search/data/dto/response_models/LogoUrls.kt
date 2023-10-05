@@ -1,5 +1,9 @@
 package ru.practicum.android.diploma.search.data.dto.response_models
 
+import com.google.gson.annotations.SerializedName
+
 data class LogoUrls(
-    val original: String?,
+    @SerializedName("240")
+    val url240: String? = "",
+    val original: String? = "",
 )

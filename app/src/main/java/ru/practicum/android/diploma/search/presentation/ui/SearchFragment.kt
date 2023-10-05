@@ -38,7 +38,7 @@ class SearchFragment : Fragment() {
         }
         setupRecyclerView()
         observeViewModel()
-        startRequest("Андроид разработчик")
+        startRequest("Стоматолог")
     }
 
     private fun observeViewModel() {
