@@ -98,23 +98,26 @@ class SearchFragment : Fragment() {
     private fun updateUI(searchUIState: SearchUIState) {
         with(binding) {
             recyclerView.visibility = View.GONE
-            searchPlaceholder.visibility = View.VISIBLE
 
             when (searchUIState) {
                 SearchUIState.CONNECTION_ERROR -> {
-                    iconSearch.setImageResource(R.drawable.placeholder_sad)
+                    searchPlaceholder.setImageResource(0)
+                    searchPlaceholder.setImageResource(R.drawable.placeholder_sad)
                     vacancyList.clear()
                 }
                 SearchUIState.EMPTY_SEARCH -> {
-                    iconSearch.setImageResource(R.drawable.placeholder_cat)
+                    searchPlaceholder.setImageResource(0)
+                    searchPlaceholder.setImageResource(R.drawable.placeholder_cat)
                     vacancyList.clear()
                 }
                 SearchUIState.NO_INTERNET -> {
-                    iconSearch.setImageResource(R.drawable.placeholder_skull)
+                    searchPlaceholder.setImageResource(0)
+                    searchPlaceholder.setImageResource(R.drawable.placeholder_skull)
                     vacancyList.clear()
                 }
                 SearchUIState.LOADING -> TODO()
             }
+            searchPlaceholder.visibility = View.VISIBLE
             vacancyAdapter.notifyDataSetChanged()
             handler.removeCallbacks(vacancySearchRunnable)
         }
