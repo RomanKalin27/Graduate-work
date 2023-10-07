@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.utils.CreateSalary
+import ru.practicum.android.diploma.common.utils.SalaryConverter
 import ru.practicum.android.diploma.search.data.dto.response_models.VacancyItem
 
 class VacancyAdapter(private val items: List<VacancyItem>) :
@@ -43,6 +43,6 @@ class VacancyAdapter(private val items: List<VacancyItem>) :
             .into(image)
         title.text = item.name
         company.text = item.employer?.name ?: " "
-        value.text = CreateSalary().createSalary(item.salary)
+        value.text = SalaryConverter().convertSalary(item.salary)
     }
 }

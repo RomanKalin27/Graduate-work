@@ -13,8 +13,9 @@ class SearchRepositoryImpl(
     private val apiService: ApiService,
     private val networkControl: ConnectivityHelper,
 ) : SearchRepository {
-    override suspend fun searchVacancies(queryParams: Map<String, String>): Flow<SearchVacancyResult> =
+    override suspend fun searchVacancies(query: String): Flow<SearchVacancyResult> =
         flow {
+            val queryParams = (mapOf("text" to "${query}", "per_page" to "50"))
             try {
                 if (!networkControl.isInternetAvailable()) {
                     emit(SearchVacancyResult.NoInternet)

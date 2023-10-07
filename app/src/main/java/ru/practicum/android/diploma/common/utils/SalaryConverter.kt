@@ -2,9 +2,9 @@ package ru.practicum.android.diploma.common.utils
 
 import ru.practicum.android.diploma.search.data.dto.response_models.Salary
 
-class CreateSalary {
-    fun createSalary(salary: Salary?): String? {
-        if (salary == null) return null
+class SalaryConverter {
+    fun convertSalary(salary: Salary?): String? {
+        if (salary == null) return "ЗП не указана"
         val result = StringBuilder()
 
         salary.from?.let {

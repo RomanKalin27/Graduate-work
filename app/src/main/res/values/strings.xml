@@ -74,6 +74,7 @@
     <string name="server_error">Ошибка сервера</string>
     <string name="from">от</string>
     <string name="to">до</string>
+    <string name="salary_not_specified">ЗП не указана</string>
 
     <plurals name="search_result_number">
         <item quantity="zero">Найдено %d вакансий</item>

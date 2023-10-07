@@ -13,9 +13,9 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
     private val _searchVacancyResult: MutableLiveData<SearchVacancyResult> = MutableLiveData()
     val searchVacancyResult: LiveData<SearchVacancyResult> = _searchVacancyResult
 
-    fun searchVacancies(queryParams: Map<String, String>) {
+    fun searchVacancies(query : String) {
         viewModelScope.launch {
-            searchInteractor.execute(queryParams).collect { result ->
+            searchInteractor.execute(query).collect { result ->
                 _searchVacancyResult.value = result
             }
         }
