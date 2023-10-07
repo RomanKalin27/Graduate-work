@@ -5,5 +5,5 @@ import ru.practicum.android.diploma.search.domain.models.SearchVacancyResult
 
 
 interface SearchRepository {
-    suspend fun searchVacancies(queryParams: Map<String, String>): Flow<SearchVacancyResult>
+    suspend fun searchVacancies(query: String): Flow<SearchVacancyResult>
 }

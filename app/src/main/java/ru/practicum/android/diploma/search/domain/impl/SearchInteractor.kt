@@ -5,7 +5,7 @@ import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.search.domain.models.SearchVacancyResult
 
 class SearchInteractor(private val searchRepository: SearchRepository) {
-    suspend fun execute(queryParams: Map<String, String>): Flow<SearchVacancyResult> {
-        return searchRepository.searchVacancies(queryParams)
+    suspend fun execute(query:String): Flow<SearchVacancyResult> {
+        return searchRepository.searchVacancies(query)
     }
 }
