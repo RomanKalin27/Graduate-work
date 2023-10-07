@@ -9,23 +9,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.utils.Constants.CLICK_DEBOUNCE_DELAY_MILLIS
 import ru.practicum.android.diploma.common.utils.Constants.SEARCH_DEBOUNCE_DELAY_MILLIS
+import ru.practicum.android.diploma.common.utils.debounce
+import ru.practicum.android.diploma.core.root.RootActivity
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.data.dto.response_models.VacancyItem
 import ru.practicum.android.diploma.search.domain.models.SearchVacancyResult
 import ru.practicum.android.diploma.search.presentation.models.SearchUIState
 import ru.practicum.android.diploma.search.presentation.rv.VacancyAdapter
 import ru.practicum.android.diploma.search.presentation.view_model.SearchViewModel
+import ru.practicum.android.diploma.vacancy.presentation.VacancyFragment
 
 class SearchFragment : Fragment() {
     private val viewModel by viewModel<SearchViewModel>()
     private val vacancyList = ArrayList<VacancyItem>()
     private val handler = Handler(Looper.getMainLooper())
     private val vacancySearchRunnable = Runnable { viewModel.searchVacancies(binding.searchEditText.text.toString()) }
+    private lateinit var onVacancyClickDebounce: (VacancyItem) -> Unit
     private val vacancyAdapter = VacancyAdapter(vacancyList)
     private lateinit var binding: FragmentSearchBinding
 
@@ -42,6 +48,9 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         observeViewModel()
+        onVacancyClickDebounce = debounce<VacancyItem>(CLICK_DEBOUNCE_DELAY_MILLIS, viewLifecycleOwner.lifecycleScope, false) { item ->
+            navigateToVacancyDetail(item)
+        }
     }
 
     override fun onResume() {
@@ -54,6 +63,11 @@ class SearchFragment : Fragment() {
         binding.iconFilter.setOnClickListener {
             findNavController().navigate(R.id.action_searchFragment_to_filtersFragment)
         }
+        vacancyAdapter.itemClickListener = { position, vacancy ->
+            (activity as? RootActivity)?.animateBottomNavigationView()
+            onVacancyClickDebounce(vacancy)
+        }
+
         setupDefaultUI()
         setupTextWatcher()
         setupRecyclerView()
@@ -144,6 +158,11 @@ class SearchFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         }
         binding.searchEditText.addTextChangedListener(searchTextWatcher)
+    }
+
+    private fun navigateToVacancyDetail(item: VacancyItem) {
+        findNavController().navigate(R.id.action_searchFragment_to_vacancyFragment,
+            VacancyFragment.createArgs(item))
     }
 }
 

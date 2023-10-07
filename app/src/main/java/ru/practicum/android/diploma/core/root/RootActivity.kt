@@ -58,6 +58,10 @@ class RootActivity : AppCompatActivity() {
 //        networkRequestExample(accessToken = BuildConfig.HH_ACCESS_TOKEN)
     }
 
+    fun animateBottomNavigationView() {
+        binding.bottomNavigationView.visibility = View.GONE
+    }
+
     private fun networkRequestExample(accessToken: String) {
         // ...
     }
