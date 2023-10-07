@@ -8,8 +8,10 @@ import android.net.NetworkCapabilities
 class ConnectivityHelper(private val context: Context) {
     fun isInternetAvailable(): Boolean {
         val connectivityManager = context.getSystemService(
-            Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkConnection = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            Context.CONNECTIVITY_SERVICE
+        ) as ConnectivityManager
+        val networkConnection =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
 
         if (networkConnection != null) {
             when {

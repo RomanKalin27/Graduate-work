@@ -4,13 +4,13 @@ import ru.practicum.android.diploma.filters.domain.api.FilterInteractor
 import ru.practicum.android.diploma.filters.domain.api.FilterRepository
 
 class FilterInteractorImpl(
-    private val filterRepository: FilterRepository
+    private val filterRepository: FilterRepository,
 ) : FilterInteractor {
     override fun saveFilters(
         location: String?,
         industry: String?,
         expectedSalary: String?,
-        removeNoSalary: Boolean
+        removeNoSalary: Boolean,
     ) {
         filterRepository.saveFilters(
             location,

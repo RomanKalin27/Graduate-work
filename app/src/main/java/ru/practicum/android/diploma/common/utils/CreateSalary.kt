@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.common.utils
 
 import ru.practicum.android.diploma.search.data.dto.response_models.Salary
 
-class CreateSalary () {
+class CreateSalary {
     fun createSalary(salary: Salary?): String? {
         if (salary == null) return null
         val result = StringBuilder()

@@ -23,5 +23,5 @@ val dataModule = module {
         androidContext().getSharedPreferences(SHARED_PREFS, Application.MODE_PRIVATE)
     }
 
-    single {ConnectivityHelper(get())}
+    single { ConnectivityHelper(get()) }
 }

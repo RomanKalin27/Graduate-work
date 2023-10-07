@@ -74,7 +74,7 @@ class VacancyDbConverter {
         )
     }
 
-//Форматтеры:
+    //Форматтеры:
     private fun getContactPhone(phones: Array<Phone>?): String {
         if (phones.isNullOrEmpty()) return ""
         val firstPhoneContact = phones[0]

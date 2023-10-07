@@ -6,6 +6,7 @@ import retrofit2.http.Path
 import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
+import ru.practicum.android.diploma.filters.data.dto.models.CountryDTO
 import ru.practicum.android.diploma.filters.data.dto.models.IndustryDTO
 import ru.practicum.android.diploma.search.data.dto.VacanciesResponse
 
@@ -17,7 +18,7 @@ interface ApiService {
     )
     @GET("/vacancies")
     suspend fun searchVacancies(
-        @QueryMap queryParams: Map<String, String>
+        @QueryMap queryParams: Map<String, String>,
     ): VacanciesResponse
 
 //    @Headers(
@@ -43,8 +44,7 @@ interface ApiService {
         "HH-User-Agent: HH_vacancy_search (g-926@ya.ru)"
     )
     @GET("/areas")
-    suspend fun getAreas(
-    ): List<AreasDTO>
+    suspend fun getAreas(): List<AreasDTO>
 
     @Headers(
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
@@ -52,4 +52,11 @@ interface ApiService {
     )
     @GET("/industries")
     suspend fun getIndustries(): List<IndustryDTO>
+
+    @Headers(
+        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
+        "HH-User-Agent: HH_vacancy_search (g-926@ya.ru)"
+    )
+    @GET("/areas/countries")
+    suspend fun getCountry(): List<CountryDTO>
 }
