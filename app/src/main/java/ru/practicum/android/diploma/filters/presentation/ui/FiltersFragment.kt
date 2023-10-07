@@ -11,6 +11,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.utils.ChangeTextFieldUtil
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.KEY_CHOOSE
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.PLACE_WORK
@@ -41,14 +42,34 @@ class FiltersFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
-        binding.jobEditText.setOnClickListener {
+        binding.btnLocation.setOnClickListener {
             findNavController().navigate(R.id.action_filtersFragment_to_choosePlaceWorkFragment)
         }
-        binding.industryEditText.setOnClickListener {
+        binding.locationClearBtn.setOnClickListener {
+            binding.locationEditText.text?.clear()
+            changeLocationField()
+            showRemoveBtn()
+        }
+        binding.btnIndustry.setOnClickListener {
             findNavController().navigate(R.id.action_filtersFragment_to_chooseIndustry)
         }
-        binding.salaryEditText.addTextChangedListener {
+        binding.industryClearBtn.setOnClickListener {
+            binding.industryEditText.text?.clear()
+            changeIndustryField()
             showRemoveBtn()
+        }
+        binding.salaryEditText.addTextChangedListener {
+            if (binding.salaryEditText.text.isEmpty()) {
+                binding.textExpectedSalary.setTextColor(R.attr.text_hint_search)
+                binding.salaryClearBtn.isVisible = false
+            } else {
+                binding.textExpectedSalary.setTextColor(requireContext().getColor(R.color.blue))
+                binding.salaryClearBtn.isVisible = true
+            }
+            showRemoveBtn()
+        }
+        binding.salaryClearBtn.setOnClickListener {
+            binding.salaryEditText.text.clear()
         }
         binding.noSalaryLayout.setOnClickListener {
             binding.noSalaryCheckbox.isChecked = !binding.noSalaryCheckbox.isChecked
@@ -56,7 +77,7 @@ class FiltersFragment : Fragment() {
         }
         binding.btnChoose.setOnClickListener {
             vm.saveFilters(
-                binding.jobEditText.text.toString(),
+                binding.locationEditText.text.toString(),
                 binding.industryEditText.text.toString(),
                 binding.salaryEditText.text.toString(),
                 binding.noSalaryCheckbox.isChecked
@@ -65,19 +86,38 @@ class FiltersFragment : Fragment() {
 
         binding.btnRemove.setOnClickListener {
             vm.removeFilters()
-            binding.jobEditText.text.clear()
+            binding.locationEditText.text?.clear()
         }
 
         vm.observeState().observe(viewLifecycleOwner) {
-            binding.jobEditText.setText(it.location)
+            binding.locationEditText.setText(it.location)
             binding.industryEditText.setText(it.industry)
             binding.salaryEditText.setText(it.lowestSalary)
             binding.noSalaryCheckbox.isChecked = it.removeNoSalary
         }
     }
 
+    private fun changeLocationField() {
+        ChangeTextFieldUtil.changeTextField(
+            binding.locationEditText,
+            binding.locationTextField,
+            binding.locationClearBtn,
+            requireContext(),
+        )
+    }
+
+    private fun changeIndustryField() {
+        ChangeTextFieldUtil.changeTextField(
+            binding.industryEditText,
+            binding.industryTextField,
+            binding.industryClearBtn,
+            requireContext(),
+        )
+    }
+
     private fun showRemoveBtn() {
-        if (binding.jobEditText.text.isNotEmpty() || binding.industryEditText.text.isNotEmpty()
+        if (binding.locationEditText.text.toString()
+                .isNotEmpty() || binding.industryEditText.text.toString().isNotEmpty()
             || binding.salaryEditText.text.isNotEmpty() || binding.noSalaryCheckbox.isChecked
         ) {
             binding.btnRemove.isVisible = true
@@ -95,5 +135,7 @@ class FiltersFragment : Fragment() {
                 vm.getLocation(bundle.getString(PLACE_WORK))
             }
         }
+        changeLocationField()
+        changeIndustryField()
     }
 }

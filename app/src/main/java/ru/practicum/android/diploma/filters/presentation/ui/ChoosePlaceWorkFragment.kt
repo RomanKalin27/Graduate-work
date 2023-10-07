@@ -11,6 +11,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.utils.ChangeTextFieldUtil
 import ru.practicum.android.diploma.databinding.FragmentSelectLocationBinding
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.BUNDLE_KEY
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.KEY
@@ -45,8 +46,18 @@ class ChoosePlaceWorkFragment : Fragment() {
         binding.btnCountry.setOnClickListener {
             findNavController().navigate(R.id.action_choosePlaceWorkFragment_to_chooseCountryFragment)
         }
-        binding.regionEditText.setOnClickListener {
+        binding.countryClearBtn.setOnClickListener {
+            binding.countryEditText.text?.clear()
+            changeCountryField()
+            showChooseBtn()
+        }
+        binding.btnRegion.setOnClickListener {
             findNavController().navigate(R.id.action_choosePlaceWorkFragment_to_chooseRegionFragment)
+        }
+        binding.regionClearBtn.setOnClickListener {
+            binding.regionEditText.text?.clear()
+            changeRegionField()
+            showChooseBtn()
         }
         binding.btnChoose.setOnClickListener {
             chooseFilters()
@@ -68,35 +79,22 @@ class ChoosePlaceWorkFragment : Fragment() {
                 binding.regionEditText.setText(region)
             }
         }
-        changeTextField()
+        changeCountryField()
+        changeRegionField()
     }
 
 
-    private fun changeTextField() {
-        if (!binding.countryEditText.text.isNullOrEmpty()) {
-            binding.countryTextField.setPadding(
-                0, requireContext().resources.getDimension(R.dimen.margin_14).toInt(),
-                requireContext().resources.getDimension(R.dimen.margin_24).toInt(), 0
-            )
-            binding.countryTextField.isEnabled = true
-            binding.countryTextField.setHintTextAppearance(R.style.Text_Regular_12_400)
-            binding.countryClearBtn.setImageDrawable(requireContext().getDrawable(R.drawable.ic_clear))
-            binding.countryClearBtn.setOnClickListener {
-                binding.countryEditText.text?.clear()
-                changeTextField()
-            }
-        } else {
-            binding.countryTextField.setPadding(
-                0, requireContext().resources.getDimension(R.dimen.margin_4).toInt(),
-                requireContext().resources.getDimension(R.dimen.margin_24).toInt(), 0
-            )
-            binding.countryTextField.isEnabled = false
-            binding.countryTextField.setHintTextAppearance(R.style.Text_Regular_16_400)
-            binding.countryClearBtn.setImageDrawable(requireContext().getDrawable(R.drawable.arrow_forward))
-            binding.countryClearBtn.setOnClickListener {
-                findNavController().navigate(R.id.action_choosePlaceWorkFragment_to_chooseCountryFragment)
-            }
-        }
+    private fun changeCountryField() {
+        ChangeTextFieldUtil.changeTextField(binding.countryEditText,
+            binding.countryTextField,
+            binding.countryClearBtn,
+            requireContext(),)
+    }
+    private fun changeRegionField() {
+        ChangeTextFieldUtil.changeTextField(binding.regionEditText,
+            binding.regionTextField,
+            binding.regionClearBtn,
+            requireContext(),)
     }
 
     private fun chooseFilters() {

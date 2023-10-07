@@ -31,7 +31,7 @@ class FilterRepositoryImpl(
 
     override fun getLocation(): String {
         val location: String = if (sharedPrefs.getString(REGION_KEY, null) !== null) {
-            sharedPrefs.getString(REGION_KEY, null) + "," + sharedPrefs.getString(COUNTRY_KEY, null)
+            sharedPrefs.getString(COUNTRY_KEY, null) + "," + sharedPrefs.getString(REGION_KEY, null)
         } else {
             sharedPrefs.getString(COUNTRY_KEY, null) ?: ""
         }

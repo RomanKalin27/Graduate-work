@@ -48,10 +48,9 @@
         android:id="@+id/btn_country"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_60"
-        android:layout_marginTop="@dimen/margin_80"
         android:backgroundTint="@color/transparent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/country_text_field" />
 
     <ImageButton
         android:id="@+id/country_clear_btn"
@@ -64,14 +63,38 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/region_edit_text"
-        style="@style/filterEditText"
-        android:layout_marginTop="@dimen/match_constraint"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/region_text_field"
+        style="@style/filterTextField"
+        android:layout_marginTop="0dp"
         android:hint="@string/region"
-        android:textFontWeight="400"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/country_text_field" />
+        app:layout_constraintTop_toBottomOf="@+id/country_text_field">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/region_edit_text"
+            style="@style/filterEditText2" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_region"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_60"
+        android:backgroundTint="@color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/region_text_field" />
+
+    <ImageButton
+        android:id="@+id/region_clear_btn"
+        android:layout_width="@dimen/margin_24"
+        android:layout_height="@dimen/margin_24"
+        android:layout_marginHorizontal="@dimen/margin_14"
+        android:layout_marginTop="@dimen/margin_158"
+        android:background="@null"
+        android:src="@drawable/arrow_forward"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_choose"
