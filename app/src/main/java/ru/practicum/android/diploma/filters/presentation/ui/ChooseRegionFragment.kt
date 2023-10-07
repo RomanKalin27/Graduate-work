@@ -8,15 +8,19 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentRegionsBinding
+import ru.practicum.android.diploma.filters.data.dto.models.RegionsDTO
+import ru.practicum.android.diploma.filters.domain.models.ChooseRegionsResult
 import ru.practicum.android.diploma.filters.presentation.rv.RegionAdapter
-import ru.practicum.android.diploma.search.data.dto.response_models.Area
+import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
 
 
 class ChooseRegionFragment : Fragment() {
     private lateinit var binding: FragmentRegionsBinding
     private lateinit var regionAdapter: RegionAdapter
-    private var regionList = ArrayList<Area>()
+    private val viewModel by viewModel<FiltersViewModel>()
+    private var regionList = ArrayList<RegionsDTO>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,13 +35,40 @@ class ChooseRegionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initCountryAdapter()
+        getRegions()
+        observeViewModel()
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
     }
 
+    private fun observeViewModel() {
+        viewModel.chooseRegionResult.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                ChooseRegionsResult.EmptyResult -> {
+                    println("Pusto")
+                }
+
+                is ChooseRegionsResult.Error -> {
+                    println(state.exception)
+                }
+
+                ChooseRegionsResult.NoInternet -> {}
+                is ChooseRegionsResult.Success -> showRegions(state.response.areas)
+            }
+        }
+    }
+
+    private fun showRegions(regions: List<RegionsDTO>) {
+        regionList.addAll(regions)
+        regionAdapter.notifyDataSetChanged()
+    }
+
+    private fun getRegions() {
+        viewModel.getRegions()
+    }
+
     private fun initCountryAdapter(): RegionAdapter {
-        regionList.add(Area("Москва"))
         regionAdapter = RegionAdapter {
             setResult(it.name)
         }

@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.filters.data.impl
+package ru.practicum.android.diploma.filters.data.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +20,7 @@ class ChooseCountryRepositoryImpl(
                     emit(ChooseResult.NoInternet)
                     return@flow
                 }
-                val response = apiService.getCountry()
+                val response = apiService.getAreas()
                 if (response.isEmpty()) {
                     emit(ChooseResult.EmptyResult)
                 } else {

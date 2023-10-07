@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemRegionBinding
-import ru.practicum.android.diploma.search.data.dto.response_models.Area
+import ru.practicum.android.diploma.filters.data.dto.models.RegionsDTO
 
 class RegionAdapter(private val clickListener: RegionClickListener) :
     RecyclerView.Adapter<RegionViewHolder>() {
-    var regionList = ArrayList<Area>()
+    var regionList = ArrayList<RegionsDTO>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = RegionViewHolder(
         ItemRegionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
@@ -26,5 +26,5 @@ class RegionAdapter(private val clickListener: RegionClickListener) :
 
 
 fun interface RegionClickListener {
-    fun onTrackClick(country: Area)
+    fun onTrackClick(country: RegionsDTO)
 }

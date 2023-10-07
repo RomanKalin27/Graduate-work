@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.core.root
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -23,7 +24,33 @@ class RootActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
+                R.id.chooseCountryFragment -> {
+                    binding.bottomNavigationView.visibility = View.GONE
+                }
 
+                R.id.filtersFragment -> {
+                    binding.bottomNavigationView.visibility = View.GONE
+                }
+
+                R.id.choosePlaceWorkFragment -> {
+                    binding.bottomNavigationView.visibility = View.GONE
+                }
+
+                R.id.chooseRegionFragment -> {
+                    binding.bottomNavigationView.visibility = View.GONE
+                }
+
+                R.id.filtersFragment -> {
+                    binding.bottomNavigationView.visibility = View.GONE
+                }
+
+                R.id.chooseIndustry -> {
+                    binding.bottomNavigationView.visibility = View.GONE
+                }
+
+                else -> {
+                    binding.bottomNavigationView.visibility = View.VISIBLE
+                }
             }
         }
 

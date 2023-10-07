@@ -10,7 +10,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentSelectCountryBinding
-import ru.practicum.android.diploma.filters.data.dto.models.CountryDTO
+import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
 import ru.practicum.android.diploma.filters.domain.models.ChooseResult
 import ru.practicum.android.diploma.filters.presentation.rv.CountryAdapter
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
@@ -24,7 +24,7 @@ class ChooseCountryFragment : Fragment() {
     private lateinit var binding: FragmentSelectCountryBinding
     private lateinit var countryAdapter: CountryAdapter
     private val viewModel by viewModel<FiltersViewModel>()
-    private var countryList = ArrayList<CountryDTO>()
+    private var countryList = ArrayList<AreasDTO>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -76,8 +76,8 @@ class ChooseCountryFragment : Fragment() {
         }
     }
 
-    private fun showCountry(countries: List<CountryDTO>) {
-        countryList.addAll(countries)
+    private fun showCountry(countries: List<AreasDTO>) {
+        countryList.addAll(countries.slice(listOf(0, 1, 2, 3, 4, 5, 7, 8, 6)))
         countryAdapter.notifyDataSetChanged()
     }
 
