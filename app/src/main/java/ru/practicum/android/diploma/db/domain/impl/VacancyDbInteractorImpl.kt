@@ -27,7 +27,7 @@ class VacancyDbInteractorImpl(
         return vacancyDbRepository.getFavouriteVacancyById(vacancyId)
     }
 
-    override suspend fun deleteFavouriteVacancyById(vacancyId: String){
+    override suspend fun deleteFavouriteVacancyById(vacancyId: String) {
         vacancyDbRepository.deleteFavouriteVacancyById(vacancyId)
     }
 }

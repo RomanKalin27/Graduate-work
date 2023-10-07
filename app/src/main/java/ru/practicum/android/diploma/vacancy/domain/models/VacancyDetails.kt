@@ -14,7 +14,7 @@ data class VacancyDetails(
     val experience: Experience?,
     val keySkills: Array<KeySkill>,
     val schedule: Schedule?,
-): Parcelable
+) : Parcelable
 
 @Parcelize
 data class Contacts(
@@ -28,12 +28,12 @@ data class Phone(
     val city: String,
     val country: String,
     val number: String,
-    val comment: String?
+    val comment: String?,
 ) : Parcelable
 
 @Parcelize
 data class Area(
-    val name: String
+    val name: String,
 ) : Parcelable
 
 @Parcelize

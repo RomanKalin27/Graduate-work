@@ -12,7 +12,8 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.CreateSalary
 import ru.practicum.android.diploma.search.data.dto.response_models.VacancyItem
 
-class VacancyAdapter(private val items: List<VacancyItem>) : RecyclerView.Adapter<VacancyAdapter.ViewHolder>() {
+class VacancyAdapter(private val items: List<VacancyItem>) :
+    RecyclerView.Adapter<VacancyAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image: ImageView = itemView.findViewById(R.id.image)
         val title: TextView = itemView.findViewById(R.id.title)

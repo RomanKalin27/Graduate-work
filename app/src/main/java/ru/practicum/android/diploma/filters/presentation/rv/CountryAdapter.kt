@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemCountryBinding
-import ru.practicum.android.diploma.search.data.dto.response_models.Area
+import ru.practicum.android.diploma.filters.data.dto.models.CountryDTO
 
 class CountryAdapter(private val clickListener: CountryClickListener) :
     RecyclerView.Adapter<CountryViewHolder>() {
-    var countryList = ArrayList<Area>()
+    var countryList = ArrayList<CountryDTO>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CountryViewHolder(
         ItemCountryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
@@ -21,5 +21,5 @@ class CountryAdapter(private val clickListener: CountryClickListener) :
 }
 
 fun interface CountryClickListener {
-    fun onTrackClick(country: Area)
+    fun onTrackClick(country: CountryDTO)
 }

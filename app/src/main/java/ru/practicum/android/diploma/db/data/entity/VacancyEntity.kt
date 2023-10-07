@@ -26,5 +26,5 @@ data class VacancyEntity(
     val originalLogo: String?,
     val experience: String?,
     val keySkillsList: String,
-    val schedule: String?
+    val schedule: String?,
 )

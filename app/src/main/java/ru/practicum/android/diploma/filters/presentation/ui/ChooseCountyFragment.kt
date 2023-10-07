@@ -8,9 +8,12 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentSelectCountryBinding
+import ru.practicum.android.diploma.filters.data.dto.models.CountryDTO
+import ru.practicum.android.diploma.filters.domain.models.ChooseResult
 import ru.practicum.android.diploma.filters.presentation.rv.CountryAdapter
-import ru.practicum.android.diploma.search.data.dto.response_models.Area
+import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
 
 class ChooseCountryFragment : Fragment() {
     companion object {
@@ -20,7 +23,8 @@ class ChooseCountryFragment : Fragment() {
 
     private lateinit var binding: FragmentSelectCountryBinding
     private lateinit var countryAdapter: CountryAdapter
-    private var countryList = ArrayList<Area>()
+    private val viewModel by viewModel<FiltersViewModel>()
+    private var countryList = ArrayList<CountryDTO>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,8 +37,9 @@ class ChooseCountryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        countryList.add(Area("Россия"))
         initCountryAdapter()
+        getCountry()
+        observeViewModel()
         binding.btnBack.setOnClickListener {
             setResult(null)
         }
@@ -55,5 +60,28 @@ class ChooseCountryFragment : Fragment() {
             bundleOf(BUNDLE_KEY to countryName)
         )
         findNavController().navigateUp()
+    }
+
+    private fun observeViewModel() {
+        viewModel.chooseResult.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is ChooseResult.EmptyResult -> {
+
+                }
+
+                is ChooseResult.Error -> TODO()
+                ChooseResult.NoInternet -> TODO()
+                is ChooseResult.Success -> showCountry(state.response)
+            }
+        }
+    }
+
+    private fun showCountry(countries: List<CountryDTO>) {
+        countryList.addAll(countries)
+        countryAdapter.notifyDataSetChanged()
+    }
+
+    private fun getCountry() {
+        viewModel.getCountry()
     }
 }

@@ -4,13 +4,13 @@ import android.content.SharedPreferences
 import ru.practicum.android.diploma.filters.domain.api.FilterRepository
 
 class FilterRepositoryImpl(
-    private val sharedPrefs: SharedPreferences
+    private val sharedPrefs: SharedPreferences,
 ) : FilterRepository {
     override fun saveFilters(
         location: String?,
         industry: String?,
         expectedSalary: String?,
-        removeNoSalary: Boolean
+        removeNoSalary: Boolean,
     ) {
         val country: String?
         var region: String? = null
