@@ -38,7 +38,7 @@ class VacancyAdapter(private val items: List<VacancyItem>) :
     private fun ViewHolder.bind(item: VacancyItem) {
         Glide.with(itemView)
             .load(item.employer?.logo_urls?.original)
-            .placeholder(R.drawable.placeholder)
+            .placeholder(R.drawable.vacancy_placeholder)
             .transform(RoundedCorners(12))
             .into(image)
         title.text = item.name

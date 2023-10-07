@@ -61,7 +61,7 @@ class SearchFragment : Fragment() {
 
     private fun setupDefaultUI() {
         with(binding) {
-            iconSearch.setImageResource(R.drawable.icons_search)
+            iconSearch.setImageResource(R.drawable.ic_search)
             searchPlaceholder.setImageResource(R.drawable.placeholder_search)
             searchPlaceholder.visibility = View.VISIBLE
             recyclerView.visibility = View.GONE
@@ -84,23 +84,23 @@ class SearchFragment : Fragment() {
     private fun updateUI(searchUIState: SearchUIState) {
         with(binding) {
             recyclerView.visibility = View.GONE
-            searchPlaceholder.visibility = View.VISIBLE
-
             when (searchUIState) {
                 SearchUIState.CONNECTION_ERROR -> {
-                    iconSearch.setImageResource(R.drawable.placeholder_sad)
-                    vacancyList.clear()
+                    searchPlaceholder.setImageResource(R.drawable.placeholder_sad)
                 }
                 SearchUIState.EMPTY_SEARCH -> {
-                    iconSearch.setImageResource(R.drawable.placeholder_cat)
-                    vacancyList.clear()
+                    searchPlaceholder.setImageResource(R.drawable.placeholder_cat)
                 }
                 SearchUIState.NO_INTERNET -> {
-                    iconSearch.setImageResource(R.drawable.placeholder_skull)
-                    vacancyList.clear()
+                    searchPlaceholder.setImageResource(R.drawable.placeholder_skull)
                 }
-                SearchUIState.LOADING -> TODO()
+                SearchUIState.LOADING -> {
+                    //TODO
+                }
             }
+            searchPlaceholder.visibility = View.VISIBLE
+            iconSearch.setImageResource(R.drawable.ic_search)
+            vacancyList.clear()
             vacancyAdapter.notifyDataSetChanged()
             handler.removeCallbacks(vacancySearchRunnable)
         }
@@ -129,7 +129,7 @@ class SearchFragment : Fragment() {
                     with(binding) {
                         recyclerView.visibility = View.GONE
                         searchPlaceholder.visibility = View.VISIBLE
-                        iconSearch.setImageResource(R.drawable.icons_search)
+                        iconSearch.setImageResource(R.drawable.ic_search)
                     }
                     vacancyList.clear()
                     vacancyAdapter.notifyDataSetChanged()
@@ -146,7 +146,3 @@ class SearchFragment : Fragment() {
         binding.searchEditText.addTextChangedListener(searchTextWatcher)
     }
 }
-
-
-
-

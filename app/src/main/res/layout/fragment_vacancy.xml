@@ -93,7 +93,7 @@
                 android:layout_height="@dimen/margin_48"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:src="@drawable/placeholder" />
+                android:src="@drawable/vacancy_placeholder" />
 
             <TextView
                 android:id="@+id/employer_name"
