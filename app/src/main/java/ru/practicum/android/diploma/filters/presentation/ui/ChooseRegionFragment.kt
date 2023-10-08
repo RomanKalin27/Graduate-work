@@ -10,17 +10,17 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentRegionsBinding
-import ru.practicum.android.diploma.filters.data.dto.models.RegionsDTO
 import ru.practicum.android.diploma.filters.domain.models.ChooseRegionsResult
 import ru.practicum.android.diploma.filters.presentation.rv.RegionAdapter
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
+import ru.practicum.android.diploma.search.data.dto.response_models.Area
 
 
 class ChooseRegionFragment : Fragment() {
     private lateinit var binding: FragmentRegionsBinding
     private lateinit var regionAdapter: RegionAdapter
     private val viewModel by viewModel<FiltersViewModel>()
-    private var regionList = ArrayList<RegionsDTO>()
+    private var regionList = ArrayList<Area>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,12 +54,12 @@ class ChooseRegionFragment : Fragment() {
                 }
 
                 ChooseRegionsResult.NoInternet -> {}
-                is ChooseRegionsResult.Success -> showRegions(state.response.areas)
+                is ChooseRegionsResult.Success -> showRegions(state.response)
             }
         }
     }
 
-    private fun showRegions(regions: List<RegionsDTO>) {
+    private fun showRegions(regions: List<Area>) {
         regionList.addAll(regions)
         regionAdapter.notifyDataSetChanged()
     }

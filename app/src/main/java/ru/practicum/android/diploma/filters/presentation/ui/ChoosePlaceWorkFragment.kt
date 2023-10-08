@@ -85,16 +85,21 @@ class ChoosePlaceWorkFragment : Fragment() {
 
 
     private fun changeCountryField() {
-        ChangeTextFieldUtil.changeTextField(binding.countryEditText,
+        ChangeTextFieldUtil.changeTextField(
+            binding.countryEditText,
             binding.countryTextField,
             binding.countryClearBtn,
-            requireContext(),)
+            requireContext(),
+        )
     }
+
     private fun changeRegionField() {
-        ChangeTextFieldUtil.changeTextField(binding.regionEditText,
+        ChangeTextFieldUtil.changeTextField(
+            binding.regionEditText,
             binding.regionTextField,
             binding.regionClearBtn,
-            requireContext(),)
+            requireContext(),
+        )
     }
 
     private fun chooseFilters() {
