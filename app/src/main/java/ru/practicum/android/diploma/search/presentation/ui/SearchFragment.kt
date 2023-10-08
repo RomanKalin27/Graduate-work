@@ -116,6 +116,7 @@ class SearchFragment : Fragment() {
                     vacancyList.clear()
 
                 }
+                SearchUIState.LOADING -> TODO()
             }
             searchPlaceholder.visibility = View.VISIBLE
 
@@ -166,10 +167,8 @@ class SearchFragment : Fragment() {
         }
         binding.searchEditText.addTextChangedListener(searchTextWatcher)
     }
-}
 
     private fun navigateToVacancyDetail(item: VacancyItem) {
         findNavController().navigate(R.id.action_searchFragment_to_vacancyFragment,
             VacancyFragment.createArgs(item))
-    }
-}
+    }}
