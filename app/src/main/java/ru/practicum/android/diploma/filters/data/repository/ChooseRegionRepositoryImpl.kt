@@ -21,10 +21,12 @@ class ChooseRegionRepositoryImpl(
                     return@flow
                 }
                 val response = apiService.getAreas()
+                val list = response.flatMap { it.areas }
+                val list2 = list.flatMap { it.areas }
                 if (response.isEmpty()) {
                     emit(ChooseRegionsResult.EmptyResult)
                 } else {
-                    emit(ChooseRegionsResult.Success(response[1]))
+                    emit(ChooseRegionsResult.Success(list2))
                 }
             } catch (e: Exception) {
                 emit(ChooseRegionsResult.Error(e))
