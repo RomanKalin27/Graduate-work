@@ -75,7 +75,7 @@ class SearchFragment : Fragment() {
 
     private fun setupDefaultUI() {
         with(binding) {
-            iconSearch.setImageResource(R.drawable.icons_search)
+            iconSearch.setImageResource(R.drawable.ic_search)
             searchPlaceholder.setImageResource(R.drawable.placeholder_search)
             searchPlaceholder.visibility = View.VISIBLE
             recyclerView.visibility = View.GONE
@@ -114,10 +114,14 @@ class SearchFragment : Fragment() {
                     searchPlaceholder.setImageResource(0)
                     searchPlaceholder.setImageResource(R.drawable.placeholder_skull)
                     vacancyList.clear()
+
                 }
-                SearchUIState.LOADING -> TODO()
             }
             searchPlaceholder.visibility = View.VISIBLE
+
+            iconSearch.setImageResource(R.drawable.ic_search)
+            vacancyList.clear()
+
             vacancyAdapter.notifyDataSetChanged()
             handler.removeCallbacks(vacancySearchRunnable)
         }
@@ -146,7 +150,7 @@ class SearchFragment : Fragment() {
                     with(binding) {
                         recyclerView.visibility = View.GONE
                         searchPlaceholder.visibility = View.VISIBLE
-                        iconSearch.setImageResource(R.drawable.icons_search)
+                        iconSearch.setImageResource(R.drawable.ic_search)
                     }
                     vacancyList.clear()
                     vacancyAdapter.notifyDataSetChanged()
@@ -162,13 +166,10 @@ class SearchFragment : Fragment() {
         }
         binding.searchEditText.addTextChangedListener(searchTextWatcher)
     }
+}
 
     private fun navigateToVacancyDetail(item: VacancyItem) {
         findNavController().navigate(R.id.action_searchFragment_to_vacancyFragment,
             VacancyFragment.createArgs(item))
     }
 }
-
-
-
-
