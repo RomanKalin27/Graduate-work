@@ -31,7 +31,6 @@
     <string name="apply">Применить</string>
     <string name="reset">Сбросить</string>
 
-
     //Зарплата
     <string name="expected_selary">Ожидаемая ЗП</string>
     <string name="enter_amount">Введите сумму</string>
@@ -75,6 +74,11 @@
     <string name="from">от</string>
     <string name="to">до</string>
     <string name="salary_not_specified">ЗП не указана</string>
+    <string name="no_data">Нет днных[</string>
+
+    <string name="write_to_email">Хотите написать на этот email?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 
     <plurals name="search_result_number">
         <item quantity="zero">Найдено %d вакансий</item>

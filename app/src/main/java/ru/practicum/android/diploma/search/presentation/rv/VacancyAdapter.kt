@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.SalaryConverter
+import ru.practicum.android.diploma.db.domain.models.Vacancy
 import ru.practicum.android.diploma.search.data.dto.response_models.VacancyItem
 
 class VacancyAdapter(private val items: List<VacancyItem>) :
@@ -37,6 +38,7 @@ class VacancyAdapter(private val items: List<VacancyItem>) :
         holder.bind(item)
         holder.itemView.setOnClickListener { itemClickListener?.invoke(position, item)}
     }
+
 
     private fun ViewHolder.bind(item: VacancyItem) {
         Glide.with(itemView)
