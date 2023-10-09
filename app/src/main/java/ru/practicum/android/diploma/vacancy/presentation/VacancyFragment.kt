@@ -10,7 +10,8 @@ import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
-import ru.practicum.android.diploma.search.data.dto.response_models.VacancyItem
+import ru.practicum.android.diploma.search.data.dto.response_models.VacancyItemDto
+import ru.practicum.android.diploma.search.domain.models.Vacancy
 
 class VacancyFragment : Fragment() {
     private val viewModel by viewModel<VacancyViewModel>()
@@ -49,15 +50,15 @@ class VacancyFragment : Fragment() {
         _binding = null
     }
 
-    fun retrieveVacancy(): VacancyItem {
+    fun retrieveVacancy(): VacancyItemDto {
         val jsonVacancy = requireArguments().getString(KEY_VACANCY)
-        return Gson().fromJson(jsonVacancy, VacancyItem::class.java)
+        return Gson().fromJson(jsonVacancy, VacancyItemDto::class.java)
     }
 
     companion object {
         const val KEY_VACANCY = "vacancy"
 
-        fun createArgs(vacancy: VacancyItem): Bundle {
+        fun createArgs(vacancy: Vacancy): Bundle {
             val gson = Gson()
             val jsonVacancy = gson.toJson(vacancy)
             val bundle = Bundle()

@@ -10,10 +10,25 @@ import ru.practicum.android.diploma.filters.domain.impl.FilterInteractorImpl
 import ru.practicum.android.diploma.search.domain.impl.SearchInteractor
 
 val domainModule = module {
-    single { SearchInteractor(get()) }
-    single<FilterInteractor> {
-        FilterInteractorImpl(get())
+    single {
+        SearchInteractor(
+            searchRepository = get()
+        )
     }
-    single<ChooseCountryInteractor> { ChooseCountryInteractorImpl(get()) }
-    single<ChooseRegionInteractor> { ChooseRegionsInteractorImpl(get()) }
+
+    single<FilterInteractor> {
+        FilterInteractorImpl(
+            filterRepository = get()
+        )
+    }
+    single<ChooseCountryInteractor> {
+        ChooseCountryInteractorImpl(
+            repository = get()
+        )
+    }
+    single<ChooseRegionInteractor> {
+        ChooseRegionsInteractorImpl(
+            repository = get()
+        )
+    }
 }
