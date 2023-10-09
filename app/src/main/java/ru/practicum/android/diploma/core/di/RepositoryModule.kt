@@ -12,8 +12,32 @@ import ru.practicum.android.diploma.search.domain.api.SearchRepository
 
 val repositoryModule = module {
 
-    factory<SearchRepository> { SearchRepositoryImpl(get(), get()) }
-    single<FilterRepository> { FilterRepositoryImpl(get()) }
-    single<ChooseCountryRepository> { ChooseCountryRepositoryImpl(get(), get()) }
-    single<ChooseRegionRepository> { ChooseRegionRepositoryImpl(get(), get()) }
+    factory<SearchRepository> {
+        SearchRepositoryImpl(
+            apiService = get(),
+            networkControl = get(),
+            converter = get()
+        )
+    }
+
+    single<FilterRepository> {
+        FilterRepositoryImpl(
+            sharedPrefs = get()
+        )
+    }
+
+    single<ChooseCountryRepository> {
+        ChooseCountryRepositoryImpl(
+            apiService = get(),
+            networkControl = get()
+        )
+    }
+
+    single<ChooseRegionRepository> {
+        ChooseRegionRepositoryImpl(
+            apiService = get(),
+            networkControl = get()
+        )
+    }
 }
+

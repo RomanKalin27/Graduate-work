@@ -6,12 +6,14 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.search.data.network.ApiService
 import ru.practicum.android.diploma.search.data.network.ConnectivityHelper
+import ru.practicum.android.diploma.search.data.network.ModelConverter
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.search.domain.models.SearchVacancyResult
 
 class SearchRepositoryImpl(
     private val apiService: ApiService,
     private val networkControl: ConnectivityHelper,
+    private val converter: ModelConverter
 ) : SearchRepository {
     override suspend fun searchVacancies(query: String): Flow<SearchVacancyResult> =
         flow {
@@ -26,7 +28,8 @@ class SearchRepositoryImpl(
                 if (response.items.isEmpty()) {
                     emit(SearchVacancyResult.EmptyResult)
                 } else {
-                    emit(SearchVacancyResult.Success(response))
+                    val convertedResponse = converter.convertVacanciesResponse(response)
+                    emit(SearchVacancyResult.Success(convertedResponse))
                 }
             } catch (e: Exception) {
                 emit(SearchVacancyResult.Error(e))

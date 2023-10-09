@@ -9,13 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.utils.SalaryConverter
-import ru.practicum.android.diploma.search.data.dto.response_models.VacancyItem
+import ru.practicum.android.diploma.search.domain.models.Vacancy
 
-class VacancyAdapter(private val items: List<VacancyItem>) :
+class VacancyAdapter(private val items: List<Vacancy>) :
     RecyclerView.Adapter<VacancyAdapter.ViewHolder>() {
 
-    var itemClickListener: ((Int, VacancyItem) -> Unit)? = null
+    var itemClickListener: ((Int, Vacancy) -> Unit)? = null
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image: ImageView = itemView.findViewById(R.id.image)
         val title: TextView = itemView.findViewById(R.id.title)
@@ -38,14 +37,14 @@ class VacancyAdapter(private val items: List<VacancyItem>) :
         holder.itemView.setOnClickListener { itemClickListener?.invoke(position, item)}
     }
 
-    private fun ViewHolder.bind(item: VacancyItem) {
+    private fun ViewHolder.bind(item: Vacancy) {
         Glide.with(itemView)
-            .load(item.employer?.logo_urls?.original)
+            .load(item.logoUrl)
             .placeholder(R.drawable.vacancy_placeholder)
             .transform(RoundedCorners(12))
             .into(image)
-        title.text = item.name
-        company.text = item.employer?.name ?: " "
-        value.text = SalaryConverter().convertSalary(item.salary)
+        title.text = item.title
+        company.text = item.company
+        value.text = item.salary
     }
 }
