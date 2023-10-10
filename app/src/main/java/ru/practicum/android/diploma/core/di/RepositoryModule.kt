@@ -44,7 +44,8 @@ val repositoryModule = module {
     single<ChooseIndustryRepository> {
         ChooseIndustryRepositoryImpl(
             apiService = get(),
-            networkControl = get()
+            networkControl = get(),
+            filterModelConverter = get()
         )
     }
 }

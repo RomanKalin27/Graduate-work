@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemCountryBinding
-import ru.practicum.android.diploma.filters.data.dto.models.ProfessionDTO
+import ru.practicum.android.diploma.filters.domain.models.Industry
 
 class IndustryAdapter(private val clickListener: IndustryClickListener) :
     RecyclerView.Adapter<IndustryViewHolder>() {
-    var industryList = ArrayList<ProfessionDTO>()
+    var industryList = ArrayList<Industry>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = IndustryViewHolder(
         ItemCountryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
@@ -21,5 +21,5 @@ class IndustryAdapter(private val clickListener: IndustryClickListener) :
 }
 
 fun interface IndustryClickListener {
-    fun onIndustryClick(industry: ProfessionDTO)
+    fun onIndustryClick(industry: Industry)
 }
