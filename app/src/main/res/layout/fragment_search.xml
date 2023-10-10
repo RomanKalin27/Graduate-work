@@ -73,7 +73,7 @@
         android:id="@+id/search_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="@dimen/margin_160"
         android:scaleType="fitStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
