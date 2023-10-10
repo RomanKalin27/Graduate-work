@@ -15,13 +15,14 @@ class ModelConverter(private val context: Context) {
                 logoUrl = item.employer?.logo_urls?.url240.toString(),
                 title = item.name,
                 company = item.employer?.name ?: "",
-                salary = convertSalary(item.salary))
+                salary = convertSalary(item.salary)
+            )
 
         }
         return ConvertedResponse(vacancies)
     }
 
-    fun convertSalary(salary: Salary?): String? {
+    fun convertSalary(salary: Salary?): String {
         if (salary == null) return context.getString(R.string.salary_not_specified)
         val result = StringBuilder()
 

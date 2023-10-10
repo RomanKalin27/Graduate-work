@@ -13,7 +13,7 @@ import ru.practicum.android.diploma.search.domain.models.SearchVacancyResult
 class SearchRepositoryImpl(
     private val apiService: ApiService,
     private val networkControl: ConnectivityHelper,
-    private val converter: ModelConverter
+    private val converter: ModelConverter,
 ) : SearchRepository {
     override suspend fun searchVacancies(query: String): Flow<SearchVacancyResult> =
         flow {
