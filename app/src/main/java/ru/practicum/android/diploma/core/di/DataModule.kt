@@ -7,6 +7,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.core.application.App.Companion.SHARED_PREFS
+import ru.practicum.android.diploma.filters.data.converter.FilterModelConverter
 import ru.practicum.android.diploma.search.data.network.ApiService
 import ru.practicum.android.diploma.search.data.network.ConnectivityHelper
 import ru.practicum.android.diploma.search.data.network.ModelConverter
@@ -34,5 +35,9 @@ val dataModule = module {
         ModelConverter(
             context = get()
         )
+    }
+
+    single {
+        FilterModelConverter()
     }
 }
