@@ -167,12 +167,11 @@
             android:textColor="?attr/text_color"
             />
 
-        <CheckBox
+        <Button
             android:id="@+id/no_salary_checkbox"
             android:layout_width="@dimen/margin_18"
             android:layout_height="@dimen/margin_18"
-            android:background="@drawable/checkbox_selector"
-            android:buttonTint="@color/blue"
+            android:background="@drawable/empty_check_box"
             android:clickable="false"
             />
     </LinearLayout>
