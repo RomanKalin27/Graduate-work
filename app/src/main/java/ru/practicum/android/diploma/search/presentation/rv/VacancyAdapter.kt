@@ -15,6 +15,7 @@ class VacancyAdapter(private val items: List<Vacancy>) :
     RecyclerView.Adapter<VacancyAdapter.ViewHolder>() {
 
     var itemClickListener: ((Int, Vacancy) -> Unit)? = null
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image: ImageView = itemView.findViewById(R.id.image)
         val title: TextView = itemView.findViewById(R.id.title)
@@ -34,7 +35,7 @@ class VacancyAdapter(private val items: List<Vacancy>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         holder.bind(item)
-        holder.itemView.setOnClickListener { itemClickListener?.invoke(position, item)}
+        holder.itemView.setOnClickListener { itemClickListener?.invoke(position, item) }
     }
 
     private fun ViewHolder.bind(item: Vacancy) {

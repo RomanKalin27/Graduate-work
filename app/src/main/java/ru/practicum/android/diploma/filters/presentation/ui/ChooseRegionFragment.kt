@@ -60,6 +60,7 @@ class ChooseRegionFragment : Fragment() {
     }
 
     private fun showRegions(regions: List<Area>) {
+        regionList.clear()
         regionList.addAll(regions)
         regionAdapter.notifyDataSetChanged()
     }

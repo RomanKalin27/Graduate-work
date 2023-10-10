@@ -7,16 +7,18 @@ import ru.practicum.android.diploma.search.presentation.view_model.SearchViewMod
 
 val viewModelModule = module {
 
-    viewModel { SearchViewModel(
-        searchInteractor = get()
-    )
+    viewModel {
+        SearchViewModel(
+            searchInteractor = get()
+        )
     }
 
     viewModel {
         FiltersViewModel(
             filterInteractor = get(),
             chooseCountryInteractor = get(),
-            chooseRegionInteractor = get()
+            chooseRegionInteractor = get(),
+            chooseIndustryInteractor = get(),
         )
     }
 }

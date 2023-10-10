@@ -77,6 +77,7 @@ class ChooseCountryFragment : Fragment() {
     }
 
     private fun showCountry(countries: List<AreasDTO>) {
+        countryList.clear()
         countryList.addAll(countries.slice(listOf(0, 1, 2, 3, 4, 5, 7, 8, 6)))
         countryAdapter.notifyDataSetChanged()
     }

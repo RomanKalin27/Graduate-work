@@ -37,7 +37,12 @@ class VacancyFragment : Fragment() {
             requireContext().startActivity(share)
         }
         binding.vacancyContactEmailValue.setOnClickListener {
-            requireContext().startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:kalinroman034@gmail.com")))
+            requireContext().startActivity(
+                Intent(
+                    Intent.ACTION_SENDTO,
+                    Uri.parse("mailto:kalinroman034@gmail.com")
+                )
+            )
         }
         binding.vacancyContactPhoneValue.setOnClickListener {
             val call = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", "8-800-555-35-35", null))
