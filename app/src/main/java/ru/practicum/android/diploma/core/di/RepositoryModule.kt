@@ -18,7 +18,8 @@ val repositoryModule = module {
         SearchRepositoryImpl(
             apiService = get(),
             networkControl = get(),
-            converter = get()
+            converter = get(),
+            sharedPreferences = get(),
         )
     }
 
