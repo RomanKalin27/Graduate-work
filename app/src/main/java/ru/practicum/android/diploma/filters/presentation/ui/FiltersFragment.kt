@@ -118,12 +118,15 @@ class FiltersFragment : Fragment() {
         )
         showRemoveBtn()
     }
+
     @SuppressLint("UseCompatLoadingForDrawables")
-    private fun changeCheckBox(){
-        if(isChecked){
-            binding.noSalaryCheckbox.background = requireContext().getDrawable(R.drawable.pressed_check_box)
+    private fun changeCheckBox() {
+        if (isChecked) {
+            binding.noSalaryCheckbox.background =
+                requireContext().getDrawable(R.drawable.pressed_check_box)
         } else {
-            binding.noSalaryCheckbox.background = requireContext().getDrawable(R.drawable.empty_check_box)
+            binding.noSalaryCheckbox.background =
+                requireContext().getDrawable(R.drawable.empty_check_box)
         }
         showRemoveBtn()
     }
