@@ -13,7 +13,7 @@ import ru.practicum.android.diploma.search.data.network.ConnectivityHelper
 class ChooseIndustryRepositoryImpl(
     private val apiService: ApiService,
     private val networkControl: ConnectivityHelper,
-    private val filterModelConverter: FilterModelConverter
+    private val filterModelConverter: FilterModelConverter,
 ) : ChooseIndustryRepository {
     override suspend fun getIndustry(): Flow<ChooseIndustryResult> =
         flow {

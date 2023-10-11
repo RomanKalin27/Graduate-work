@@ -42,6 +42,8 @@
     <dimen name="margin_168">168dp</dimen>
     <dimen name="margin_248">248dp</dimen>
     <dimen name="margin_323">323dp</dimen>
+    <dimen name="margin_395">395dp</dimen>
+    <dimen name="margin_460">460dp</dimen>
 
     <dimen name="pic_size_48">48dp</dimen>
 
