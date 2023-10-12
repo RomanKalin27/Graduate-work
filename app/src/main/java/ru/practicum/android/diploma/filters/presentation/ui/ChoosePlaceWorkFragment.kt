@@ -139,25 +139,26 @@ class ChoosePlaceWorkFragment : Fragment() {
         if (region == Area.emptyArea) {
             setFragmentResult(
                 KEY_CHOOSE,
-                bundleOf(PLACE_WORK to country)
+                bundleOf(PLACE_WORK to country, AREA_ID to area[0].id)
             )
         } else {
             val result = "$country,${region.name}"
             setFragmentResult(
                 KEY_CHOOSE,
-                bundleOf(PLACE_WORK to result)
+                bundleOf(PLACE_WORK to result, AREA_ID to region.id)
             )
         }
         findNavController().navigateUp()
     }
 
     private fun showChooseBtn() {
-        region = Area("", binding.regionEditText.text.toString(), "")
+        //region = Area("", binding.regionEditText.text.toString(), "")
         binding.btnChoose.isVisible = !binding.countryEditText.text.isNullOrEmpty()
     }
 
     companion object {
         const val KEY_CHOOSE = "key_choose"
         const val PLACE_WORK = "place_work"
+        const val AREA_ID = "AREA_ID"
     }
 }

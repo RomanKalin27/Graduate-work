@@ -14,6 +14,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.ChangeTextFieldUtil
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
+import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.AREA_ID
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.KEY_CHOOSE
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.PLACE_WORK
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
@@ -21,6 +22,7 @@ import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewM
 class FiltersFragment : Fragment() {
     private lateinit var binding: FragmentFilterBinding
     private var isChecked = false
+    private var areaId = ""
     private val vm by viewModel<FiltersViewModel>()
 
     override fun onCreateView(
@@ -81,7 +83,8 @@ class FiltersFragment : Fragment() {
                 binding.locationEditText.text.toString(),
                 binding.industryEditText.text.toString(),
                 binding.salaryEditText.text.toString(),
-                isChecked
+                isChecked,
+                areaId,
             )
         }
 
@@ -96,6 +99,8 @@ class FiltersFragment : Fragment() {
             binding.salaryEditText.setText(it.lowestSalary)
             isChecked = it.removeNoSalary
             changeCheckBox()
+            changeLocationField()
+            changeIndustryField()
         }
     }
 
@@ -149,9 +154,8 @@ class FiltersFragment : Fragment() {
         { _, bundle ->
             if (!bundle.getString(PLACE_WORK).isNullOrEmpty()) {
                 vm.getLocation(bundle.getString(PLACE_WORK))
+                areaId = bundle.getString(AREA_ID) ?: ""
             }
         }
-        changeLocationField()
-        changeIndustryField()
     }
 }

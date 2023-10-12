@@ -21,7 +21,7 @@ class FiltersViewModel(
     private val chooseIndustryInteractor: ChooseIndustryInteractor,
 ) : ViewModel() {
     private val _stateLiveData = MutableLiveData<FiltersState>()
-    private var emptyFilters = FiltersState(null, null, null, false)
+    private var emptyFilters = FiltersState(null, null, null, false, null)
     fun observeState(): LiveData<FiltersState> = _stateLiveData
 
     private val _chooseResult: MutableLiveData<ChooseResult> = MutableLiveData()
@@ -72,12 +72,14 @@ class FiltersViewModel(
         industry: String?,
         expectedSalary: String?,
         removeNoSalary: Boolean,
+        areaId: String?,
     ) {
         filterInteractor.saveFilters(
             location,
             industry,
             expectedSalary,
             removeNoSalary,
+            areaId
         )
     }
 

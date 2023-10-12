@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.AREA_ID_KEY
 import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.EXPECTED_SALARY_KEY
 import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.NO_SALARY_KEY
 import ru.practicum.android.diploma.search.data.network.ApiService
@@ -44,6 +45,10 @@ class SearchRepositoryImpl(
 
     private fun requestMaker(query: String): Map<String, String> {
         var params = (mapOf("text" to "${query}", "per_page" to "50"))
+        val areaId = sharedPreferences.getString(AREA_ID_KEY, null)
+        if (!areaId.isNullOrEmpty()) {
+            params += Pair("area", areaId)
+        }
         val salary = sharedPreferences.getString(EXPECTED_SALARY_KEY, null)
         if (!salary.isNullOrEmpty()) {
             params += Pair("salary", salary)
