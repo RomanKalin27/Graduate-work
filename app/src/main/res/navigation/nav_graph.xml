@@ -71,6 +71,18 @@
         android:id="@+id/vacancyFragment"
         android:name="ru.practicum.android.diploma.vacancy.presentation.VacancyFragment"
         android:label="VacancyFragment"
-        tools:layout="@layout/fragment_vacancy"/>
+        tools:layout="@layout/fragment_vacancy">
+        <action
+            android:id="@+id/action_vacancyFragment_to_similarVacancyFragment"
+            app:destination="@id/similarVacancyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/similarVacancyFragment"
+        android:name="ru.practicum.android.diploma.vacancy.presentation.SimilarVacancyFragment"
+        android:label="SimilarVacancyFragment" >
+        <action
+            android:id="@+id/action_similarVacancyFragment_to_vacancyFragment"
+            app:destination="@id/vacancyFragment" />
+    </fragment>
 
 </navigation>

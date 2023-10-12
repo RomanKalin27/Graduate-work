@@ -182,10 +182,16 @@ class SearchFragment : Fragment() {
         binding.searchEditText.addTextChangedListener(searchTextWatcher)
     }
 
+
     private fun navigateToVacancyDetail(item: Vacancy) {
         findNavController().navigate(
             R.id.action_searchFragment_to_vacancyFragment,
             VacancyFragment.createArgs(item)
         )
+=======
+    private fun navigateToVacancyDetail(item: VacancyItem) {
+        findNavController().navigate(R.id.action_searchFragment_to_vacancyFragment,
+            VacancyFragment.createArgs(item))
+
     }
 }
