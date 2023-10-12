@@ -67,9 +67,10 @@ class ChoosePlaceWorkFragment : Fragment() {
             findNavController().navigate(R.id.action_choosePlaceWorkFragment_to_chooseRegionFragment)
         }
         binding.regionClearBtn.setOnClickListener {
-            binding.regionEditText.text?.clear()
-            changeRegionField()
+            //binding.regionEditText.text?.clear()
+            region = Area.emptyArea
             showChooseBtn()
+            changeRegionField()
         }
         binding.btnChoose.setOnClickListener {
             chooseFilters()
@@ -153,6 +154,7 @@ class ChoosePlaceWorkFragment : Fragment() {
 
     private fun showChooseBtn() {
         //region = Area("", binding.regionEditText.text.toString(), "")
+        binding.regionEditText.setText(region.name)
         binding.btnChoose.isVisible = !binding.countryEditText.text.isNullOrEmpty()
     }
 
