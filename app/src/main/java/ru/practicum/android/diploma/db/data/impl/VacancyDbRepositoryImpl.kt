@@ -7,9 +7,9 @@ import ru.practicum.android.diploma.db.data.entity.VacancyEntity
 import ru.practicum.android.diploma.db.domain.AppDB
 import ru.practicum.android.diploma.db.domain.api.VacancyDbRepository
 import ru.practicum.android.diploma.db.domain.models.Vacancy
-import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetails
+//import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetails
 
-class VacancyDbRepositoryImpl(
+abstract class VacancyDbRepositoryImpl(
     private val appDataBase: AppDB,
     private val vacancyDbConverter: VacancyDbConverter,
 ) : VacancyDbRepository {
@@ -22,10 +22,10 @@ class VacancyDbRepositoryImpl(
             .map { convertFromListVacancyEntityToListVacancy(it) }
     }
 
-    override suspend fun getFavouriteVacancyDetailsById(vacancyId: String): Flow<VacancyDetails?> {
-        return appDataBase.vacancyDao().getFavouriteVacancyById(vacancyId)
-            .map { convertFromVacancyEntityToVacancyDetails(it) }
-    }
+//    override suspend fun getFavouriteVacancyDetailsById(vacancyId: String): Flow<VacancyDetails?> {
+//        return appDataBase.vacancyDao().getFavouriteVacancyById(vacancyId)
+//            .map { convertFromVacancyEntityToVacancyDetails(it) }
+//    }
 
     override suspend fun getFavouriteVacancyById(vacancyId: String): Flow<Vacancy?> {
         return appDataBase.vacancyDao().getFavouriteVacancyById(vacancyId)
@@ -36,12 +36,12 @@ class VacancyDbRepositoryImpl(
         appDataBase.vacancyDao().deleteFavouriteVacancyById(vacancyId)
     }
 
-    private fun convertFromVacancyEntityToVacancyDetails(vacancyEntity: VacancyEntity?): VacancyDetails? {
-        return if (vacancyEntity != null)
-            vacancyDbConverter.mapDetail(vacancyEntity)
-        else
-            null
-    }
+//    private fun convertFromVacancyEntityToVacancyDetails(vacancyEntity: VacancyEntity?): VacancyDetails? {
+//        return if (vacancyEntity != null)
+//            vacancyDbConverter.mapDetail(vacancyEntity)
+//        else
+//            null
+//    }
 
     private fun convertFromVacancyEntityToVacancy(vacancyEntity: VacancyEntity?): Vacancy? {
         return if (vacancyEntity != null)
