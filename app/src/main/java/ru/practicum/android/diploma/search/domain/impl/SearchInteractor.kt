@@ -8,4 +8,8 @@ class SearchInteractor(private val searchRepository: SearchRepository) {
     suspend fun execute(query: String): Flow<SearchVacancyResult> {
         return searchRepository.searchVacancies(query)
     }
+
+    fun isFiltersOn(): Boolean {
+        return searchRepository.isFiltersOn()
+    }
 }

@@ -84,6 +84,7 @@ class SearchFragment : Fragment() {
             searchPlaceholder.setImageResource(R.drawable.placeholder_search)
             searchPlaceholder.visibility = View.VISIBLE
             recyclerView.visibility = View.GONE
+            viewModel.isFiltersOn(iconFilter)
         }
         vacancyList.clear()
         vacancyAdapter.notifyDataSetChanged()

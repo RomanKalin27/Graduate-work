@@ -61,6 +61,7 @@ class FiltersViewModel(
 
     private fun loadFilters() {
         emptyFilters.location = filterInteractor.getLocation()
+        emptyFilters.areaId = filterInteractor.getAreaId()
         emptyFilters.industry = filterInteractor.getIndustry()
         emptyFilters.lowestSalary = filterInteractor.getExpectedSalary()
         emptyFilters.removeNoSalary = filterInteractor.getRemoveNoSalary()
@@ -72,14 +73,13 @@ class FiltersViewModel(
         industry: String?,
         expectedSalary: String?,
         removeNoSalary: Boolean,
-        areaId: String?,
     ) {
         filterInteractor.saveFilters(
             location,
             industry,
             expectedSalary,
             removeNoSalary,
-            areaId
+            emptyFilters.areaId,
         )
     }
 
@@ -88,8 +88,9 @@ class FiltersViewModel(
         loadFilters()
     }
 
-    fun getLocation(location: String?) {
+    fun getLocation(location: String?, areaId: String?) {
         emptyFilters.location = location
+        emptyFilters.areaId = areaId
         _stateLiveData.postValue(emptyFilters)
     }
 }

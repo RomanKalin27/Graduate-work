@@ -1,10 +1,12 @@
 package ru.practicum.android.diploma.search.presentation.view_model
 
+import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.search.domain.impl.SearchInteractor
 import ru.practicum.android.diploma.search.domain.models.SearchVacancyResult
 
@@ -18,6 +20,13 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
             searchInteractor.execute(query).collect { result ->
                 _searchVacancyResult.value = result
             }
+        }
+    }
+    fun isFiltersOn(iconFilter: ImageView){
+        if(searchInteractor.isFiltersOn()){
+            iconFilter.setImageResource(R.drawable.ic_filter_on)
+        } else {
+            iconFilter.setImageResource(R.drawable.ic_filter_off)
         }
     }
 }

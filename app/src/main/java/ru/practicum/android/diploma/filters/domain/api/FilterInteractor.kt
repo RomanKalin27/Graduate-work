@@ -13,5 +13,6 @@ interface FilterInteractor {
     fun getIndustry(): String?
     fun getExpectedSalary(): String?
     fun getRemoveNoSalary(): Boolean
+    fun getAreaId(): String?
     fun removeFilters()
 }

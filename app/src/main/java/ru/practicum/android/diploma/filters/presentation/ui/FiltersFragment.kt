@@ -22,7 +22,6 @@ import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewM
 class FiltersFragment : Fragment() {
     private lateinit var binding: FragmentFilterBinding
     private var isChecked = false
-    private var areaId = ""
     private val vm by viewModel<FiltersViewModel>()
 
     override fun onCreateView(
@@ -51,7 +50,7 @@ class FiltersFragment : Fragment() {
         }
         binding.locationClearBtn.setOnClickListener {
             binding.locationEditText.text?.clear()
-            vm.getLocation(null)
+            vm.getLocation(null, null)
             changeLocationField()
         }
         binding.btnIndustry.setOnClickListener {
@@ -84,7 +83,6 @@ class FiltersFragment : Fragment() {
                 binding.industryEditText.text.toString(),
                 binding.salaryEditText.text.toString(),
                 isChecked,
-                areaId,
             )
         }
 
@@ -153,8 +151,7 @@ class FiltersFragment : Fragment() {
         setFragmentResultListener(KEY_CHOOSE)
         { _, bundle ->
             if (!bundle.getString(PLACE_WORK).isNullOrEmpty()) {
-                vm.getLocation(bundle.getString(PLACE_WORK))
-                areaId = bundle.getString(AREA_ID) ?: ""
+                vm.getLocation(bundle.getString(PLACE_WORK), bundle.getString(AREA_ID))
             }
         }
     }

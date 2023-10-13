@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.AREA_ID_KEY
 import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.EXPECTED_SALARY_KEY
+import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.FILTERS_ON_KEY
 import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.NO_SALARY_KEY
 import ru.practicum.android.diploma.search.data.network.ApiService
 import ru.practicum.android.diploma.search.data.network.ConnectivityHelper
@@ -43,6 +44,7 @@ class SearchRepositoryImpl(
             }
         }.flowOn(Dispatchers.IO)
 
+
     private fun requestMaker(query: String): Map<String, String> {
         var params = (mapOf("text" to "${query}", "per_page" to "50"))
         val areaId = sharedPreferences.getString(AREA_ID_KEY, null)
@@ -56,6 +58,10 @@ class SearchRepositoryImpl(
         val noSalary = sharedPreferences.getBoolean(NO_SALARY_KEY, false)
         params += Pair("only_with_salary", "$noSalary")
         return params
+    }
+
+    override fun isFiltersOn(): Boolean {
+        return sharedPreferences.getBoolean(FILTERS_ON_KEY, false)
     }
 }
 

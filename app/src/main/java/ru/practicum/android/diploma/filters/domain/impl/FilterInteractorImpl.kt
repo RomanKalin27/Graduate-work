@@ -38,6 +38,10 @@ class FilterInteractorImpl(
         return filterRepository.getRemoveNoSalary()
     }
 
+    override fun getAreaId(): String? {
+        return filterRepository.getAreaId()
+    }
+
     override fun removeFilters() {
         filterRepository.removeFilters()
     }

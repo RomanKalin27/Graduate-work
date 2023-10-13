@@ -13,6 +13,7 @@ class FilterRepositoryImpl(
         removeNoSalary: Boolean,
         areaId: String?,
     ) {
+        var isFiltersOn = false
         val country: String?
         var region: String? = null
         if (location.toString().contains(",")) {
@@ -21,6 +22,10 @@ class FilterRepositoryImpl(
         } else {
             country = location
         }
+        if (!areaId.isNullOrEmpty() || !industry.isNullOrEmpty() || !expectedSalary.isNullOrEmpty() || removeNoSalary) {
+            isFiltersOn = true
+        }
+
         sharedPrefs.edit()
             .putString(COUNTRY_KEY, country)
             .putString(REGION_KEY, region)
@@ -28,6 +33,7 @@ class FilterRepositoryImpl(
             .putString(EXPECTED_SALARY_KEY, expectedSalary)
             .putBoolean(NO_SALARY_KEY, removeNoSalary)
             .putString(AREA_ID_KEY, areaId)
+            .putBoolean(FILTERS_ON_KEY, isFiltersOn)
             .apply()
     }
 
@@ -56,12 +62,18 @@ class FilterRepositoryImpl(
         sharedPrefs.edit().clear().apply()
     }
 
+    override fun getAreaId(): String? {
+        return sharedPrefs.getString(AREA_ID_KEY, null)
+    }
+
     companion object {
         const val COUNTRY_KEY = "COUNTRY_KEY"
         const val REGION_KEY = "REGION_KEY"
         const val INDUSTRY_KEY = "INDUSTRY_KEY"
+        const val INDUSTRY_ID_KEY = "INDUSTRY_ID_KEY"
         const val EXPECTED_SALARY_KEY = "EXPECTED_SALARY_KEY"
         const val NO_SALARY_KEY = "NO_SALARY_KEY"
         const val AREA_ID_KEY = "AREA_ID_KEY"
+        const val FILTERS_ON_KEY = "FILTERS_ON_KEY"
     }
 }

@@ -14,4 +14,5 @@ interface FilterRepository {
     fun getExpectedSalary(): String?
     fun getRemoveNoSalary(): Boolean
     fun removeFilters()
+    fun getAreaId(): String?
 }
