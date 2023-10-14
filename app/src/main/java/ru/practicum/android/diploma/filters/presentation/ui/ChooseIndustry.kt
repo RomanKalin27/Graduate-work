@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentIndustryBinding
 import ru.practicum.android.diploma.filters.domain.models.ChooseIndustryResult
@@ -17,6 +19,8 @@ class ChooseIndustry : Fragment() {
     private lateinit var binding: FragmentIndustryBinding
     private lateinit var industryAdapter: IndustryAdapter
     private var industryList = ArrayList<Industry>()
+    private lateinit var selectedIndustry: Industry
+    private lateinit var industryRecyclerView: RecyclerView
     private val viewModel by viewModel<FiltersViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,11 +34,16 @@ class ChooseIndustry : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initIndustryAdapter()
+        industryAdapter = initIndustryAdapter()
         getIndustry()
         observeViewModel()
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
+        }
+        industryAdapter.itemClickListener = { position, vacancy ->
+            industryAdapter.notifyDataSetChanged()
+            println("ДЛЯ ТЕСТИРОВАНИЯ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            println(vacancy.industries)
         }
     }
 
@@ -50,13 +59,17 @@ class ChooseIndustry : Fragment() {
     }
 
     private fun initIndustryAdapter(): IndustryAdapter {
-        industryAdapter = IndustryAdapter {
+        industryRecyclerView = binding.industryRecycler
+        industryRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        industryAdapter = IndustryAdapter(industryList) { industry ->
+            selectedIndustry = industry
         }
-        industryAdapter.industryList = industryList
-        binding.industryRecycler.adapter = industryAdapter
-        return industryAdapter
+        industryRecyclerView.adapter = industryAdapter
+        return industryRecyclerView.adapter as IndustryAdapter
     }
+
+
 
     private fun getIndustry() {
         viewModel.getIndustry()
@@ -67,4 +80,6 @@ class ChooseIndustry : Fragment() {
         industryList.addAll(industry)
         industryAdapter.notifyDataSetChanged()
     }
+
+
 }
