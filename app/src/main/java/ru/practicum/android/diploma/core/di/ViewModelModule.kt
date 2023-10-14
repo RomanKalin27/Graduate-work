@@ -19,6 +19,7 @@ val viewModelModule = module {
             chooseCountryInteractor = get(),
             chooseRegionInteractor = get(),
             chooseIndustryInteractor = get(),
+            get()
         )
     }
 }

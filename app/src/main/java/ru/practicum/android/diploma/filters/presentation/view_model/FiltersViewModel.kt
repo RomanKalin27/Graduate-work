@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.filters.data.converter.FilterModelConverter
+import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
 import ru.practicum.android.diploma.filters.domain.api.ChooseCountryInteractor
 import ru.practicum.android.diploma.filters.domain.api.ChooseIndustryInteractor
 import ru.practicum.android.diploma.filters.domain.api.ChooseRegionInteractor
@@ -13,12 +15,14 @@ import ru.practicum.android.diploma.filters.domain.models.ChooseIndustryResult
 import ru.practicum.android.diploma.filters.domain.models.ChooseRegionsResult
 import ru.practicum.android.diploma.filters.domain.models.ChooseResult
 import ru.practicum.android.diploma.filters.domain.models.FiltersState
+import ru.practicum.android.diploma.search.data.dto.response_models.Area
 
 class FiltersViewModel(
     private val filterInteractor: FilterInteractor,
     private val chooseCountryInteractor: ChooseCountryInteractor,
     private val chooseRegionInteractor: ChooseRegionInteractor,
     private val chooseIndustryInteractor: ChooseIndustryInteractor,
+    private val converter: FilterModelConverter,
 ) : ViewModel() {
     private val _stateLiveData = MutableLiveData<FiltersState>()
     private var emptyFilters = FiltersState(null, null, null, false, null)
@@ -30,6 +34,8 @@ class FiltersViewModel(
     val chooseRegionResult: LiveData<ChooseRegionsResult> = _chooseRegionResult
     private val _chooseIndustryResult: MutableLiveData<ChooseIndustryResult> = MutableLiveData()
     val chooseIndustryResult: LiveData<ChooseIndustryResult> = _chooseIndustryResult
+    private val _convert: MutableLiveData<List<Area>> = MutableLiveData()
+    val convert: LiveData<List<Area>> = _convert
 
     init {
         loadFilters()
@@ -40,6 +46,16 @@ class FiltersViewModel(
             chooseCountryInteractor.execute().collect { result ->
                 _chooseResult.postValue(result)
             }
+        }
+    }
+
+    fun convert(areas: List<AreasDTO>, country: AreasDTO) {
+        if (country != AreasDTO.emptyArea) {
+            val result = converter.regionDTOListToAreaList(areas.flatMap { it.areas }
+                .filter { it.parentId == country.id })
+            _convert.postValue(result)
+        } else {
+            _convert.postValue(converter.regionDTOListToAreaList(areas.flatMap { it.areas }))
         }
     }
 
