@@ -22,8 +22,9 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
             }
         }
     }
-    fun isFiltersOn(iconFilter: ImageView){
-        if(searchInteractor.isFiltersOn()){
+
+    fun isFiltersOn(iconFilter: ImageView) {
+        if (searchInteractor.isFiltersOn()) {
             iconFilter.setImageResource(R.drawable.ic_filter_on)
         } else {
             iconFilter.setImageResource(R.drawable.ic_filter_off)

@@ -26,7 +26,7 @@ import ru.practicum.android.diploma.search.data.dto.response_models.Area
 
 class ChoosePlaceWorkFragment : Fragment() {
     private lateinit var binding: FragmentSelectLocationBinding
-    private var country: String = ""
+    private var country: AreasDTO = AreasDTO.emptyArea
     private var region: Area = Area.emptyArea
     private val viewModel by viewModel<FiltersViewModel>()
     private var areasList = ArrayList<AreasDTO>()
@@ -80,9 +80,10 @@ class ChoosePlaceWorkFragment : Fragment() {
     private fun setFilters() {
         setFragmentResultListener(KEY)
         { _, bundle ->
-            country = bundle.getString(BUNDLE_KEY).orEmpty()
-            if (country.isNotEmpty()) {
-                binding.countryEditText.setText(country)
+            country = (bundle.getString(BUNDLE_KEY)?.let { Json.decodeFromString<AreasDTO>(it) }
+                ?: AreasDTO.emptyArea)
+            if (country != AreasDTO.emptyArea) {
+                binding.countryEditText.setText(country.name)
             }
         }
         setFragmentResultListener(KEY_R)
@@ -97,7 +98,7 @@ class ChoosePlaceWorkFragment : Fragment() {
             areasList.removeIf { it.id != region.parentId }
             area.addAll(areasList)
             binding.countryEditText.setText(area[0].name)
-            country = area[0].name
+            country = AreasDTO(id = area[0].id, name = area[0].name, emptyList())
         }
         changeCountryField()
         changeRegionField()
@@ -143,7 +144,7 @@ class ChoosePlaceWorkFragment : Fragment() {
                 bundleOf(PLACE_WORK to country, AREA_ID to area[0].id)
             )
         } else {
-            val result = "$country,${region.name}"
+            val result = "${country.name},${region.name}"
             setFragmentResult(
                 KEY_CHOOSE,
                 bundleOf(PLACE_WORK to result, AREA_ID to region.id)

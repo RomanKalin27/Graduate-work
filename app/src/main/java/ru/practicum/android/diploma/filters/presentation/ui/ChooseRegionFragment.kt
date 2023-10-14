@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.serialization.encodeToString
@@ -16,8 +17,11 @@ import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.common.utils.debounce
 import ru.practicum.android.diploma.databinding.FragmentRegionsBinding
+import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
 import ru.practicum.android.diploma.filters.domain.models.ChooseRegionsResult
 import ru.practicum.android.diploma.filters.presentation.rv.RegionAdapter
+import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.FILTER_COUNTRY
+import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.FILTER_KEY
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
 import ru.practicum.android.diploma.search.data.dto.response_models.Area
 
@@ -26,11 +30,12 @@ class ChooseRegionFragment : Fragment() {
     private lateinit var binding: FragmentRegionsBinding
     private lateinit var regionAdapter: RegionAdapter
     private lateinit var textWatcher: TextWatcher
+    private var debounce : ((String) -> Unit)? = null
     private val viewModel by viewModel<FiltersViewModel>()
     private var regionList = ArrayList<Area>()
     private var regionListSaved = ArrayList<Area>()
     private var regionListFilter = ArrayList<Area>()
-    private lateinit var selected: Area
+    private var country: AreasDTO = AreasDTO.emptyArea
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,6 +48,7 @@ class ChooseRegionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        debounce()
         initCountryAdapter()
         getRegions()
         observeViewModel()
@@ -70,16 +76,19 @@ class ChooseRegionFragment : Fragment() {
                 }
             }
         }
+        viewModel.convert.observe(viewLifecycleOwner) {
+            regionList.clear()
+            regionList.addAll(it)
+            regionAdapter.notifyDataSetChanged()
+            binding.regionRecycler.visibility = View.VISIBLE
+            regionListSaved.addAll(it)
+            binding.noInternetImage.visibility = View.GONE
+            binding.noInternetText.visibility = View.GONE
+        }
     }
 
-    private fun showRegions(regions: List<Area>) {
-        regionList.clear()
-        regionList.addAll(regions)
-        regionAdapter.notifyDataSetChanged()
-        binding.regionRecycler.visibility = View.VISIBLE
-        regionListSaved.addAll(regions)
-        binding.noInternetImage.visibility = View.GONE
-        binding.noInternetText.visibility = View.GONE
+    private fun showRegions(regions: List<AreasDTO>) {
+        viewModel.convert(regions, setFilters())
     }
 
     private fun getRegions() {
@@ -111,7 +120,7 @@ class ChooseRegionFragment : Fragment() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                debounceSearch(p0.toString())
+                debounceSearch(p0.toString().trim())
             }
 
             override fun afterTextChanged(p0: Editable?) {
@@ -135,7 +144,10 @@ class ChooseRegionFragment : Fragment() {
     }
 
     private fun debounceSearch(p0: String) {
-        val onSearchDebounce = debounce<String>(
+        debounce?.let { it(p0) }
+    }
+    private fun debounce(){
+        debounce = debounce<String>(
             SEARCH_DEBOUNCE_DELAY_MILLIS,
             viewLifecycleOwner.lifecycleScope,
             true,
@@ -162,7 +174,6 @@ class ChooseRegionFragment : Fragment() {
                     regionAdapter.notifyDataSetChanged()
                 }
             })
-        onSearchDebounce(p0)
     }
 
     private fun setResult(region: Area) {
@@ -170,6 +181,15 @@ class ChooseRegionFragment : Fragment() {
             KEY_R,
             bundleOf(REGION_KEY to Json.encodeToString(region))
         )
+    }
+
+    private fun setFilters(): AreasDTO {
+        setFragmentResultListener(FILTER_KEY)
+        { _, bundle ->
+            country = (bundle.getString(FILTER_COUNTRY)?.let { Json.decodeFromString<AreasDTO>(it) }
+                ?: AreasDTO.emptyArea)
+        }
+        return country
     }
 
     companion object {
