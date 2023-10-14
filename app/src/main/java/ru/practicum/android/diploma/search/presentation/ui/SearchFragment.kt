@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ import ru.practicum.android.diploma.common.utils.Constants.SEARCH_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.common.utils.debounce
 import ru.practicum.android.diploma.core.root.RootActivity
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
+import ru.practicum.android.diploma.filters.presentation.ui.FiltersFragment.Companion.SET_FILTERS_KEY
 import ru.practicum.android.diploma.search.domain.models.SearchVacancyResult
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.search.presentation.models.SearchUIState
@@ -61,12 +63,20 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         setupDefaultUI()
-        binding.searchEditText.text.clear()
+        setFragmentResultListener(SET_FILTERS_KEY)
+        { _, bundle ->
+            if (!binding.searchEditText.text.isNullOrEmpty()) {
+                viewModel.searchVacancies(binding.searchEditText.text.toString())
+            }
+        }
     }
 
     private fun setupViews() {
         binding.iconFilter.setOnClickListener {
             findNavController().navigate(R.id.action_searchFragment_to_filtersFragment)
+        }
+        binding.iconSearch.setOnClickListener {
+            binding.searchEditText.text.clear()
         }
         vacancyAdapter.itemClickListener = { position, vacancy ->
             (activity as? RootActivity)?.animateBottomNavigationView()
@@ -80,20 +90,18 @@ class SearchFragment : Fragment() {
 
     private fun setupDefaultUI() {
         with(binding) {
-            iconSearch.setImageResource(R.drawable.ic_search)
             searchPlaceholder.setImageResource(R.drawable.placeholder_search)
-            searchPlaceholder.visibility = View.VISIBLE
-            recyclerView.visibility = View.GONE
             viewModel.isFiltersOn(iconFilter)
+            if (searchEditText.text.isNullOrEmpty()) {
+                clearUI()
+            }
         }
-        vacancyList.clear()
-        vacancyAdapter.notifyDataSetChanged()
-        handler.removeCallbacks(vacancySearchRunnable)
         println("Test")
     }
 
     private fun observeViewModel() {
         viewModel.searchVacancyResult.observe(viewLifecycleOwner) { state ->
+            binding.iconSearch.setImageResource(R.drawable.ic_search)
             when (state) {
                 is SearchVacancyResult.Error -> updateUI(SearchUIState.CONNECTION_ERROR)
                 SearchVacancyResult.EmptyResult -> updateUI(SearchUIState.EMPTY_SEARCH)
@@ -111,7 +119,6 @@ class SearchFragment : Fragment() {
                 SearchUIState.CONNECTION_ERROR -> {
                     searchPlaceholder.setImageResource(0)
                     searchPlaceholder.setImageResource(R.drawable.placeholder_sad)
-
                     vacancyList.clear()
                 }
 
@@ -157,20 +164,24 @@ class SearchFragment : Fragment() {
         }
     }
 
+    private fun clearUI() {
+        with(binding) {
+            searchPlaceholder.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
+            iconSearch.setImageResource(R.drawable.ic_search)
+        }
+        vacancyList.clear()
+        vacancyAdapter.notifyDataSetChanged()
+        handler.removeCallbacks(vacancySearchRunnable)
+    }
+
     private fun setupTextWatcher() {
         val searchTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s.isNullOrEmpty()) {
-                    with(binding) {
-                        recyclerView.visibility = View.GONE
-                        searchPlaceholder.visibility = View.VISIBLE
-                        iconSearch.setImageResource(R.drawable.ic_search)
-                    }
-                    vacancyList.clear()
-                    vacancyAdapter.notifyDataSetChanged()
-                    handler.removeCallbacks(vacancySearchRunnable)
+                    clearUI()
                 } else {
                     binding.iconSearch.setImageResource(R.drawable.ic_clear)
                     handler.removeCallbacks(vacancySearchRunnable)
