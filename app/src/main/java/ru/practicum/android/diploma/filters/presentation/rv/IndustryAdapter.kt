@@ -3,23 +3,45 @@ package ru.practicum.android.diploma.filters.presentation.rv
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.practicum.android.diploma.databinding.ItemCountryBinding
+import ru.practicum.android.diploma.databinding.ItemRegionBinding
 import ru.practicum.android.diploma.filters.domain.models.Industry
 
-class IndustryAdapter(private val clickListener: IndustryClickListener) :
-    RecyclerView.Adapter<IndustryViewHolder>() {
-    var industryList = ArrayList<Industry>()
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = IndustryViewHolder(
-        ItemCountryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+class IndustryAdapter(private val items: List<Industry>,
+                      private val onIndustrySelected: (Industry) -> Unit) :
+    RecyclerView.Adapter<IndustryAdapter.ViewHolderIndustry>() {
+    private var selectedPosition = -1
+    var itemClickListener: ((Int, Industry) -> Unit)? = null
 
-    override fun getItemCount() = industryList.size
-    override fun onBindViewHolder(holder: IndustryViewHolder, position: Int) {
-        holder.bind(industryList[position])
-        holder.itemView.setOnClickListener { clickListener.onIndustryClick(industryList[position]) }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderIndustry {
+        val binding =
+            ItemRegionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolderIndustry(binding)
     }
-}
 
-fun interface IndustryClickListener {
-    fun onIndustryClick(industry: Industry)
+    override fun getItemCount(): Int {
+        return items.size
+    }
+
+    override fun onBindViewHolder(holder: ViewHolderIndustry, position: Int) {
+        val industry = items[position]
+        holder.bind(industry, position == selectedPosition)
+    }
+
+    inner class ViewHolderIndustry(private val binding: ItemRegionBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(industry: Industry, isSelected: Boolean) {
+            binding.region.text = industry.name
+            binding.radioButton.isChecked = isSelected
+
+            itemView.setOnClickListener {
+                if (selectedPosition != adapterPosition) {
+                    selectedPosition = adapterPosition
+                    onIndustrySelected(industry)
+                    notifyDataSetChanged()
+                    itemClickListener?.invoke(adapterPosition, industry)
+                }
+            }
+        }
+    }
 }
