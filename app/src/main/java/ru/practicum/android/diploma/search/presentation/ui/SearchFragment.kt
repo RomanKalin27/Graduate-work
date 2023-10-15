@@ -117,22 +117,21 @@ class SearchFragment : Fragment() {
 
             when (searchUIState) {
                 SearchUIState.CONNECTION_ERROR -> {
-                    searchPlaceholder.setImageResource(0)
                     searchPlaceholder.setImageResource(R.drawable.placeholder_sad)
+                    searchPlaceholderText.setText(R.string.server_error)
                     vacancyList.clear()
                 }
 
                 SearchUIState.EMPTY_SEARCH -> {
-                    searchPlaceholder.setImageResource(0)
                     searchPlaceholder.setImageResource(R.drawable.placeholder_cat)
+                    searchPlaceholderText.setText(R.string.error_no_vacancies)
                     vacancyList.clear()
                 }
 
                 SearchUIState.NO_INTERNET -> {
-                    searchPlaceholder.setImageResource(0)
                     searchPlaceholder.setImageResource(R.drawable.placeholder_skull)
+                    searchPlaceholderText.setText(R.string.error_no_internet)
                     vacancyList.clear()
-
                 }
 
                 SearchUIState.LOADING -> TODO()
