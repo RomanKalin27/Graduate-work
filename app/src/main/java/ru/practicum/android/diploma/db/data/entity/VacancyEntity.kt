@@ -11,11 +11,8 @@ data class VacancyEntity(
     val city: String,
     val employerName: String,
     val employerLogoUrl: String?,
-    val salaryCurrency: String?,
-    val salaryFrom: Int?,
-    val salaryTo: Int?,
+    val salary: String?,
     val currentDate: String,
-
     val contactEmail: String?,
     val contactName: String?,
     val contactPhones: String?,

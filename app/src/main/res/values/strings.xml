@@ -82,6 +82,7 @@
     <string name="write_to_email">Хотите написать на этот email?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="delete_vacancy">Удалить вакансию из избранного?</string>
 
     <plurals name="search_result_number">
         <item quantity="zero">Найдено %d вакансий</item>

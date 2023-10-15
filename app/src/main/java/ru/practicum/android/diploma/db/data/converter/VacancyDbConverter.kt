@@ -16,9 +16,7 @@ class VacancyDbConverter {
             city = vacancyEntity.city,
             employerName = vacancyEntity.employerName,
             employerLogoUrl = vacancyEntity.employerLogoUrl,
-            salaryCurrency = vacancyEntity.salaryCurrency,
-            salaryFrom = createValue(vacancyEntity.salaryFrom),
-            salaryTo = createValue(vacancyEntity.salaryTo),
+            salary = vacancyEntity.salary,
             found = 0,
             pages = 0
         )
@@ -55,9 +53,7 @@ class VacancyDbConverter {
             city = vacancy.city,
             employerName = vacancy.employerName,
             employerLogoUrl = vacancy.employerLogoUrl,
-            salaryCurrency = vacancy.salaryCurrency,
-            salaryFrom = vacancy.salaryFrom?.filterNot { it.isWhitespace() }?.toInt(),
-            salaryTo = vacancy.salaryTo?.filterNot { it.isWhitespace() }?.toInt(),
+            salary = vacancy.salary,
             getCurrentDate(),
 
             contactEmail = vacancyDetails.contacts?.email,

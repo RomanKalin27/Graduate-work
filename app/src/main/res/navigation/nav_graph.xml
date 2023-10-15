@@ -6,7 +6,7 @@
     app:startDestination="@id/searchFragment">
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="ru.practicum.android.diploma.favorites.FavoriteFragment"
+        android:name="ru.practicum.android.diploma.favorites.presentation.ui.FavoriteFragment"
         android:label="FavoriteFragment"
         tools:layout="@layout/fragment_favorite"/>
     <fragment
@@ -78,8 +78,8 @@
     </fragment>
     <fragment
         android:id="@+id/similarVacancyFragment"
-        android:name="ru.practicum.android.diploma.vacancy.presentation.SimilarVacancyFragment"
-        android:label="SimilarVacancyFragment" >
+        android:name="ru.practicum.android.diploma.vacancy.presentation.VacancyFragment"
+        android:label="VacancyFragment" >
         <action
             android:id="@+id/action_similarVacancyFragment_to_vacancyFragment"
             app:destination="@id/vacancyFragment" />
