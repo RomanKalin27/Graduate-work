@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.core.di
 
 import org.koin.dsl.module
+import ru.practicum.android.diploma.db.data.impl.VacancyDbRepositoryImpl
+import ru.practicum.android.diploma.db.domain.api.VacancyDbRepository
 import ru.practicum.android.diploma.filters.data.repository.ChooseCountryRepositoryImpl
 import ru.practicum.android.diploma.filters.data.repository.ChooseIndustryRepositoryImpl
 import ru.practicum.android.diploma.filters.data.repository.ChooseRegionRepositoryImpl
@@ -47,6 +49,13 @@ val repositoryModule = module {
             apiService = get(),
             networkControl = get(),
             filterModelConverter = get()
+        )
+    }
+
+    single<VacancyDbRepository> {
+        VacancyDbRepositoryImpl(
+            appDataBase = get(),
+            vacancyDbConverter = get()
         )
     }
 }

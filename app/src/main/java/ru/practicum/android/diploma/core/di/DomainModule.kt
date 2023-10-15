@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.core.di
 
 import org.koin.dsl.module
+import ru.practicum.android.diploma.db.domain.api.VacancyDbInteractor
+import ru.practicum.android.diploma.db.domain.impl.VacancyDbInteractorImpl
 import ru.practicum.android.diploma.filters.domain.api.ChooseCountryInteractor
 import ru.practicum.android.diploma.filters.domain.api.ChooseIndustryInteractor
 import ru.practicum.android.diploma.filters.domain.api.ChooseRegionInteractor
@@ -36,6 +38,13 @@ val domainModule = module {
     single<ChooseIndustryInteractor> {
         ChooseIndustryInteractorImpl(
             repository = get()
+        )
+    }
+
+    single<VacancyDbInteractor> {
+        VacancyDbInteractorImpl(
+            vacancyDbRepository = get(),
+            vacancyDbConverter = get()
         )
     }
 }

@@ -7,10 +7,11 @@ import ru.practicum.android.diploma.db.data.entity.VacancyEntity
 import ru.practicum.android.diploma.db.domain.AppDB
 import ru.practicum.android.diploma.db.domain.api.VacancyDbRepository
 import ru.practicum.android.diploma.db.domain.models.Vacancy
+import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetails
 
 //import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetails
 
-abstract class VacancyDbRepositoryImpl(
+class VacancyDbRepositoryImpl(
     private val appDataBase: AppDB,
     private val vacancyDbConverter: VacancyDbConverter,
 ) : VacancyDbRepository {
@@ -23,10 +24,12 @@ abstract class VacancyDbRepositoryImpl(
             .map { convertFromListVacancyEntityToListVacancy(it) }
     }
 
-//    override suspend fun getFavouriteVacancyDetailsById(vacancyId: String): Flow<VacancyDetails?> {
-//        return appDataBase.vacancyDao().getFavouriteVacancyById(vacancyId)
-//            .map { convertFromVacancyEntityToVacancyDetails(it) }
-//    }
+    override suspend fun getFavouriteVacancyDetailsById(vacancyId: String): Flow<VacancyDetails?> {
+        return appDataBase.vacancyDao().getFavouriteVacancyById(vacancyId).map {
+            vacancyDbConverter.mapDetail(it)
+        }
+
+    }
 
     override suspend fun getFavouriteVacancyById(vacancyId: String): Flow<Vacancy?> {
         return appDataBase.vacancyDao().getFavouriteVacancyById(vacancyId)
