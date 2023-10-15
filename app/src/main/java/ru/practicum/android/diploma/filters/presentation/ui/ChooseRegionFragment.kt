@@ -104,7 +104,6 @@ class ChooseRegionFragment : Fragment() {
     private fun initCountryAdapter(): RegionAdapter {
         regionAdapter = RegionAdapter {
             setResult(it)
-            binding.selectBtn.visibility = View.VISIBLE
         }
         regionAdapter.regionList = regionList
         binding.regionRecycler.adapter = regionAdapter
@@ -128,9 +127,6 @@ class ChooseRegionFragment : Fragment() {
 
         }
         binding.regionEditText.addTextChangedListener(textWatcher)
-        binding.selectBtn.setOnClickListener {
-            findNavController().navigateUp()
-        }
     }
 
     private fun showErrorNothing() {
@@ -181,6 +177,7 @@ class ChooseRegionFragment : Fragment() {
             KEY_R,
             bundleOf(REGION_KEY to Json.encodeToString(region))
         )
+        findNavController().navigateUp()
     }
 
     private fun setFilters(): AreasDTO {

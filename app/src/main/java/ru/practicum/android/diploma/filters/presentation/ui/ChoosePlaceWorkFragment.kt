@@ -173,6 +173,10 @@ class ChoosePlaceWorkFragment : Fragment() {
         }
         binding.countryClearBtn.setOnClickListener {
             binding.countryEditText.text?.clear()
+            setFragmentResult(
+                ChooseCountryFragment.FILTER_KEY,
+                bundleOf(ChooseCountryFragment.FILTER_COUNTRY to Json.encodeToString(AreasDTO.emptyArea))
+            )
             changeCountryField()
             showChooseBtn()
         }
