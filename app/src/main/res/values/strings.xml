@@ -1,3 +1,95 @@
 <resources>
-    <string name="app_name">Practicum-Android-Diploma</string>
+    <string name="app_name">Job Search</string>
+    //Поиск
+    <string name="search_vacancy">Поиск вакансий</string>
+    <string name="enter_request">Введите запрос</string>
+    <string name="no_vacansy">Таких вакансий нет</string>
+    <string name="list_empty">Список пуст</string>
+
+    <string name="similar_vacancies">Похожие вакансии</string>
+
+    //Меню
+    <string name="main">Главная</string>
+    <string name="favorites">Избранное</string>
+    <string name="team">Команда</string>
+
+    //Фильтры
+    <string name="set_filter">Настройка фильтрации</string>
+    <string name="select_job">Выбор места работы</string>
+    <string name="select_country">Выбор страны</string>
+    <string name="select_region">Выбор региона</string>
+    <string name="enter_region">Введите регион</string>
+    <string name="select_industry">Выбор отрасли</string>
+    <string name="enter_industry">Введите отрасль</string>
+    <string name="country">Страна</string>
+    <string name="region">Регион</string>
+    <string name="job">Место работы</string>
+    <string name="industry">Отрасль</string>
+
+    //Кнопки
+    <string name="select">Выбрать</string>
+    <string name="apply">Применить</string>
+    <string name="reset">Сбросить</string>
+
+    //Зарплата
+    <string name="expected_selary">Ожидаемая ЗП</string>
+    <string name="enter_amount">Введите сумму</string>
+    <string name="do_not_show_without_salary">Не показывать без ЗП</string>
+
+    //Детали выкансии
+    <string name="vacancy">Вакансия</string>
+    <string name="required_experience">Требуемый опыт</string>
+    <string name="vacancy_description">Описание вакансии</string>
+    <string name="responsibilities">Обязанности</string>
+    <string name="requirements">Требования</string>
+    <string name="conditions">Условия</string>
+    <string name="key_skills">Ключевые навыки</string>
+
+    <string name="contacts">Контакты</string>
+    <string name="contact_person">Контактное лицо</string>
+    <string name="mail">E-mail</string>
+    <string name="phone">Телефон</string>
+    <string name="comment">Коментарий</string>
+    <string name="developers">Над приложением работали</string>
+
+    //Команда
+    <string name="text_team">Команда</string>
+    <string name="text_developer_worker">Над приложением работали</string>
+    <string name="text_developer_name_first">Никулин Никита Сергеевич</string>
+    <string name="text_developer_name_second">Куликов Герасим Александрович</string>
+    <string name="text_developer_name_third">Калин Роман Эдуардович</string>
+    <string name="text_developer_name_four">Позябин Юрий Олегович</string>
+
+    //item
+    <string name="vacancy_placeholder">Разработчик на С++ в команду, Москва</string>
+    <string name="departament">Еда</string>
+    <string name="money">от 1 000 до 1 500 €</string>
+
+    //Плейсхолдеры ошибок
+    <string name="error_no_internet">Нет интернета</string>
+    <string name="error_no_vacancies">Не удалось получить список вакансий</string>
+    <string name="error_get_list">Не удалось получить \n список</string>
+    <string name="error_wrong_region">Такого региона нет</string>
+    <string name="server_error">Ошибка сервера</string>
+    <string name="from">от</string>
+    <string name="to">до</string>
+
+    <string name="salary_not_specified_">Зарплата не указана</string>
+
+    <string name="salary_not_specified">ЗП не указана</string>
+    <string name="no_data">Нет днных[</string>
+
+    <string name="write_to_email">Хотите написать на этот email?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+
+    <plurals name="search_result_number">
+        <item quantity="zero">Найдено %d вакансий</item>
+        <item quantity="one">Найдена %d вакансия</item>
+        <item quantity="two">Найдено %d вакансии</item>
+        <item quantity="few">Найдено %d вакансии</item>
+        <item quantity="many">Найдено %d вакансий</item>
+        <item quantity="other">Найдено %d вакансий</item>
+    </plurals>
+
 </resources>
