@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.utils.BindingFragment
 import ru.practicum.android.diploma.common.utils.Constants.CLICK_DEBOUNCE_DELAY_MILLIS
 import ru.practicum.android.diploma.common.utils.Constants.SEARCH_DEBOUNCE_DELAY_MILLIS
 import ru.practicum.android.diploma.common.utils.debounce
@@ -29,7 +30,7 @@ import ru.practicum.android.diploma.search.presentation.rv.VacancyAdapter
 import ru.practicum.android.diploma.search.presentation.view_model.SearchViewModel
 import ru.practicum.android.diploma.vacancy.presentation.VacancyFragment
 
-class SearchFragment : Fragment() {
+class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private val viewModel by viewModel<SearchViewModel>()
     private val vacancyList = ArrayList<Vacancy>()
     private val handler = Handler(Looper.getMainLooper())
@@ -37,15 +38,9 @@ class SearchFragment : Fragment() {
         Runnable { viewModel.searchVacancies(binding.searchEditText.text.toString()) }
     private lateinit var onVacancyClickDebounce: (Vacancy) -> Unit
     private val vacancyAdapter = VacancyAdapter(vacancyList)
-    private lateinit var binding: FragmentSearchBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentSearchBinding {
+        return FragmentSearchBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -155,6 +150,7 @@ class SearchFragment : Fragment() {
         vacancyList.clear()
         vacancyList.addAll(items)
         vacancyAdapter.notifyDataSetChanged()
+        updateIconBasedOnText()
     }
 
     private fun setupRecyclerView() {
