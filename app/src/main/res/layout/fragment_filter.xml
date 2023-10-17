@@ -25,7 +25,6 @@
         android:text="@string/set_filter"
         android:textColor="?attr/text_color"
         style="@style/Text_Medium_22_500"
-        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/btn_back"
         app:layout_constraintTop_toTopOf="parent" />
 
