@@ -9,13 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.utils.BindingFragment
 import ru.practicum.android.diploma.common.utils.Constants.CLICK_DEBOUNCE_DELAY_MILLIS
 import ru.practicum.android.diploma.common.utils.Constants.SEARCH_DEBOUNCE_DELAY_MILLIS
 import ru.practicum.android.diploma.common.utils.debounce
@@ -29,7 +29,7 @@ import ru.practicum.android.diploma.search.presentation.rv.VacancyAdapter
 import ru.practicum.android.diploma.search.presentation.view_model.SearchViewModel
 import ru.practicum.android.diploma.vacancy.presentation.VacancyFragment
 
-class SearchFragment : Fragment() {
+class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private val viewModel by viewModel<SearchViewModel>()
     private val vacancyList = ArrayList<Vacancy>()
     private val handler = Handler(Looper.getMainLooper())
@@ -37,22 +37,19 @@ class SearchFragment : Fragment() {
         Runnable { viewModel.searchVacancies(binding.searchEditText.text.toString()) }
     private lateinit var onVacancyClickDebounce: (Vacancy) -> Unit
     private val vacancyAdapter = VacancyAdapter(vacancyList)
-    private lateinit var binding: FragmentSearchBinding
 
-    override fun onCreateView(
+    override fun createBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
-        return binding.root
+        container: ViewGroup?
+    ): FragmentSearchBinding {
+        return FragmentSearchBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         observeViewModel()
-        onVacancyClickDebounce = debounce<Vacancy>(
+        onVacancyClickDebounce = debounce(
             CLICK_DEBOUNCE_DELAY_MILLIS,
             viewLifecycleOwner.lifecycleScope,
             false
@@ -83,7 +80,6 @@ class SearchFragment : Fragment() {
             (activity as? RootActivity)?.animateBottomNavigationView()
             onVacancyClickDebounce(vacancy)
         }
-
         setupDefaultUI()
         setupTextWatcher()
         setupRecyclerView()
@@ -102,10 +98,7 @@ class SearchFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.searchVacancyResult.observe(viewLifecycleOwner) { state ->
-
-                binding.iconSearch.setImageResource(R.drawable.ic_search)
-
-
+            binding.iconSearch.setImageResource(R.drawable.ic_search)
 
             when (state) {
                 is SearchVacancyResult.Error -> updateUI(SearchUIState.CONNECTION_ERROR)
@@ -133,7 +126,7 @@ class SearchFragment : Fragment() {
                 SearchUIState.EMPTY_SEARCH -> placeholderNoVacancies.isVisible = true
                 SearchUIState.NO_INTERNET -> noInternetPlaceholder.isVisible = true
                 SearchUIState.LOADING -> progressBar.isVisible = true
-                }
+            }
 
             iconSearch.setImageResource(R.drawable.ic_search)
             vacancyAdapter.notifyDataSetChanged()
@@ -155,6 +148,7 @@ class SearchFragment : Fragment() {
         vacancyList.clear()
         vacancyList.addAll(items)
         vacancyAdapter.notifyDataSetChanged()
+        updateIconBasedOnText()
     }
 
     private fun setupRecyclerView() {
@@ -179,6 +173,7 @@ class SearchFragment : Fragment() {
         handler.removeCallbacks(vacancySearchRunnable)
         updateIconBasedOnText()
     }
+
     //наши "любимые" костыли
     private fun updateIconBasedOnText() {
         if (binding.searchEditText.text.isNullOrEmpty()) {
