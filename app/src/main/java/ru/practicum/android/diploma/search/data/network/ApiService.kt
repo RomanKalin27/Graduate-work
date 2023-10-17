@@ -10,6 +10,7 @@ import ru.practicum.android.diploma.filters.data.dto.models.CategoriesDTO
 import ru.practicum.android.diploma.filters.data.dto.models.CountryDTO
 import ru.practicum.android.diploma.filters.data.dto.models.IndustryDTO
 import ru.practicum.android.diploma.search.data.dto.VacanciesResponse
+import ru.practicum.android.diploma.vacancy.data.network.dto.VacancyDetailModelDTO
 
 interface ApiService {
 
@@ -22,14 +23,14 @@ interface ApiService {
         @QueryMap queryParams: Map<String, String>,
     ): VacanciesResponse
 
-//    @Headers(
-//        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
-//        "HH-User-Agent: HH_vacancy_search (g-926@ya.ru)"
-//    )
-//    @GET("/vacancies/{vacancy_id}")
-//    suspend fun getVacancyById(
-//        @Path("vacancy_id") id: String
-//    ): VacancyDetailsResponse
+    @Headers(
+        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
+        "HH-User-Agent: HH_vacancy_search (g-926@ya.ru)"
+    )
+    @GET("/vacancies/{vacancy_id}")
+    suspend fun getVacancyById(
+        @Path("vacancy_id") id: String
+    ): VacancyDetailModelDTO
 
     @Headers(
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
