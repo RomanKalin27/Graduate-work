@@ -13,6 +13,8 @@ import ru.practicum.android.diploma.filters.domain.api.ChooseRegionRepository
 import ru.practicum.android.diploma.filters.domain.api.FilterRepository
 import ru.practicum.android.diploma.search.data.impl.SearchRepositoryImpl
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
+import ru.practicum.android.diploma.vacancy.data.impl.DetailVacancyRepositoryImpl
+import ru.practicum.android.diploma.vacancy.domain.api.DetailVacancyRepository
 
 val repositoryModule = module {
 
@@ -56,6 +58,15 @@ val repositoryModule = module {
         VacancyDbRepositoryImpl(
             appDataBase = get(),
             vacancyDbConverter = get()
+        )
+    }
+
+    single<DetailVacancyRepository> {
+        DetailVacancyRepositoryImpl(
+            apiService = get(),
+            networkControl = get(),
+            converter = get(),
+            vacancyDb = get()
         )
     }
 }

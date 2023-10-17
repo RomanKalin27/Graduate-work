@@ -1,9 +1,8 @@
 package ru.practicum.android.diploma.filters.data.dto.models
 
-import kotlinx.serialization.Serializable
 
 
-@Serializable
+
 data class AreasDTO(
     val id: String,
     val name: String,

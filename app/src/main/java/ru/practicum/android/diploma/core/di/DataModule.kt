@@ -8,7 +8,6 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.core.application.App.Companion.SHARED_PREFS
-import ru.practicum.android.diploma.db.data.converter.VacancyDbConverter
 import ru.practicum.android.diploma.db.data.dao.VacancyDao
 import ru.practicum.android.diploma.db.domain.AppDB
 import ru.practicum.android.diploma.filters.data.converter.FilterModelConverter
@@ -54,7 +53,5 @@ val dataModule = module {
         FilterModelConverter()
     }
 
-    single {
-        VacancyDbConverter()
-    }
+
 }

@@ -26,7 +26,7 @@ import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.search.presentation.models.SearchUIState
 import ru.practicum.android.diploma.search.presentation.rv.VacancyAdapter
 import ru.practicum.android.diploma.search.presentation.view_model.SearchViewModel
-import ru.practicum.android.diploma.vacancy.presentation.VacancyFragment
+import ru.practicum.android.diploma.vacancy.presentation.ui.VacancyFragment
 
 class SearchFragment : Fragment() {
     private val viewModel by viewModel<SearchViewModel>()
@@ -56,7 +56,7 @@ class SearchFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope,
             false
         ) { item ->
-            navigateToVacancyDetail(item)
+            navigateToVacancyDetail(item.id)
         }
     }
 
@@ -193,7 +193,7 @@ class SearchFragment : Fragment() {
         binding.searchEditText.addTextChangedListener(searchTextWatcher)
     }
 
-    private fun navigateToVacancyDetail(item: Vacancy) {
+    private fun navigateToVacancyDetail(item: String) {
         findNavController().navigate(
             R.id.action_searchFragment_to_vacancyFragment,
             VacancyFragment.createArgs(item)

@@ -69,7 +69,7 @@
         tools:layout="@layout/fragment_industry"/>
     <fragment
         android:id="@+id/vacancyFragment"
-        android:name="ru.practicum.android.diploma.vacancy.presentation.VacancyFragment"
+        android:name="ru.practicum.android.diploma.vacancy.presentation.ui.VacancyFragment"
         android:label="VacancyFragment"
         tools:layout="@layout/fragment_vacancy">
         <action
@@ -78,7 +78,7 @@
     </fragment>
     <fragment
         android:id="@+id/similarVacancyFragment"
-        android:name="ru.practicum.android.diploma.vacancy.presentation.VacancyFragment"
+        android:name="ru.practicum.android.diploma.vacancy.presentation.ui.VacancyFragment"
         android:label="VacancyFragment" >
         <action
             android:id="@+id/action_similarVacancyFragment_to_vacancyFragment"
