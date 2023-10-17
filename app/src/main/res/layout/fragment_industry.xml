@@ -22,12 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_20"
         android:layout_marginTop="15dp"
-        android:fontFamily="@font/ys_display_medium"
         android:text="@string/select_industry"
+        style="@style/Text_Medium_22_500"
         android:textColor="?attr/text_color"
-        android:textFontWeight="500"
-        android:textSize="@dimen/text_22sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/btn_back"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,12 +39,12 @@
         android:hint="@string/enter_industry"
         android:imeOptions="actionDone|flagNoExtractUi"
         android:inputType="text"
+        style="@style/Text_Regular_16_400"
         android:paddingStart="@dimen/margin_16"
         android:singleLine="true"
-        android:textColor="?attr/text_hint_search"
+        android:textColor="@color/black"
         android:textColorHint="?attr/text_hint_search"
         android:textCursorDrawable="@drawable/cursor_search"
-        android:textFontWeight="400"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

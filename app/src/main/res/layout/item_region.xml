@@ -13,13 +13,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        style="@style/Text_Regular_16_400"
         android:layout_marginStart="@dimen/margin_16"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="@dimen/margin_20"
-        android:fontFamily="@font/ys_display_regular"
         android:gravity="start"
         android:textColor="?attr/colorOnPrimary"
-        android:textSize="@dimen/text_16sp"
         tools:text="Россия" />
 
     <RadioButton

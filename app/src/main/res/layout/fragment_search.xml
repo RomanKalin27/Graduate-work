@@ -10,15 +10,13 @@
 
     <TextView
         android:id="@+id/search_vacancy"
+        style="@style/Text_Medium_22_500"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_19"
-
         android:text="@string/search_vacancy"
         android:textColor="?attr/text_color"
-        style="@style/Text_Medium_22_500"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,8 +28,7 @@
         android:layout_marginRight="@dimen/margin_8"
         android:src="@drawable/ic_filter_off"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/search_edit_text"
@@ -72,68 +69,62 @@
         android:id="@+id/search_placeholder"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-android:visibility="gone"
         android:layout_marginHorizontal="@dimen/margin_16"
         android:scaleType="fitStart"
         android:src="@drawable/placeholder_search"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/no_internet_placeholder"
+        style="@style/Text_Medium_22_500"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:drawableTopCompat="@drawable/placeholder_sad"
-        style="@style/Text_Medium_22_500"
-        android:text="@string/error_no_internet"
+        android:layout_marginTop="@dimen/margin_16"
         android:padding="@dimen/margin_16"
+        android:text="@string/error_no_internet"
         android:textAlignment="center"
         android:visibility="gone"
-        android:layout_marginTop="@dimen/margin_16"
+        app:drawableTopCompat="@drawable/placeholder_sad"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/placeholder_server_error"
+        style="@style/Text_Medium_22_500"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:drawableTopCompat="@drawable/placeholder_skull"
-        style="@style/Text_Medium_22_500"
-        android:text="@string/server_error"
+        android:layout_marginTop="@dimen/margin_16"
         android:padding="@dimen/margin_16"
+        android:text="@string/server_error"
         android:textAlignment="center"
         android:visibility="gone"
-        android:layout_marginTop="@dimen/margin_16"
+        app:drawableTopCompat="@drawable/placeholder_skull"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/placeholder_no_vacancies"
+        style="@style/Text_Medium_22_500"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:drawableTopCompat="@drawable/placeholder_cat"
-        style="@style/Text_Medium_22_500"
-        android:text="@string/error_no_vacancies"
+        android:layout_marginTop="@dimen/margin_16"
         android:padding="@dimen/margin_16"
+        android:text="@string/error_no_vacancies"
         android:textAlignment="center"
         android:visibility="gone"
-        android:layout_marginTop="@dimen/margin_16"
+        app:drawableTopCompat="@drawable/placeholder_cat"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
-
-
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -179,6 +170,5 @@ android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chip"
         tools:listitem="@layout/item_search" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
