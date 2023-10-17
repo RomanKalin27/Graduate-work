@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.utils.BindingFragment
 import ru.practicum.android.diploma.common.utils.Constants.CLICK_DEBOUNCE_DELAY_MILLIS
 import ru.practicum.android.diploma.common.utils.debounce
 import ru.practicum.android.diploma.databinding.FragmentFavoriteBinding
@@ -19,22 +19,15 @@ import ru.practicum.android.diploma.favorites.presentation.adapters.FavoritesAda
 import ru.practicum.android.diploma.favorites.presentation.models.FavoritesScreenState
 import ru.practicum.android.diploma.favorites.presentation.view_model.FavoriteViewModel
 
-class FavoriteFragment : Fragment() {
-    private lateinit var binding: FragmentFavoriteBinding
+class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
     private val viewModel by viewModel<FavoriteViewModel>()
     private val vacancyList = ArrayList<Vacancy>()
     private var favoriteAdapter = FavoritesAdapter(vacancyList)
     private var onVacancyClickDebounce: ((Vacancy) -> Unit)? = null
     private var onLongVacancyClickDebounce: ((Vacancy) -> Unit)? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        super.onCreateView(inflater, container, savedInstanceState)
-        binding = FragmentFavoriteBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentFavoriteBinding {
+        return FragmentFavoriteBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
