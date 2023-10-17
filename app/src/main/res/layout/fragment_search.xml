@@ -70,25 +70,70 @@
 
     <ImageView
         android:id="@+id/search_placeholder"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_160"
+android:visibility="gone"
+        android:layout_marginHorizontal="@dimen/margin_16"
         android:scaleType="fitStart"
+        android:src="@drawable/placeholder_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_edit_text" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/search_placeholder_text"
+        android:id="@+id/no_internet_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:drawableTopCompat="@drawable/placeholder_sad"
         style="@style/Text_Medium_22_500"
-        android:layout_marginHorizontal="46dp"
-        android:layout_marginTop="@dimen/text_16sp"
+        android:text="@string/error_no_internet"
+        android:padding="@dimen/margin_16"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/margin_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_placeholder"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
+
+    <TextView
+        android:id="@+id/placeholder_server_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:drawableTopCompat="@drawable/placeholder_skull"
+        style="@style/Text_Medium_22_500"
+        android:text="@string/server_error"
+        android:padding="@dimen/margin_16"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/margin_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/placeholder_no_vacancies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:drawableTopCompat="@drawable/placeholder_cat"
+        style="@style/Text_Medium_22_500"
+        android:text="@string/error_no_vacancies"
+        android:padding="@dimen/margin_16"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/margin_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+
+
 
     <ProgressBar
         android:id="@+id/progressBar"
