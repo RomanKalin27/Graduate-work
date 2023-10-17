@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -39,7 +38,10 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private lateinit var onVacancyClickDebounce: (Vacancy) -> Unit
     private val vacancyAdapter = VacancyAdapter(vacancyList)
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentSearchBinding {
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSearchBinding {
         return FragmentSearchBinding.inflate(inflater, container, false)
     }
 
@@ -47,7 +49,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         observeViewModel()
-        onVacancyClickDebounce = debounce<Vacancy>(
+        onVacancyClickDebounce = debounce(
             CLICK_DEBOUNCE_DELAY_MILLIS,
             viewLifecycleOwner.lifecycleScope,
             false
@@ -78,7 +80,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             (activity as? RootActivity)?.animateBottomNavigationView()
             onVacancyClickDebounce(vacancy)
         }
-
         setupDefaultUI()
         setupTextWatcher()
         setupRecyclerView()
@@ -97,10 +98,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun observeViewModel() {
         viewModel.searchVacancyResult.observe(viewLifecycleOwner) { state ->
-
-                binding.iconSearch.setImageResource(R.drawable.ic_search)
-
-
+            binding.iconSearch.setImageResource(R.drawable.ic_search)
 
             when (state) {
                 is SearchVacancyResult.Error -> updateUI(SearchUIState.CONNECTION_ERROR)
@@ -128,7 +126,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 SearchUIState.EMPTY_SEARCH -> placeholderNoVacancies.isVisible = true
                 SearchUIState.NO_INTERNET -> noInternetPlaceholder.isVisible = true
                 SearchUIState.LOADING -> progressBar.isVisible = true
-                }
+            }
 
             iconSearch.setImageResource(R.drawable.ic_search)
             vacancyAdapter.notifyDataSetChanged()
@@ -175,6 +173,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         handler.removeCallbacks(vacancySearchRunnable)
         updateIconBasedOnText()
     }
+
     //наши "любимые" костыли
     private fun updateIconBasedOnText() {
         if (binding.searchEditText.text.isNullOrEmpty()) {
