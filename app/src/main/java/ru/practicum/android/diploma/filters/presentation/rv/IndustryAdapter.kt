@@ -9,7 +9,7 @@ import ru.practicum.android.diploma.filters.domain.models.Industry
 class IndustryAdapter(private val items: List<Industry>,
                       private val onIndustrySelected: (Industry) -> Unit) :
     RecyclerView.Adapter<IndustryAdapter.ViewHolderIndustry>() {
-    private var selectedPosition = -1
+    var clickedId: String? = null
     var itemClickListener: ((Int, Industry) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderIndustry {
@@ -24,21 +24,21 @@ class IndustryAdapter(private val items: List<Industry>,
 
     override fun onBindViewHolder(holder: ViewHolderIndustry, position: Int) {
         val industry = items[position]
-        holder.bind(industry, position == selectedPosition)
+        holder.bind(industry)
     }
 
     inner class ViewHolderIndustry(private val binding: ItemRegionBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(industry: Industry, isSelected: Boolean) {
+        fun bind(industry: Industry) {
             binding.region.text = industry.name
-            binding.radioButton.isChecked = isSelected
+            binding.radioButton.isChecked = industry.id == clickedId
 
             itemView.setOnClickListener {
-                if (selectedPosition != adapterPosition) {
-                    selectedPosition = adapterPosition
-                    onIndustrySelected(industry)
+                if (industry.id != clickedId) {
+                    clickedId = industry.id
                     notifyDataSetChanged()
+                    onIndustrySelected(industry)
                     itemClickListener?.invoke(adapterPosition, industry)
                 }
             }
