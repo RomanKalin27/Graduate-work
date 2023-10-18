@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -63,7 +64,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
                 DetailVacancyResult.AddedToFavorite -> updateUI(DetailsVacancyScreenState.FAVORITE)
                 DetailVacancyResult.EmptyResult -> updateUI(DetailsVacancyScreenState.ERROR)
                 is DetailVacancyResult.Error -> updateUI(DetailsVacancyScreenState.ERROR)
-                DetailVacancyResult.NoFavorite -> updateUI(DetailsVacancyScreenState.UNFAFORITE)
+                DetailVacancyResult.NoFavorite -> updateUI(DetailsVacancyScreenState.UNFAVORITE)
                 DetailVacancyResult.NoInternet -> updateUI(DetailsVacancyScreenState.NO_INTERNET)
                 is DetailVacancyResult.Success -> setupDefaultUI(state.response)
             }
@@ -72,14 +73,27 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private fun updateUI(detailsVacancyScreenState: DetailsVacancyScreenState) {
         with(binding) {
+            //Скрываем всё, кроме тулбара
+            progressBar.isVisible = false
+            placeholderServerError.isVisible = false
+            noInternetPlaceholder.isVisible = false
+            group.isVisible = false
+
+            // Обработка конкретного состояния
             when (detailsVacancyScreenState) {
-                DetailsVacancyScreenState.NO_INTERNET -> TODO()
-                DetailsVacancyScreenState.LOADING -> TODO()
-                DetailsVacancyScreenState.CONTENT -> {
-                }
-                DetailsVacancyScreenState.ERROR -> TODO()
-                DetailsVacancyScreenState.FAVORITE -> TODO()
-                DetailsVacancyScreenState.UNFAFORITE -> TODO()
+                DetailsVacancyScreenState.NO_INTERNET -> noInternetPlaceholder.isVisible = true
+                DetailsVacancyScreenState.LOADING -> progressBar.isVisible = true
+
+               // CONTENT обрабатывается в комплекте с FAVORITE и UNFAVORITE
+               // DetailsVacancyScreenState.CONTENT -> group.isVisible = true
+
+                DetailsVacancyScreenState.ERROR -> placeholderServerError.isVisible = true
+                DetailsVacancyScreenState.FAVORITE ->{
+                    group.isVisible = true
+                icFavorites.setImageResource(R.drawable.ic_favorites_on)}
+                DetailsVacancyScreenState.UNFAVORITE ->  {
+                    group.isVisible = true
+                    binding.icFavorites.setImageResource(R.drawable.ic_favorites_on)}
             }
         }
     }
@@ -115,9 +129,8 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
             Glide.with(this@VacancyFragment.requireContext())
                 .load(vacancy.logo)
                 .placeholder(R.drawable.vacancy_placeholder)
-                .transform(RoundedCorners(12))
+                .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_radius_12)))
                 .into(placeholder)
-
         }
     }
 
