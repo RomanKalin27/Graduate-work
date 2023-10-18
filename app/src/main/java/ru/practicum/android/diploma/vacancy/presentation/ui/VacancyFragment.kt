@@ -7,30 +7,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
-import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.utils.BindingFragment
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.vacancy.domain.models.DetailVacancyResult
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetailnfo
 import ru.practicum.android.diploma.vacancy.presentation.models.DetailsVacancyScreenState
 import ru.practicum.android.diploma.vacancy.presentation.view_model.DetailVacancyViewModel
 
-class VacancyFragment : Fragment() {
+class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
     private val viewModel by viewModel<DetailVacancyViewModel>()
+
     private val currentVacancy by lazy { retrieveVacancy() }
-    private var _binding: FragmentVacancyBinding? = null
-    private val binding get() = _binding!!
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        super.onCreateView(inflater, container, savedInstanceState)
-        _binding = FragmentVacancyBinding.inflate(inflater, container, false)
-        return binding.root
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentVacancyBinding {
+        return FragmentVacancyBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,17 +51,11 @@ class VacancyFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun setupDefaultUI(vacancy: VacancyDetailnfo) {
         with(binding) {
             showDataContent(vacancy)
             }
         }
-
 
     private fun observeViewModel() {
         viewModel.detailVacancyResult.observe(viewLifecycleOwner) { state ->
@@ -93,23 +81,12 @@ class VacancyFragment : Fragment() {
                 DetailsVacancyScreenState.FAVORITE -> TODO()
                 DetailsVacancyScreenState.UNFAFORITE -> TODO()
             }
-
         }
     }
 
     fun retrieveVacancy(): String? {
         val idVacancy = requireArguments().getString(KEY_VACANCY)
         return idVacancy
-    }
-
-    companion object {
-        const val KEY_VACANCY = "vacancy"
-
-        fun createArgs(vacancy: String): Bundle {
-            val bundle = Bundle()
-            bundle.putString(KEY_VACANCY, vacancy)
-            return bundle
-        }
     }
 
     fun showDataContent(vacancy: VacancyDetailnfo) {
@@ -179,6 +156,16 @@ class VacancyFragment : Fragment() {
             } else {
                 vacancyKeySkillsValue.text = vacancy.keySkills
             }
+        }
+    }
+
+    companion object {
+        const val KEY_VACANCY = "vacancy"
+
+        fun createArgs(vacancy: String): Bundle {
+            val bundle = Bundle()
+            bundle.putString(KEY_VACANCY, vacancy)
+            return bundle
         }
     }
 }
