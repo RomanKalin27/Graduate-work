@@ -197,5 +197,6 @@ class ChoosePlaceWorkFragment : Fragment() {
         const val KEY_CHOOSE = "key_choose"
         const val PLACE_WORK = "place_work"
         const val AREA_ID = "AREA_ID"
+        const val COUNTRY_AND_REGION = "COUNTRY_AND_REGION"
     }
 }

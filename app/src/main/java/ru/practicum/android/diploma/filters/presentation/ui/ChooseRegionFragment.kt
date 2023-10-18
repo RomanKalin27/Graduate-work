@@ -36,6 +36,7 @@ class ChooseRegionFragment : Fragment() {
     private var regionListSaved = ArrayList<Area>()
     private var regionListFilter = ArrayList<Area>()
     private var country: AreasDTO = AreasDTO.emptyArea
+    private var hasInternet : Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -88,6 +89,7 @@ class ChooseRegionFragment : Fragment() {
     }
 
     private fun showRegions(regions: List<AreasDTO>) {
+        hasInternet = true
         viewModel.convert(regions, setFilters())
     }
 
@@ -96,6 +98,7 @@ class ChooseRegionFragment : Fragment() {
     }
 
     private fun showErrorList() {
+        hasInternet = false
         binding.noInternetImage.visibility = View.VISIBLE
         binding.noInternetText.visibility = View.VISIBLE
         binding.regionRecycler.visibility = View.GONE
@@ -119,7 +122,9 @@ class ChooseRegionFragment : Fragment() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                debounceSearch(p0.toString().trim())
+                if (hasInternet) {
+                    debounceSearch(p0.toString().trim())
+                }
             }
 
             override fun afterTextChanged(p0: Editable?) {
