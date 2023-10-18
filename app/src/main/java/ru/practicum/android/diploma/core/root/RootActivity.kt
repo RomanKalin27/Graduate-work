@@ -22,35 +22,20 @@ class RootActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
 
+        //Скрытие bottomNav
+        val hideBottomNavForDestinations = setOf(
+            R.id.chooseCountryFragment,
+            R.id.filtersFragment,
+            R.id.choosePlaceWorkFragment,
+            R.id.chooseRegionFragment,
+            R.id.chooseIndustry,
+            R.id.vacancyFragment
+        )
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.chooseCountryFragment -> {
-                    binding.bottomNavigationView.visibility = View.GONE
-                }
-
-                R.id.filtersFragment -> {
-                    binding.bottomNavigationView.visibility = View.GONE
-                }
-
-                R.id.choosePlaceWorkFragment -> {
-                    binding.bottomNavigationView.visibility = View.GONE
-                }
-
-                R.id.chooseRegionFragment -> {
-                    binding.bottomNavigationView.visibility = View.GONE
-                }
-
-                R.id.filtersFragment -> {
-                    binding.bottomNavigationView.visibility = View.GONE
-                }
-
-                R.id.chooseIndustry -> {
-                    binding.bottomNavigationView.visibility = View.GONE
-                }
-
-                else -> {
-                    binding.bottomNavigationView.visibility = View.VISIBLE
-                }
+            binding.bottomNavigationView.visibility = if (destination.id in hideBottomNavForDestinations) {
+                View.GONE
+            } else {
+                View.VISIBLE
             }
         }
 
