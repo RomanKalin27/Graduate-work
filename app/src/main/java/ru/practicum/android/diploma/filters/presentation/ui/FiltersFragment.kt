@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.filters.presentation.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +13,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.ChangeTextFieldUtil
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
+import ru.practicum.android.diploma.filters.domain.models.Industry
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.AREA_ID
+import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.COUNTRY_AND_REGION
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.KEY_CHOOSE
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.PLACE_WORK
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
@@ -28,6 +32,8 @@ class FiltersFragment : Fragment() {
 
     companion object {
         const val SET_FILTERS_KEY = "SET_FILTERS_KEY"
+        const val KEY_INDUSTRY = "KEY_INDUSTRY"
+        const val INDUSTRY = "INDUSTRY"
     }
 
     override fun onCreateView(
@@ -164,6 +170,12 @@ class FiltersFragment : Fragment() {
             if (!bundle.getString(PLACE_WORK).isNullOrEmpty()) {
                 vm.getLocation(bundle.getString(PLACE_WORK), bundle.getString(AREA_ID))
             }
+        }
+        setFragmentResultListener(KEY_INDUSTRY){_,bundle ->
+            val result = bundle.getString(INDUSTRY)?.let{
+                Json.decodeFromString<Industry>(it)
+            } ?: Industry.emptyIndustry
+            binding.industryEditText.setText(result.name)
         }
     }
 }
