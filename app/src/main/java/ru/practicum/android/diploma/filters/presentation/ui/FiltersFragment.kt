@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.filters.presentation.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,15 +18,18 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.ChangeTextFieldUtil
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.filters.domain.models.Industry
-import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.AREA_ID
-import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.COUNTRY_AND_REGION
+import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.COUNTRY_JSON_KEY
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.KEY_CHOOSE
-import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.PLACE_WORK
+import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.REGION_JSON_KEY
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
+import ru.practicum.android.diploma.search.data.dto.response_models.Area
 
 class FiltersFragment : Fragment() {
     private lateinit var binding: FragmentFilterBinding
     private var isChecked = false
+    private var country: Area = Area.emptyArea
+    private var region: Area = Area.emptyArea
+    private var industry: Industry = Industry.emptyIndustry
     private val vm by viewModel<FiltersViewModel>()
 
     companion object {
@@ -70,6 +72,7 @@ class FiltersFragment : Fragment() {
         }
         binding.industryClearBtn.setOnClickListener {
             binding.industryEditText.text?.clear()
+            vm.getIndustry(null)
             changeIndustryField()
         }
         binding.salaryEditText.addTextChangedListener {
@@ -91,8 +94,6 @@ class FiltersFragment : Fragment() {
         }
         binding.btnChoose.setOnClickListener {
             vm.saveFilters(
-                binding.locationEditText.text.toString(),
-                binding.industryEditText.text.toString(),
                 binding.salaryEditText.text.toString(),
                 isChecked,
             )
@@ -106,11 +107,30 @@ class FiltersFragment : Fragment() {
         binding.btnRemove.setOnClickListener {
             vm.removeFilters()
             binding.locationEditText.text?.clear()
+            binding.industryEditText.text?.clear()
         }
 
         vm.observeState().observe(viewLifecycleOwner) {
-            binding.locationEditText.setText(it.location)
-            binding.industryEditText.setText(it.industry)
+            if (!it.country.isNullOrEmpty()) {
+                country = Json.decodeFromString(it.country ?: "")
+                if (!it.region.isNullOrEmpty()) {
+                    region = Json.decodeFromString(it.region ?: "")
+                    val location = country.name + "," + region.name
+                    binding.locationEditText.setText(location)
+                } else {
+                    region = Area.emptyArea
+                    binding.locationEditText.setText(country.name)
+                }
+            } else {
+                country = Area.emptyArea
+                region = Area.emptyArea
+            }
+            if (!it.industry.isNullOrEmpty()) {
+                industry = Json.decodeFromString(it.industry ?: "")
+                binding.industryEditText.setText(industry.name)
+            } else {
+                industry = Industry.emptyIndustry
+            }
             binding.salaryEditText.setText(it.lowestSalary)
             isChecked = it.removeNoSalary
             changeCheckBox()
@@ -167,15 +187,15 @@ class FiltersFragment : Fragment() {
     private fun setPlaceWork() {
         setFragmentResultListener(KEY_CHOOSE)
         { _, bundle ->
-            if (!bundle.getString(PLACE_WORK).isNullOrEmpty()) {
-                vm.getLocation(bundle.getString(PLACE_WORK), bundle.getString(AREA_ID))
+            if (!bundle.getString(COUNTRY_JSON_KEY).isNullOrEmpty()) {
+                vm.getLocation(
+                    bundle.getString(COUNTRY_JSON_KEY),
+                    bundle.getString(REGION_JSON_KEY)
+                )
             }
         }
-        setFragmentResultListener(KEY_INDUSTRY){_,bundle ->
-            val result = bundle.getString(INDUSTRY)?.let{
-                Json.decodeFromString<Industry>(it)
-            } ?: Industry.emptyIndustry
-            binding.industryEditText.setText(result.name)
+        setFragmentResultListener(KEY_INDUSTRY) { _, bundle ->
+            vm.getIndustry(bundle.getString(INDUSTRY))
         }
     }
 }

@@ -6,8 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
+import androidx.navigation.fragment.findNavController
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResultListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -17,6 +20,8 @@ import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.vacancy.domain.models.DetailVacancyResult
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetailnfo
 import ru.practicum.android.diploma.vacancy.presentation.models.DetailsVacancyScreenState
+import ru.practicum.android.diploma.vacancy.presentation.ui.SimilarVacancyFragment.Companion.SIMILAR_VACANCY
+import ru.practicum.android.diploma.vacancy.presentation.ui.SimilarVacancyFragment.Companion.SIMILAR_VACANCY_KEY
 import ru.practicum.android.diploma.vacancy.presentation.view_model.DetailVacancyViewModel
 
 class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
@@ -26,6 +31,12 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentVacancyBinding {
         return FragmentVacancyBinding.inflate(inflater, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        retrieveVacancy()?.let { viewModel.showDetailVacancy(it) }
+        observeViewModel()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,6 +60,10 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         binding.vacancyContactPhoneValue.setOnClickListener {
             val call = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", "8-800-555-35-35", null))
             requireContext().startActivity(call)
+        }
+        binding.similarVacanciesButton.setOnClickListener {
+            findNavController().navigate(R.id.action_vacancyFragment_to_similarVacancyFragment,
+                SimilarVacancyFragment.createArgs(retrieveVacancy() ?: ""))
         }
     }
 
@@ -99,7 +114,11 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
     }
 
     fun retrieveVacancy(): String? {
-        val idVacancy = requireArguments().getString(KEY_VACANCY)
+            var idVacancy = requireArguments().getString(KEY_VACANCY) ?: ""
+            setFragmentResultListener(SIMILAR_VACANCY_KEY){
+                _, bundle ->
+                idVacancy = bundleOf().getString(SIMILAR_VACANCY) ?: ""
+            }
         return idVacancy
     }
 
@@ -131,6 +150,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
                 .placeholder(R.drawable.vacancy_placeholder)
                 .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_radius_12)))
                 .into(placeholder)
+
         }
     }
 

@@ -2,17 +2,17 @@ package ru.practicum.android.diploma.filters.domain.api
 
 interface FilterRepository {
     fun saveFilters(
-        location: String?,
-        industry: String?,
+        countryJson: String?,
+        regionJson: String?,
+        industryJson: String?,
         expectedSalary: String?,
         removeNoSalary: Boolean,
-        areaId: String?,
     )
 
-    fun getLocation(): String
+    fun getCountry(): String?
+    fun getRegion(): String?
     fun getIndustry(): String?
     fun getExpectedSalary(): String?
     fun getRemoveNoSalary(): Boolean
     fun removeFilters()
-    fun getAreaId(): String?
 }

@@ -8,5 +8,4 @@ interface SearchRepository {
     suspend fun searchVacancies(query: String): Flow<SearchVacancyResult>
     fun isFiltersOn(): Boolean
 
-
 }

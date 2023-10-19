@@ -25,7 +25,7 @@ class FiltersViewModel(
     private val converter: FilterModelConverter,
 ) : ViewModel() {
     private val _stateLiveData = MutableLiveData<FiltersState>()
-    private var emptyFilters = FiltersState(null, null, null, false, null)
+    private var emptyFilters = FiltersState(null, null, null, null,false)
     fun observeState(): LiveData<FiltersState> = _stateLiveData
 
     private val _chooseResult: MutableLiveData<ChooseResult> = MutableLiveData()
@@ -76,8 +76,8 @@ class FiltersViewModel(
     }
 
     private fun loadFilters() {
-        emptyFilters.location = filterInteractor.getLocation()
-        emptyFilters.areaId = filterInteractor.getAreaId()
+        emptyFilters.country = filterInteractor.getCountry()
+        emptyFilters.region = filterInteractor.getRegion()
         emptyFilters.industry = filterInteractor.getIndustry()
         emptyFilters.lowestSalary = filterInteractor.getExpectedSalary()
         emptyFilters.removeNoSalary = filterInteractor.getRemoveNoSalary()
@@ -85,17 +85,15 @@ class FiltersViewModel(
     }
 
     fun saveFilters(
-        location: String?,
-        industry: String?,
         expectedSalary: String?,
         removeNoSalary: Boolean,
     ) {
         filterInteractor.saveFilters(
-            location,
-            industry,
+            emptyFilters.country,
+            emptyFilters.region,
+            emptyFilters.industry,
             expectedSalary,
             removeNoSalary,
-            emptyFilters.areaId,
         )
     }
 
@@ -104,9 +102,13 @@ class FiltersViewModel(
         loadFilters()
     }
 
-    fun getLocation(location: String?, areaId: String?) {
-        emptyFilters.location = location
-        emptyFilters.areaId = areaId
+    fun getLocation(countryJson: String?, regionJson: String?) {
+        emptyFilters.country = countryJson
+        emptyFilters.region = regionJson
+        _stateLiveData.postValue(emptyFilters)
+    }
+    fun getIndustry(industryJson: String?){
+        emptyFilters.industry = industryJson
         _stateLiveData.postValue(emptyFilters)
     }
 }

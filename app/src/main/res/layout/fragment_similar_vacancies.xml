@@ -34,6 +34,54 @@
             android:textColor="?attr/black_to_white_color" />
     </androidx.appcompat.widget.Toolbar>
 
+    <TextView
+        android:id="@+id/no_internet_placeholder"
+        style="@style/Text_Medium_22_500"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:padding="@dimen/margin_16"
+        android:text="@string/error_no_internet"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_sad"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/placeholder_server_error"
+        style="@style/Text_Medium_22_500"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:padding="@dimen/margin_16"
+        android:text="@string/server_error"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_skull"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/placeholder_no_vacancies"
+        style="@style/Text_Medium_22_500"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:padding="@dimen/margin_16"
+        android:text="@string/error_no_vacancies"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_cat"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
@@ -48,7 +96,7 @@
         tools:listitem="@layout/item_search" />
 
     <ProgressBar
-        android:id="@+id/progress_bar_for_load"
+        android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_24"
