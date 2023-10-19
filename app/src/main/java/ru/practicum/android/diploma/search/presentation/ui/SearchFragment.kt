@@ -179,7 +179,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         updateIconBasedOnText()
     }
 
-    //наши "любимые" костыли
     private fun updateIconBasedOnText() {
         if (binding.searchEditText.text.isNullOrEmpty()) {
             binding.iconSearch.setImageResource(R.drawable.ic_search)
