@@ -3,7 +3,8 @@ package ru.practicum.android.diploma.favorites.presentation.view_model
 import androidx.lifecycle.ViewModel
 import ru.practicum.android.diploma.vacancy.domain.impl.DetailVacancyInteractor
 
-class FavoriteViewModel(private val favoriteVacancyInteractor: DetailVacancyInteractor) : ViewModel() {
+class FavoriteViewModel(private val favoriteVacancyInteractor: DetailVacancyInteractor) :
+    ViewModel() {
 //
 //    private val contentStateLiveData = MutableLiveData<FavoritesScreenState>()
 //    fun observeContentState(): LiveData<FavoritesScreenState> = contentStateLiveData

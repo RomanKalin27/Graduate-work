@@ -14,7 +14,7 @@ class SimilarVacancyRepositoryImpl(
     private val apiService: ApiService,
     private val networkControl: ConnectivityHelper,
     private val converter: ModelConverter,
-): SimilarVacancyRepository {
+) : SimilarVacancyRepository {
     override suspend fun searchSimilarVacancies(id: String): Flow<SearchVacancyResult> =
         flow {
             try {

@@ -7,5 +7,5 @@ data class Vacancy(
     val company: String = "",
     val salary: String? = "",
     val area: String = "",
-    val date : String = "",
+    val date: String = "",
 )

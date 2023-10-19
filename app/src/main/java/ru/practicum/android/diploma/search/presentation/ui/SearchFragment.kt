@@ -1,8 +1,6 @@
 package ru.practicum.android.diploma.search.presentation.ui
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -13,6 +11,9 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.BindingFragment
@@ -32,15 +33,13 @@ import ru.practicum.android.diploma.vacancy.presentation.ui.VacancyFragment
 class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private val viewModel by viewModel<SearchViewModel>()
     private val vacancyList = ArrayList<Vacancy>()
-    private val handler = Handler(Looper.getMainLooper())
-    private val vacancySearchRunnable =
-        Runnable { viewModel.searchVacancies(binding.searchEditText.text.toString()) }
     private lateinit var onVacancyClickDebounce: (Vacancy) -> Unit
     private val vacancyAdapter = VacancyAdapter(vacancyList)
+    private var timerJob: Job? = null
 
     override fun createBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?
+        container: ViewGroup?,
     ): FragmentSearchBinding {
         return FragmentSearchBinding.inflate(inflater, container, false)
     }
@@ -49,13 +48,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         observeViewModel()
-        onVacancyClickDebounce = debounce(
-            CLICK_DEBOUNCE_DELAY_MILLIS,
-            viewLifecycleOwner.lifecycleScope,
-            false
-        ) { item ->
-            navigateToVacancyDetail(item.id)
-        }
     }
 
     override fun onResume() {
@@ -80,9 +72,24 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             (activity as? RootActivity)?.animateBottomNavigationView()
             onVacancyClickDebounce(vacancy)
         }
+        onVacancyClickDebounce = debounce(
+            CLICK_DEBOUNCE_DELAY_MILLIS,
+            viewLifecycleOwner.lifecycleScope,
+            false
+        ) { item ->
+            navigateToVacancyDetail(item.id)
+        }
         setupDefaultUI()
         setupTextWatcher()
         setupRecyclerView()
+    }
+
+    private fun debounceSearch(p0: String) {
+        timerJob?.cancel()
+        timerJob = viewLifecycleOwner.lifecycleScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
+            viewModel.searchVacancies(p0)
+        }
     }
 
     private fun setupDefaultUI() {
@@ -129,7 +136,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
             iconSearch.setImageResource(R.drawable.ic_search)
             vacancyAdapter.notifyDataSetChanged()
-            handler.removeCallbacks(vacancySearchRunnable)
         }
         updateIconBasedOnText()
     }
@@ -169,7 +175,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         }
         vacancyList.clear()
         vacancyAdapter.notifyDataSetChanged()
-        handler.removeCallbacks(vacancySearchRunnable)
+        timerJob?.cancel()
         updateIconBasedOnText()
     }
 
@@ -188,12 +194,10 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s.isNullOrEmpty()) {
-
                     clearUI()
                 } else {
                     binding.iconSearch.setImageResource(R.drawable.ic_clear)
-                    handler.removeCallbacks(vacancySearchRunnable)
-                    handler.postDelayed(vacancySearchRunnable, SEARCH_DEBOUNCE_DELAY_MILLIS)
+                    debounceSearch(s.toString())
                 }
             }
 

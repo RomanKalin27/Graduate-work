@@ -29,7 +29,7 @@ interface ApiService {
     )
     @GET("/vacancies/{vacancy_id}")
     suspend fun getVacancyById(
-        @Path("vacancy_id") id: String
+        @Path("vacancy_id") id: String,
     ): VacancyDetailModelDTO
 
     @Headers(

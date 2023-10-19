@@ -43,9 +43,11 @@ val domainModule = module {
     single {
         DetailVacancyInteractor(
             detailVacancyRepository = get()
-        ) }
+        )
+    }
     single {
         SimilarVacancyInteractor(
             similarVacancyRepository = get()
-        ) }
+        )
+    }
 }

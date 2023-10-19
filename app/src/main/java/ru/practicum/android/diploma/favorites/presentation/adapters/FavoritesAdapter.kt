@@ -6,7 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemSearchBinding
 import ru.practicum.android.diploma.db.domain.models.Vacancy
 
-class FavoritesAdapter(private val vacancyList: List<Vacancy>) : RecyclerView.Adapter<FavoritesViewHolder>() {
+class FavoritesAdapter(private val vacancyList: List<Vacancy>) :
+    RecyclerView.Adapter<FavoritesViewHolder>() {
 
     var itemClickListener: ((Int, Vacancy) -> Unit)? = null
     var itemLongClickListener: ((Int, Vacancy) -> Unit)? = null
@@ -15,6 +16,7 @@ class FavoritesAdapter(private val vacancyList: List<Vacancy>) : RecyclerView.Ad
         val binding = ItemSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FavoritesViewHolder(binding)
     }
+
     override fun onBindViewHolder(holder: FavoritesViewHolder, position: Int) {
         val vacancy = vacancyList[position]
         holder.bind(vacancy)
@@ -24,6 +26,7 @@ class FavoritesAdapter(private val vacancyList: List<Vacancy>) : RecyclerView.Ad
             true
         }
     }
+
     override fun getItemCount(): Int {
         return vacancyList.size
     }

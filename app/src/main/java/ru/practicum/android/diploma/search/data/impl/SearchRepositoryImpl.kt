@@ -5,9 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.AREA_ID_KEY
 import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.COUNTRY_KEY
 import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.EXPECTED_SALARY_KEY
 import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.FILTERS_ON_KEY

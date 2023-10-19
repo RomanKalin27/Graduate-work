@@ -6,7 +6,7 @@ enum class DetailsVacancyScreenState {
     /*Стоит ли CONTENT обосабливать? В updateUI он обрабатывается
     в комплекте с FAVORITE и UNFAVORITE*/
 
- //   CONTENT,
+    //   CONTENT,
     ERROR,
     FAVORITE,
     UNFAVORITE

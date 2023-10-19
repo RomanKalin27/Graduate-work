@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemCountryBinding
-import ru.practicum.android.diploma.databinding.ItemRegionBinding
 import ru.practicum.android.diploma.search.data.dto.response_models.Area
 
 class RegionAdapter(private val clickListener: RegionClickListener) :
@@ -22,6 +21,8 @@ class RegionAdapter(private val clickListener: RegionClickListener) :
             clickListener.onTrackClick(regionList[position])
         }
     }
-fun interface RegionClickListener {
-    fun onTrackClick(country: Area)
-} }
+
+    fun interface RegionClickListener {
+        fun onTrackClick(country: Area)
+    }
+}

@@ -10,7 +10,8 @@ import ru.practicum.android.diploma.vacancy.domain.impl.DetailVacancyInteractor
 import ru.practicum.android.diploma.vacancy.domain.models.DetailVacancyResult
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetailnfo
 
-class DetailVacancyViewModel(private val detailVacancyInteractor: DetailVacancyInteractor) : ViewModel() {
+class DetailVacancyViewModel(private val detailVacancyInteractor: DetailVacancyInteractor) :
+    ViewModel() {
 
     private val _detailVacancyResult: MutableLiveData<DetailVacancyResult> = MutableLiveData()
     val detailVacancyResult: LiveData<DetailVacancyResult> = _detailVacancyResult
@@ -31,8 +32,7 @@ class DetailVacancyViewModel(private val detailVacancyInteractor: DetailVacancyI
                 detailVacancyInteractor.removeVacancyFromFavorites(vacancy.id).collect {
                     _detailVacancyResult.value = DetailVacancyResult.NoFavorite
                 }
-            }
-            else {
+            } else {
                 detailVacancyInteractor.addVacancyToFavorites(vacancy).collect {
                     _detailVacancyResult.value = DetailVacancyResult.AddedToFavorite
                 }
@@ -40,7 +40,6 @@ class DetailVacancyViewModel(private val detailVacancyInteractor: DetailVacancyI
 
         }
     }
-
 
 
 }

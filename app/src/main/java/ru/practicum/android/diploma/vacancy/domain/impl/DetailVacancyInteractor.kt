@@ -9,12 +9,15 @@ class DetailVacancyInteractor(private val detailVacancyRepository: DetailVacancy
     suspend fun addVacancyToFavorites(vacancy: VacancyDetailnfo): Flow<Unit> {
         return detailVacancyRepository.addVacancyToFavorites(vacancy)
     }
+
     suspend fun checkIfVacancyInFavorite(id: String): Boolean {
         return detailVacancyRepository.checkIfVacancyInFavorites(id)
     }
+
     suspend fun getDetailVacancyById(id: String): Flow<DetailVacancyResult> {
         return detailVacancyRepository.getDetailVacancyById(id)
     }
+
     suspend fun removeVacancyFromFavorites(id: String): Flow<Int> {
         return detailVacancyRepository.removeVacancyFromFavorites(id)
     }

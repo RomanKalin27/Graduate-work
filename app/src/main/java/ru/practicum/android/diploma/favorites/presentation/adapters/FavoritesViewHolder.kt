@@ -7,7 +7,8 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemSearchBinding
 import ru.practicum.android.diploma.db.domain.models.Vacancy
 
-class FavoritesViewHolder(private val binding: ItemSearchBinding) : RecyclerView.ViewHolder(binding.root) {
+class FavoritesViewHolder(private val binding: ItemSearchBinding) :
+    RecyclerView.ViewHolder(binding.root) {
     fun bind(vacancy: Vacancy) {
         Glide.with(itemView)
             .load(vacancy.employerLogoUrl)

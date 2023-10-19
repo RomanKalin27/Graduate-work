@@ -29,20 +29,7 @@ class FavoriteFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-//        observeOnContentState()
-//        initAdapter()
-//        initListeners()
-//        viewModel.fillData()
-    }
-
-    override fun onResume() {
-        super.onResume()
-//        viewModel.fillData()
-    }
-
-//    private fun observeOnContentState() {
+    //    private fun observeOnContentState() {
 //        viewModel.observeContentState().observe(viewLifecycleOwner) { contentState ->
 //            render(contentState)
 //        }

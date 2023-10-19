@@ -19,7 +19,10 @@ class VacancyDbRepositoryImpl(
     }
 
     override suspend fun addVacancyToFavorite(vacancy: VacancyDetailnfo): Flow<Unit> {
-        return flowOf(appDataBase.vacancyDao().insertFavouriteVacancy(vacancyDbConverter.toFullInfoEntity(vacancy)))
+        return flowOf(
+            appDataBase.vacancyDao()
+                .insertFavouriteVacancy(vacancyDbConverter.toFullInfoEntity(vacancy))
+        )
     }
 
 //    override suspend fun showIfInFavouriteById(id: String): Flow<Boolean> {
@@ -29,9 +32,12 @@ class VacancyDbRepositoryImpl(
     override suspend fun isVacancyInFavs(id: String): Boolean {
         return appDataBase.vacancyDao().isVacancyInFavs(id)
     }
+
     override suspend fun getFavoritesById(id: String): Flow<VacancyDetailnfo> {
-        return appDataBase.vacancyDao().getFavoritesById(id).map { vacancyDbConverter.entityToModel(it) }
+        return appDataBase.vacancyDao().getFavoritesById(id)
+            .map { vacancyDbConverter.entityToModel(it) }
     }
+
     override suspend fun getFavsVacancies(): Flow<List<Vacancy>> {
         return appDataBase.vacancyDao().getFavorites().map { vacancyDbConverter.mapToVacancies(it) }
     }

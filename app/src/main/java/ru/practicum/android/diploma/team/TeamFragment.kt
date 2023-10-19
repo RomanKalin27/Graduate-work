@@ -7,7 +7,10 @@ import ru.practicum.android.diploma.databinding.FragmentTeamBinding
 
 class TeamFragment : BindingFragment<FragmentTeamBinding>() {
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTeamBinding {
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+    ): FragmentTeamBinding {
         return FragmentTeamBinding.inflate(inflater, container, false)
     }
 }

@@ -18,5 +18,5 @@ data class VacancyDetailnfo(
     val contactPhones: List<String> = emptyList(),
     val contactComment: String = "",
     val alternateUrl: String? = "",
-    val isInFavorite: Boolean = false
+    val isInFavorite: Boolean = false,
 )

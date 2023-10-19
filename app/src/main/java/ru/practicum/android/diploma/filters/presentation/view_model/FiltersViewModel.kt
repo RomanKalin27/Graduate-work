@@ -25,7 +25,7 @@ class FiltersViewModel(
     private val converter: FilterModelConverter,
 ) : ViewModel() {
     private val _stateLiveData = MutableLiveData<FiltersState>()
-    private var emptyFilters = FiltersState(null, null, null, null,false)
+    private var emptyFilters = FiltersState(null, null, null, null, false)
     fun observeState(): LiveData<FiltersState> = _stateLiveData
 
     private val _chooseResult: MutableLiveData<ChooseResult> = MutableLiveData()
@@ -107,7 +107,8 @@ class FiltersViewModel(
         emptyFilters.region = regionJson
         _stateLiveData.postValue(emptyFilters)
     }
-    fun getIndustry(industryJson: String?){
+
+    fun getIndustry(industryJson: String?) {
         emptyFilters.industry = industryJson
         _stateLiveData.postValue(emptyFilters)
     }
