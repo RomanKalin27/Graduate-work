@@ -9,15 +9,16 @@ import ru.practicum.android.diploma.filters.domain.models.Industry
 class IndustryAdapter(
     private val items: List<Industry>,
     private val onIndustrySelected: (Industry) -> Unit,
+    private var industryText: String?
 ) :
     RecyclerView.Adapter<IndustryAdapter.ViewHolderIndustry>() {
-    var clickedId: String? = null
+    var clickedName: String? = null
     var itemClickListener: ((Int, Industry) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderIndustry {
         val binding =
             ItemRegionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolderIndustry(binding)
+        return ViewHolderIndustry(binding, industryText)
     }
 
     override fun getItemCount(): Int {
@@ -29,21 +30,29 @@ class IndustryAdapter(
         holder.bind(industry)
     }
 
-    inner class ViewHolderIndustry(private val binding: ItemRegionBinding) :
+    inner class ViewHolderIndustry(
+        private val binding: ItemRegionBinding,
+        private var industryText: String?
+    ) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(industry: Industry) {
             binding.region.text = industry.name
-            binding.radioButton.isChecked = industry.id == clickedId
-
+            binding.radioButton.isChecked =
+                (isIndustryTextNotEmptyAndNameMatches(industry) || industry.name == clickedName)
             itemView.setOnClickListener {
-                if (industry.id != clickedId) {
-                    clickedId = industry.id
+                if (industry.name != clickedName) {
+                    clickedName = industry.name
+                    industryText = industry.name
                     notifyDataSetChanged()
                     onIndustrySelected(industry)
                     itemClickListener?.invoke(adapterPosition, industry)
                 }
             }
+        }
+
+        private fun isIndustryTextNotEmptyAndNameMatches(industry: Industry): Boolean {
+            return industryText?.isNotEmpty() == true && industry.name == industryText
         }
     }
 }

@@ -72,12 +72,15 @@ class ChooseIndustry : Fragment() {
     }
 
     private fun initIndustryAdapter(): IndustryAdapter {
+        val industryText = arguments?.getString("INDUSTRY_TEXT")
         industryRecyclerView = binding.industryRecycler
         industryRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        industryAdapter = IndustryAdapter(industryList) { industry ->
-            selectedIndustry = industry
-        }
+        industryAdapter = IndustryAdapter(
+            industryList,
+            { industry -> selectedIndustry = industry },
+            industryText)
+
         industryRecyclerView.adapter = industryAdapter
         return industryRecyclerView.adapter as IndustryAdapter
     }
