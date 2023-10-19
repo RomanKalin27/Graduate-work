@@ -13,7 +13,6 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.encodeToString
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.ChangeTextFieldUtil
@@ -71,7 +70,9 @@ class FiltersFragment : Fragment() {
             changeLocationField()
         }
         binding.btnIndustry.setOnClickListener {
-            findNavController().navigate(R.id.action_filtersFragment_to_chooseIndustry)
+            val currentIndustry = binding.industryEditText.text.toString()
+            val bundleIndustry = bundleOf("INDUSTRY_TEXT" to currentIndustry)
+            findNavController().navigate(R.id.action_filtersFragment_to_chooseIndustry, bundleIndustry)
         }
         binding.industryClearBtn.setOnClickListener {
             binding.industryEditText.text?.clear()
