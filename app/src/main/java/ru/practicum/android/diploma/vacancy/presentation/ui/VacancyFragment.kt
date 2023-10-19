@@ -53,17 +53,18 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
             requireContext().startActivity(share)
         }
         binding.vacancyContactEmailValue.setOnClickListener {
-            requireContext().startActivity(
-                Intent(
-                    Intent.ACTION_SENDTO,
-                    Uri.parse("mailto:kalinroman034@gmail.com")
-                )
-            )
+            val emailAddress = binding.vacancyContactEmailValue.text.toString()
+            val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$emailAddress"))
+            requireContext().startActivity(emailIntent)
         }
+
         binding.vacancyContactPhoneValue.setOnClickListener {
-            val call = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", "8-800-555-35-35", null))
+            val phoneNumber = binding.vacancyContactPhoneValue.text.toString()
+            val call = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null))
             requireContext().startActivity(call)
         }
+
+
         binding.similarVacanciesButton.setOnClickListener {
             findNavController().navigate(
                 R.id.action_vacancyFragment_to_similarVacancyFragment,
