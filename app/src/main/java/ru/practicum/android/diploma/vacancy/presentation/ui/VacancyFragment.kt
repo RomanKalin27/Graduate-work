@@ -93,7 +93,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
                 icFavorites.setImageResource(R.drawable.ic_favorites_on)}
                 DetailsVacancyScreenState.UNFAVORITE ->  {
                     group.isVisible = true
-                    binding.icFavorites.setImageResource(R.drawable.ic_favorites_on)}
+                    binding.icFavorites.setImageResource(R.drawable.ic_favorites_off)}
             }
         }
     }
