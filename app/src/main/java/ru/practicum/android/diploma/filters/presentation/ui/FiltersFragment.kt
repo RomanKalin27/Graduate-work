@@ -13,11 +13,14 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.encodeToString
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.ChangeTextFieldUtil
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
+import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
 import ru.practicum.android.diploma.filters.domain.models.Industry
+import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.COUNTRY_AND_REGION
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.COUNTRY_JSON_KEY
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.KEY_CHOOSE
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.REGION_JSON_KEY
@@ -27,7 +30,7 @@ import ru.practicum.android.diploma.search.data.dto.response_models.Area
 class FiltersFragment : Fragment() {
     private lateinit var binding: FragmentFilterBinding
     private var isChecked = false
-    private var country: Area = Area.emptyArea
+    private var country: AreasDTO = AreasDTO.emptyArea
     private var region: Area = Area.emptyArea
     private var industry: Industry = Industry.emptyIndustry
     private val vm by viewModel<FiltersViewModel>()
@@ -77,7 +80,7 @@ class FiltersFragment : Fragment() {
         }
         binding.salaryEditText.addTextChangedListener {
             if (binding.salaryEditText.text.isEmpty()) {
-                binding.textExpectedSalary.setTextColor(R.attr.text_hint_search)
+                binding.textExpectedSalary.setTextColor(requireContext().getColor(R.color.hint))
                 binding.salaryClearBtn.isVisible = false
             } else {
                 binding.textExpectedSalary.setTextColor(requireContext().getColor(R.color.blue))
@@ -111,6 +114,9 @@ class FiltersFragment : Fragment() {
         }
 
         vm.observeState().observe(viewLifecycleOwner) {
+            setFragmentResult(COUNTRY_AND_REGION,
+                bundleOf(COUNTRY_JSON_KEY to it.country,
+                    REGION_JSON_KEY to  it.region))
             if (!it.country.isNullOrEmpty()) {
                 country = Json.decodeFromString(it.country ?: "")
                 if (!it.region.isNullOrEmpty()) {
@@ -122,7 +128,7 @@ class FiltersFragment : Fragment() {
                     binding.locationEditText.setText(country.name)
                 }
             } else {
-                country = Area.emptyArea
+                country = AreasDTO.emptyArea
                 region = Area.emptyArea
             }
             if (!it.industry.isNullOrEmpty()) {
@@ -198,4 +204,5 @@ class FiltersFragment : Fragment() {
             vm.getIndustry(bundle.getString(INDUSTRY))
         }
     }
+
 }

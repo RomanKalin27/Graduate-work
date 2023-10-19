@@ -9,7 +9,7 @@
     <color name="transparent">#00000000</color>
     <color name="yp_black">#1A1B22</color>
     <color name="yp_white">#FDFDFD</color>
-
+    <color name="hint">#AEAFB4</color>
     <color name="black50">#801A1B22</color>
     <color name="white_2">#FFFFFF</color>
     <color name="edit_text_hint_color">?attr/black_to_white_color</color>

@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.filters.presentation.ui
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
 import ru.practicum.android.diploma.filters.domain.models.ChooseRegionsResult
 import ru.practicum.android.diploma.filters.domain.models.ChooseResult
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.BUNDLE_KEY
+import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.FILTER_COUNTRY
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.KEY
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseRegionFragment.Companion.KEY_R
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseRegionFragment.Companion.REGION_KEY
@@ -34,6 +36,7 @@ class ChoosePlaceWorkFragment : Fragment() {
     private var areasList = ArrayList<AreasDTO>()
     private var areasRegionList = ArrayList<AreasDTO>()
     private var area = ArrayList<AreasDTO>()
+    private var countryArea = AreasDTO.emptyArea
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,8 +51,9 @@ class ChoosePlaceWorkFragment : Fragment() {
         super.onResume()
         getCountry()
         getRegions()
-        setFilters()
         observeViewModel()
+        setFilters()
+        setSavedFilters()
         showChooseBtn()
     }
 
@@ -58,6 +62,28 @@ class ChoosePlaceWorkFragment : Fragment() {
         getRegions()
         getCountry()
         initListeners()
+    }
+    private fun setSavedFilters(){
+        setFragmentResultListener(COUNTRY_AND_REGION){_,bundle ->
+            val country = (bundle.getString(COUNTRY_JSON_KEY)?.let {
+                Json.decodeFromString<AreasDTO>(it)
+            }?: AreasDTO.emptyArea)
+            if (country != AreasDTO.emptyArea) {
+                binding.countryEditText.setText(country.name)
+            }
+            val region = (bundle.getString(REGION_JSON_KEY)?.let {
+                Json.decodeFromString<Area>(it)
+            }?: Area.emptyArea)
+            if (region != Area.emptyArea) {
+                binding.regionEditText.setText(region.name)
+            }
+            setFragmentResult(
+                ChooseCountryFragment.FILTER_KEY,
+                bundleOf(FILTER_COUNTRY to Json.encodeToString(country))
+            )
+            changeCountryField()
+            changeRegionField()
+        }
     }
 
     private fun setFilters() {
@@ -87,10 +113,11 @@ class ChoosePlaceWorkFragment : Fragment() {
                 areasList.removeIf { it.id != a[0].parentId }
                 area.addAll(areasList)
             }
+            countryArea = area[0]
             binding.countryEditText.setText(area[0].name)
             setFragmentResult(
                 ChooseCountryFragment.FILTER_KEY,
-                bundleOf(ChooseCountryFragment.FILTER_COUNTRY to Json.encodeToString(area[0]))
+                bundleOf(FILTER_COUNTRY to Json.encodeToString(area[0]))
             )
             country = AreasDTO(id = area[0].id, name = area[0].name, emptyList())
         }
@@ -147,10 +174,10 @@ class ChoosePlaceWorkFragment : Fragment() {
         var countryJson: String? = null
         var regionJson: String? = null
         if (binding.countryEditText.text.toString().isNotEmpty()) {
-            countryJson = Json.encodeToString(Area(area[0].id, country.name, null))
+            countryJson = Json.encodeToString(countryArea)
         }
         if (binding.regionEditText.text.toString().isNotEmpty()) {
-            regionJson = Json.encodeToString(Area(region.id, region.name, null))
+            regionJson = Json.encodeToString(region)
         }
         setFragmentResult(
             KEY_CHOOSE,
