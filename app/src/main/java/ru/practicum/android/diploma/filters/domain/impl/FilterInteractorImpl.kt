@@ -7,23 +7,27 @@ class FilterInteractorImpl(
     private val filterRepository: FilterRepository,
 ) : FilterInteractor {
     override fun saveFilters(
-        location: String?,
-        industry: String?,
+        countryJson: String?,
+        regionJson: String?,
+        industryJson: String?,
         expectedSalary: String?,
         removeNoSalary: Boolean,
-        areaId: String?,
     ) {
         filterRepository.saveFilters(
-            location,
-            industry,
+            countryJson,
+            regionJson,
+            industryJson,
             expectedSalary,
             removeNoSalary,
-            areaId,
         )
     }
 
-    override fun getLocation(): String {
-        return filterRepository.getLocation()
+    override fun getCountry(): String? {
+        return filterRepository.getCountry()
+    }
+
+    override fun getRegion(): String? {
+        return filterRepository.getRegion()
     }
 
     override fun getIndustry(): String? {
@@ -36,10 +40,6 @@ class FilterInteractorImpl(
 
     override fun getRemoveNoSalary(): Boolean {
         return filterRepository.getRemoveNoSalary()
-    }
-
-    override fun getAreaId(): String? {
-        return filterRepository.getAreaId()
     }
 
     override fun removeFilters() {

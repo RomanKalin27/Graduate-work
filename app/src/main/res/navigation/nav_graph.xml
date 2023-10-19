@@ -78,8 +78,8 @@
     </fragment>
     <fragment
         android:id="@+id/similarVacancyFragment"
-        android:name="ru.practicum.android.diploma.vacancy.presentation.ui.VacancyFragment"
-        android:label="VacancyFragment" >
+        android:name="ru.practicum.android.diploma.vacancy.presentation.ui.SimilarVacancyFragment"
+        android:label="SimilarVacancyFragment" >
         <action
             android:id="@+id/action_similarVacancyFragment_to_vacancyFragment"
             app:destination="@id/vacancyFragment" />

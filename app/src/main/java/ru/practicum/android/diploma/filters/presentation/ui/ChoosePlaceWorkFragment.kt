@@ -17,7 +17,6 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.ChangeTextFieldUtil
 import ru.practicum.android.diploma.databinding.FragmentSelectLocationBinding
 import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
-import ru.practicum.android.diploma.filters.data.dto.models.RegionsDTO
 import ru.practicum.android.diploma.filters.domain.models.ChooseRegionsResult
 import ru.practicum.android.diploma.filters.domain.models.ChooseResult
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.BUNDLE_KEY
@@ -144,18 +143,18 @@ class ChoosePlaceWorkFragment : Fragment() {
     }
 
     private fun chooseFilters() {
-        if (region == Area.emptyArea) {
-            setFragmentResult(
-                KEY_CHOOSE,
-                bundleOf(PLACE_WORK to country, AREA_ID to area[0].id)
-            )
-        } else {
-            val result = "${country.name},${region.name}"
-            setFragmentResult(
-                KEY_CHOOSE,
-                bundleOf(PLACE_WORK to result, AREA_ID to region.id)
-            )
+        var countryJson: String? = null
+        var regionJson: String? = null
+        if (binding.countryEditText.text.toString().isNotEmpty()) {
+            countryJson = Json.encodeToString(Area(area[0].id, country.name, null))
         }
+        if (binding.regionEditText.text.toString().isNotEmpty()) {
+            regionJson = Json.encodeToString(Area(region.id, region.name, null))
+        }
+        setFragmentResult(
+            KEY_CHOOSE,
+            bundleOf(COUNTRY_JSON_KEY to countryJson, REGION_JSON_KEY to regionJson)
+        )
         findNavController().navigateUp()
     }
 
@@ -195,8 +194,8 @@ class ChoosePlaceWorkFragment : Fragment() {
 
     companion object {
         const val KEY_CHOOSE = "key_choose"
-        const val PLACE_WORK = "place_work"
-        const val AREA_ID = "AREA_ID"
+        const val COUNTRY_JSON_KEY = "COUNTRY_JSON_KEY"
+        const val REGION_JSON_KEY = "REGION_JSON_KEY"
         const val COUNTRY_AND_REGION = "COUNTRY_AND_REGION"
     }
 }

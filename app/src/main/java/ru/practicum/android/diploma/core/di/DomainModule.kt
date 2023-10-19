@@ -11,6 +11,7 @@ import ru.practicum.android.diploma.filters.domain.impl.ChooseRegionsInteractorI
 import ru.practicum.android.diploma.filters.domain.impl.FilterInteractorImpl
 import ru.practicum.android.diploma.search.domain.impl.SearchInteractor
 import ru.practicum.android.diploma.vacancy.domain.impl.DetailVacancyInteractor
+import ru.practicum.android.diploma.vacancy.domain.impl.SimilarVacancyInteractor
 
 val domainModule = module {
     single {
@@ -43,6 +44,8 @@ val domainModule = module {
         DetailVacancyInteractor(
             detailVacancyRepository = get()
         ) }
-
-
+    single {
+        SimilarVacancyInteractor(
+            similarVacancyRepository = get()
+        ) }
 }

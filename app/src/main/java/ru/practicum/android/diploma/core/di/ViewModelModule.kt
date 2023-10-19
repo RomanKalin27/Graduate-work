@@ -6,6 +6,7 @@ import ru.practicum.android.diploma.favorites.presentation.view_model.FavoriteVi
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
 import ru.practicum.android.diploma.search.presentation.view_model.SearchViewModel
 import ru.practicum.android.diploma.vacancy.presentation.view_model.DetailVacancyViewModel
+import ru.practicum.android.diploma.vacancy.presentation.view_model.SimilarVacanciesViewModel
 
 val viewModelModule = module {
 
@@ -32,6 +33,11 @@ val viewModelModule = module {
     viewModel {
         DetailVacancyViewModel(
             detailVacancyInteractor = get()
+        )
+    }
+    viewModel {
+        SimilarVacanciesViewModel(
+            similarVacancyInteractor = get()
         )
     }
 }

@@ -104,7 +104,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 is SearchVacancyResult.Error -> updateUI(SearchUIState.CONNECTION_ERROR)
                 SearchVacancyResult.EmptyResult -> updateUI(SearchUIState.EMPTY_SEARCH)
                 SearchVacancyResult.NoInternet -> updateUI(SearchUIState.NO_INTERNET)
-
                 is SearchVacancyResult.Success -> showVacancy(state.response.vacancies)
             }
         }
