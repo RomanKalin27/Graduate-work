@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
@@ -27,7 +26,7 @@ import ru.practicum.android.diploma.vacancy.presentation.view_model.DetailVacanc
 class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
     private val viewModel by viewModel<DetailVacancyViewModel>()
 
-    private val currentVacancy by lazy { retrieveVacancy() }
+ //   private val currentVacancy by lazy { retrieveVacancy() }
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -38,13 +37,13 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     override fun onResume() {
         super.onResume()
-        retrieveVacancy()?.let { viewModel.showDetailVacancy(it) }
+        viewModel.showDetailVacancy(retrieveVacancy())
         observeViewModel()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        retrieveVacancy()?.let { viewModel.showDetailVacancy(it) }
+        viewModel.showDetailVacancy(retrieveVacancy())
         observeViewModel()
         binding.icSharing.setOnClickListener {
             val share = Intent(Intent.ACTION_SEND)
@@ -67,16 +66,14 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         binding.similarVacanciesButton.setOnClickListener {
             findNavController().navigate(
                 R.id.action_vacancyFragment_to_similarVacancyFragment,
-                SimilarVacancyFragment.createArgs(retrieveVacancy() ?: "")
+                SimilarVacancyFragment.createArgs(retrieveVacancy())
             )
         }
     }
 
     private fun setupDefaultUI(vacancy: VacancyDetailnfo) {
-        with(binding) {
-            showDataContent(vacancy)
+                    showDataContent(vacancy)
         }
-    }
 
     private fun observeViewModel() {
         viewModel.detailVacancyResult.observe(viewLifecycleOwner) { state ->
@@ -121,15 +118,15 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         }
     }
 
-    fun retrieveVacancy(): String {
+    private fun retrieveVacancy(): String {
         var idVacancy = requireArguments().getString(KEY_VACANCY) ?: ""
         setFragmentResultListener(SIMILAR_VACANCY_KEY) { _, bundle ->
-            idVacancy = bundleOf().getString(SIMILAR_VACANCY) ?: ""
+            idVacancy = bundle.getString(SIMILAR_VACANCY) ?: ""
         }
         return idVacancy
     }
 
-    fun showDataContent(vacancy: VacancyDetailnfo) {
+    private fun showDataContent(vacancy: VacancyDetailnfo) {
         with(binding) {
             scrollView.visibility = View.VISIBLE
             //  placeHolder.visibility = View.GONE
