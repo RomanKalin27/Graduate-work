@@ -26,8 +26,6 @@ import ru.practicum.android.diploma.vacancy.presentation.view_model.DetailVacanc
 class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
     private val viewModel by viewModel<DetailVacancyViewModel>()
 
- //   private val currentVacancy by lazy { retrieveVacancy() }
-
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -75,8 +73,8 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
     }
 
     private fun setupDefaultUI(vacancy: VacancyDetailnfo) {
-                    showDataContent(vacancy)
-        }
+        showDataContent(vacancy)
+    }
 
     private fun observeViewModel() {
         viewModel.detailVacancyResult.observe(viewLifecycleOwner) { state ->
@@ -103,10 +101,6 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
             when (detailsVacancyScreenState) {
                 DetailsVacancyScreenState.NO_INTERNET -> noInternetPlaceholder.isVisible = true
                 DetailsVacancyScreenState.LOADING -> progressBar.isVisible = true
-
-                // CONTENT обрабатывается в комплекте с FAVORITE и UNFAVORITE
-                // DetailsVacancyScreenState.CONTENT -> group.isVisible = true
-
                 DetailsVacancyScreenState.ERROR -> placeholderServerError.isVisible = true
                 DetailsVacancyScreenState.FAVORITE -> {
                     group.isVisible = true
@@ -203,7 +197,6 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     companion object {
         const val KEY_VACANCY = "vacancy"
-
         fun createArgs(vacancy: String): Bundle {
             val bundle = Bundle()
             bundle.putString(KEY_VACANCY, vacancy)

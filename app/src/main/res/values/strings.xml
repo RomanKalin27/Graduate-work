@@ -32,9 +32,9 @@
     <string name="reset">Сбросить</string>
 
     //Зарплата
-    <string name="expected_selary">Ожидаемая ЗП</string>
+    <string name="expected_selary">Ожидаемая зарплата</string>
     <string name="enter_amount">Введите сумму</string>
-    <string name="do_not_show_without_salary">Не показывать без ЗП</string>
+    <string name="do_not_show_without_salary">Не показывать без зарплаты</string>
 
     //Детали выкансии
     <string name="vacancy">Вакансия</string>
