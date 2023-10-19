@@ -8,18 +8,26 @@ import kotlinx.coroutines.launch
 fun <T> debounce(
     delayMillis: Long,
     coroutineScope: CoroutineScope,
-    useLastParam: Boolean,
-    action: (T) -> Unit,
+    cancelPrevious: Boolean, // переименован useLastParam
+    action: (T) -> Unit
 ): (T) -> Unit {
     var debounceJob: Job? = null
+    val lock = Any() // объект для синхронизации
+
     return { param: T ->
-        if (useLastParam) {
-            debounceJob?.cancel()
-        }
-        if (debounceJob?.isCompleted != false || useLastParam) {
-            debounceJob = coroutineScope.launch {
-                delay(delayMillis)
-                action(param)
+        synchronized(lock) {
+            if (cancelPrevious) {
+                debounceJob?.cancel()
+            }
+            if (debounceJob?.isCompleted != false || cancelPrevious) {
+                debounceJob = coroutineScope.launch {
+                    delay(delayMillis)
+                    try {
+                        action(param)
+                    } catch (e: Exception) {
+                        // Обрабатываем ошибку, например, логируем или "тостим"
+                    }
+                }
             }
         }
     }
