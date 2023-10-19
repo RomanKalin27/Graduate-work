@@ -112,7 +112,7 @@ class ModelConverter(private val context: Context) {
         )
     }
 
-    fun mapToVacancies(entities: List<VacancyFullInfoEntity>): List<Vacancy>{
+    fun mapToVacancies(entities: List<VacancyFullInfoEntity>): List<Vacancy> {
         return entities.map { toVacancy(it) }
     }
 
@@ -154,9 +154,11 @@ class ModelConverter(private val context: Context) {
             )
         }
     }
+
     private fun keySkillsToString(keySkills: List<KeySkillDto>?): String {
         return keySkills?.map { "• ${it.name}" }?.joinToString("\n") ?: ""
     }
+
     private fun createPhones(phones: List<Phone?>?): List<String> {
         if (phones == null) {
             return emptyList()

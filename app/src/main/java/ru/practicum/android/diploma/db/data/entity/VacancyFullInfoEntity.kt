@@ -22,5 +22,5 @@ data class VacancyFullInfoEntity(
     val contactName: String = "",
     val contactComment: String = "",
     val contactPhones: String = "",
-    val alternativeUrl: String? = ""
+    val alternativeUrl: String? = "",
 )

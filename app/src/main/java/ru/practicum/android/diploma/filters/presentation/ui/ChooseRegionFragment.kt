@@ -30,13 +30,13 @@ class ChooseRegionFragment : Fragment() {
     private lateinit var binding: FragmentRegionsBinding
     private lateinit var regionAdapter: RegionAdapter
     private lateinit var textWatcher: TextWatcher
-    private var debounce : ((String) -> Unit)? = null
+    private var debounce: ((String) -> Unit)? = null
     private val viewModel by viewModel<FiltersViewModel>()
     private var regionList = ArrayList<Area>()
     private var regionListSaved = ArrayList<Area>()
     private var regionListFilter = ArrayList<Area>()
     private var country: AreasDTO = AreasDTO.emptyArea
-    private var hasInternet : Boolean = false
+    private var hasInternet: Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -147,7 +147,8 @@ class ChooseRegionFragment : Fragment() {
     private fun debounceSearch(p0: String) {
         debounce?.let { it(p0) }
     }
-    private fun debounce(){
+
+    private fun debounce() {
         debounce = debounce<String>(
             SEARCH_DEBOUNCE_DELAY_MILLIS,
             viewLifecycleOwner.lifecycleScope,

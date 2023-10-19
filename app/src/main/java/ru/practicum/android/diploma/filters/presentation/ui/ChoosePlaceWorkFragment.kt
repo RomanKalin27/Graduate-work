@@ -79,10 +79,10 @@ class ChoosePlaceWorkFragment : Fragment() {
         }
         if (region != Area.emptyArea) {
             area.clear()
-            if (region.parentId?.length!! <= 3 ){
-                areasList.removeIf { it.id != region.parentId}
+            if (region.parentId?.length!! <= 3) {
+                areasList.removeIf { it.id != region.parentId }
                 area.addAll(areasList)
-            }else{
+            } else {
                 val a = areasRegionList.flatMap { it.areas }.filter { it.id == region.parentId }
                 areasList.removeIf { it.id != a[0].parentId }
                 area.addAll(areasList)
@@ -101,7 +101,8 @@ class ChoosePlaceWorkFragment : Fragment() {
     private fun getCountry() {
         viewModel.getCountry()
     }
-    private fun getRegions(){
+
+    private fun getRegions() {
         viewModel.getRegions()
     }
 
@@ -132,8 +133,8 @@ class ChoosePlaceWorkFragment : Fragment() {
                 is ChooseResult.Success -> areasList.addAll(state.response)
             }
         }
-        viewModel.chooseRegionResult.observe(viewLifecycleOwner){state ->
-            when(state){
+        viewModel.chooseRegionResult.observe(viewLifecycleOwner) { state ->
+            when (state) {
                 ChooseRegionsResult.EmptyResult -> {}
                 is ChooseRegionsResult.Error -> {}
                 ChooseRegionsResult.NoInternet -> {}
@@ -163,7 +164,7 @@ class ChoosePlaceWorkFragment : Fragment() {
         binding.btnChoose.isVisible = !binding.countryEditText.text.isNullOrEmpty()
     }
 
-    private fun initListeners(){
+    private fun initListeners() {
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }

@@ -6,6 +6,6 @@ data class VacancyItemDto(
     val name: String? = "",
     val salary: Salary? = Salary(),
     val employer: Employer?,
-    val date : String = "",
+    val date: String = "",
 )
 

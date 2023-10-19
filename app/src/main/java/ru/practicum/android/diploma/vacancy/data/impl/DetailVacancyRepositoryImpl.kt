@@ -16,7 +16,7 @@ class DetailVacancyRepositoryImpl(
     private val apiService: ApiService,
     private val networkControl: ConnectivityHelper,
     private val converter: ModelConverter,
-    private val vacancyDb: VacancyDbRepository
+    private val vacancyDb: VacancyDbRepository,
 ) : DetailVacancyRepository {
 
     override suspend fun getDetailVacancyById(id: String): Flow<DetailVacancyResult> =

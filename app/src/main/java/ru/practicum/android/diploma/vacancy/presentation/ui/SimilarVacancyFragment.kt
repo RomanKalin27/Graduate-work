@@ -29,7 +29,7 @@ class SimilarVacancyFragment : BindingFragment<FragmentSimilarVacanciesBinding>(
     private val vacancyAdapter = VacancyAdapter(similarVacancyList)
     override fun createBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?
+        container: ViewGroup?,
     ): FragmentSimilarVacanciesBinding {
         return FragmentSimilarVacanciesBinding.inflate(inflater, container, false)
     }

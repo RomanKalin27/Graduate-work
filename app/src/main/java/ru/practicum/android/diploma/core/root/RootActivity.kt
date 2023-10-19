@@ -32,11 +32,12 @@ class RootActivity : AppCompatActivity() {
             R.id.vacancyFragment
         )
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.bottomNavigationView.visibility = if (destination.id in hideBottomNavForDestinations) {
-                View.GONE
-            } else {
-                View.VISIBLE
-            }
+            binding.bottomNavigationView.visibility =
+                if (destination.id in hideBottomNavForDestinations) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
         }
 
         // Пример использования access token для HeadHunter API

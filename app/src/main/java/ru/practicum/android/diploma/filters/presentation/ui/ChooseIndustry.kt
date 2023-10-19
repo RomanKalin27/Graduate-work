@@ -17,8 +17,8 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.common.utils.Constants.SEARCH_DEBOUNCE_DELAY_MILLIS
-import ru.practicum.android.diploma.databinding.FragmentIndustryBinding
 import ru.practicum.android.diploma.common.utils.debounce
+import ru.practicum.android.diploma.databinding.FragmentIndustryBinding
 import ru.practicum.android.diploma.filters.domain.models.ChooseIndustryResult
 import ru.practicum.android.diploma.filters.domain.models.Industry
 import ru.practicum.android.diploma.filters.presentation.rv.IndustryAdapter
@@ -29,7 +29,7 @@ import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewM
 class ChooseIndustry : Fragment() {
     private lateinit var binding: FragmentIndustryBinding
     private lateinit var industryAdapter: IndustryAdapter
-    private var debounce : ((String) -> Unit)? = null
+    private var debounce: ((String) -> Unit)? = null
     private var industryList = ArrayList<Industry>()
     private var industryListFilter = ArrayList<Industry>()
     private lateinit var textWatcher: TextWatcher
@@ -37,7 +37,7 @@ class ChooseIndustry : Fragment() {
     private lateinit var selectedIndustry: Industry
     private lateinit var industryRecyclerView: RecyclerView
     private val viewModel by viewModel<FiltersViewModel>()
-    private var hasInternet : Boolean = false
+    private var hasInternet: Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -82,7 +82,7 @@ class ChooseIndustry : Fragment() {
         return industryRecyclerView.adapter as IndustryAdapter
     }
 
-    private fun debounce(){
+    private fun debounce() {
         debounce = debounce<String>(
             SEARCH_DEBOUNCE_DELAY_MILLIS,
             viewLifecycleOwner.lifecycleScope,
@@ -98,7 +98,7 @@ class ChooseIndustry : Fragment() {
                     industryList.clear()
                     industryListFilter.clear()
                     savedIndustryList.forEach {
-                        if (it.name!!.lowercase() == text.lowercase()) {
+                        if (it.name.lowercase() == text.lowercase()) {
                             industryListFilter.add(it)
                         }
                     }
@@ -112,7 +112,8 @@ class ChooseIndustry : Fragment() {
                 }
             })
     }
-    private fun initListeners(){
+
+    private fun initListeners() {
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -126,20 +127,24 @@ class ChooseIndustry : Fragment() {
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
+
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (hasInternet) {
                     debounceSearch(p0.toString().trim())
                 }
             }
+
             override fun afterTextChanged(p0: Editable?) {
             }
         }
         binding.industryEditText.addTextChangedListener(textWatcher)
     }
-    private fun btSelectClicked(industry:Industry){
-        setFragmentResult(KEY_INDUSTRY,
+
+    private fun btSelectClicked(industry: Industry) {
+        setFragmentResult(
+            KEY_INDUSTRY,
             bundleOf(INDUSTRY to Json.encodeToString(industry))
-            )
+        )
         findNavController().navigateUp()
     }
 
@@ -151,27 +156,30 @@ class ChooseIndustry : Fragment() {
         viewModel.getIndustry()
     }
 
-    private fun hideErrorNothing(){
+    private fun hideErrorNothing() {
         binding.selectBtn.visibility = View.VISIBLE
         binding.nothingSearchImage.visibility = View.GONE
         binding.nothingSearchText.visibility = View.GONE
     }
-    private fun showErrorNothing(){
+
+    private fun showErrorNothing() {
         binding.selectBtn.visibility = View.GONE
         binding.nothingSearchImage.visibility = View.VISIBLE
         binding.nothingSearchText.visibility = View.VISIBLE
     }
 
-    private fun showInternetError(){
+    private fun showInternetError() {
         hasInternet = false
         binding.noInternetImage.visibility = View.VISIBLE
         binding.noInternetText.visibility = View.VISIBLE
     }
-    private fun hideInternetError(){
+
+    private fun hideInternetError() {
         hasInternet = true
         binding.noInternetImage.visibility = View.GONE
         binding.noInternetText.visibility = View.GONE
     }
+
     private fun showIndustry(industry: List<Industry>) {
         industryList.clear()
         industryList.addAll(industry)

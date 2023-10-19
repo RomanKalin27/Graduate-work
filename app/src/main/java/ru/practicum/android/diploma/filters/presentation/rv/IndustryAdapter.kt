@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemRegionBinding
 import ru.practicum.android.diploma.filters.domain.models.Industry
 
-class IndustryAdapter(private val items: List<Industry>,
-                      private val onIndustrySelected: (Industry) -> Unit) :
+class IndustryAdapter(
+    private val items: List<Industry>,
+    private val onIndustrySelected: (Industry) -> Unit,
+) :
     RecyclerView.Adapter<IndustryAdapter.ViewHolderIndustry>() {
     var clickedId: String? = null
     var itemClickListener: ((Int, Industry) -> Unit)? = null

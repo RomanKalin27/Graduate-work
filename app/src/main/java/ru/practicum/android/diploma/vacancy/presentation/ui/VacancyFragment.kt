@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
-import androidx.navigation.fragment.findNavController
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -29,7 +29,10 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private val currentVacancy by lazy { retrieveVacancy() }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentVacancyBinding {
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+    ): FragmentVacancyBinding {
         return FragmentVacancyBinding.inflate(inflater, container, false)
     }
 
@@ -62,16 +65,18 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
             requireContext().startActivity(call)
         }
         binding.similarVacanciesButton.setOnClickListener {
-            findNavController().navigate(R.id.action_vacancyFragment_to_similarVacancyFragment,
-                SimilarVacancyFragment.createArgs(retrieveVacancy() ?: ""))
+            findNavController().navigate(
+                R.id.action_vacancyFragment_to_similarVacancyFragment,
+                SimilarVacancyFragment.createArgs(retrieveVacancy() ?: "")
+            )
         }
     }
 
     private fun setupDefaultUI(vacancy: VacancyDetailnfo) {
         with(binding) {
             showDataContent(vacancy)
-            }
         }
+    }
 
     private fun observeViewModel() {
         viewModel.detailVacancyResult.observe(viewLifecycleOwner) { state ->
@@ -99,40 +104,44 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
                 DetailsVacancyScreenState.NO_INTERNET -> noInternetPlaceholder.isVisible = true
                 DetailsVacancyScreenState.LOADING -> progressBar.isVisible = true
 
-               // CONTENT обрабатывается в комплекте с FAVORITE и UNFAVORITE
-               // DetailsVacancyScreenState.CONTENT -> group.isVisible = true
+                // CONTENT обрабатывается в комплекте с FAVORITE и UNFAVORITE
+                // DetailsVacancyScreenState.CONTENT -> group.isVisible = true
 
                 DetailsVacancyScreenState.ERROR -> placeholderServerError.isVisible = true
-                DetailsVacancyScreenState.FAVORITE ->{
+                DetailsVacancyScreenState.FAVORITE -> {
                     group.isVisible = true
-                icFavorites.setImageResource(R.drawable.ic_favorites_on)}
-                DetailsVacancyScreenState.UNFAVORITE ->  {
+                    icFavorites.setImageResource(R.drawable.ic_favorites_on)
+                }
+
+                DetailsVacancyScreenState.UNFAVORITE -> {
                     group.isVisible = true
-                    binding.icFavorites.setImageResource(R.drawable.ic_favorites_off)}
+                    binding.icFavorites.setImageResource(R.drawable.ic_favorites_off)
+                }
             }
         }
     }
 
-    fun retrieveVacancy(): String? {
-            var idVacancy = requireArguments().getString(KEY_VACANCY) ?: ""
-            setFragmentResultListener(SIMILAR_VACANCY_KEY){
-                _, bundle ->
-                idVacancy = bundleOf().getString(SIMILAR_VACANCY) ?: ""
-            }
+    fun retrieveVacancy(): String {
+        var idVacancy = requireArguments().getString(KEY_VACANCY) ?: ""
+        setFragmentResultListener(SIMILAR_VACANCY_KEY) { _, bundle ->
+            idVacancy = bundleOf().getString(SIMILAR_VACANCY) ?: ""
+        }
         return idVacancy
     }
 
     fun showDataContent(vacancy: VacancyDetailnfo) {
         with(binding) {
             scrollView.visibility = View.VISIBLE
-          //  placeHolder.visibility = View.GONE
+            //  placeHolder.visibility = View.GONE
             hideContactsIfEmpty(vacancy)
             showKeySkills(vacancy)
-            val tvSchedule = StringBuilder().append(vacancy.employment).append(". ").append(vacancy.schedule).toString()
+            val tvSchedule =
+                StringBuilder().append(vacancy.employment).append(". ").append(vacancy.schedule)
+                    .toString()
             val formattedDescription =
                 HtmlCompat.fromHtml(vacancy.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
-        //    if (vacancy.logo.isNotEmpty()) imageView.imageTintList = null
+            //    if (vacancy.logo.isNotEmpty()) imageView.imageTintList = null
 
             vacancyContactPhoneValue.text = vacancy.contactPhones.joinToString("\n")
             vacancyPhoneCommentValue.text = vacancy.contactComment

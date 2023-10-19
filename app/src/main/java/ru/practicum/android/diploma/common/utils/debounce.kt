@@ -9,7 +9,7 @@ fun <T> debounce(
     delayMillis: Long,
     coroutineScope: CoroutineScope,
     cancelPrevious: Boolean, // переименован useLastParam
-    action: (T) -> Unit
+    action: (T) -> Unit,
 ): (T) -> Unit {
     var debounceJob: Job? = null
     val lock = Any() // объект для синхронизации
