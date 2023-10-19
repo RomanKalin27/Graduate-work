@@ -45,6 +45,9 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.showDetailVacancy(retrieveVacancy())
         observeViewModel()
+        binding.backBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
         binding.icSharing.setOnClickListener {
             val share = Intent(Intent.ACTION_SEND)
             share.putExtra(Intent.EXTRA_TEXT, "ССЫЛКА")
