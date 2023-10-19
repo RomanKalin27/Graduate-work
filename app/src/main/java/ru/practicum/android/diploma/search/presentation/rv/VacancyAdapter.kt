@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.databinding.ItemSearchBinding
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 
 class VacancyAdapter(private val items: List<Vacancy>) :
@@ -17,10 +18,12 @@ class VacancyAdapter(private val items: List<Vacancy>) :
     var itemClickListener: ((Int, Vacancy) -> Unit)? = null
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val image: ImageView = itemView.findViewById(R.id.image)
-        val title: TextView = itemView.findViewById(R.id.title)
-        val company: TextView = itemView.findViewById(R.id.company)
-        val value: TextView = itemView.findViewById(R.id.value)
+        private val binding = ItemSearchBinding.bind(itemView)
+
+        val image: ImageView by lazy { binding.image }
+        val title: TextView by lazy { binding.title }
+        val company: TextView by lazy { binding.company }
+        val value: TextView by lazy { binding.value }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -42,7 +45,7 @@ class VacancyAdapter(private val items: List<Vacancy>) :
         Glide.with(itemView)
             .load(item.logoUrl)
             .placeholder(R.drawable.vacancy_placeholder)
-            .transform(RoundedCorners(12))
+            .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.corner_radius_12)))
             .into(image)
         title.text = item.title
         company.text = item.company
