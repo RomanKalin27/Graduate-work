@@ -46,12 +46,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         binding.backBtn.setOnClickListener {
             findNavController().popBackStack()
         }
-//        binding.icSharing.setOnClickListener {
-//            val share = Intent(Intent.ACTION_SEND)
-//            share.putExtra(Intent.EXTRA_TEXT, "ССЫЛКА")
-//            share.type = "text/plane"
-//            requireContext().startActivity(share)
-//        }
+
         binding.vacancyContactEmailValue.setOnClickListener {
             val emailAddress = binding.vacancyContactEmailValue.text.toString()
             val emailIntent = Intent(
