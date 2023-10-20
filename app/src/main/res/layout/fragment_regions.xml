@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/background">
 
     <ImageButton
@@ -19,18 +19,19 @@
 
     <TextView
         android:id="@+id/text_select_region"
+        style="@style/Text_Medium_22_500"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_20"
         android:layout_marginTop="15dp"
         android:text="@string/select_region"
         android:textColor="?attr/text_color"
-        style="@style/Text_Medium_22_500"
         app:layout_constraintStart_toEndOf="@+id/btn_back"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/region_edit_text"
+        style="@style/Text_Regular_16_400"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_56"
         android:layout_marginHorizontal="@dimen/margin_16"
@@ -45,7 +46,6 @@
         android:textColor="@color/black"
         android:textColorHint="?attr/text_hint_search"
         android:textCursorDrawable="@drawable/cursor_search"
-        style="@style/Text_Regular_16_400"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -61,54 +61,57 @@
         app:layout_constraintTop_toTopOf="@+id/region_edit_text" />
 
     <ImageView
-        android:id = "@+id/nothing_search_image"
+        android:id="@+id/nothing_search_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src = "@drawable/placeholder_cat"
+        android:layout_marginBottom="@dimen/margin_16"
+        android:src="@drawable/placeholder_cat"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/text_select_region"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/nothing_search_text"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/nothing_search_text"
+        style="@style/Text_Medium_22_500"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_395"
         android:text="@string/error_wrong_region"
         android:textColor="?attr/text_color"
-        style="@style/Text_Medium_22_500"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/region_edit_text"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/nothing_search_image" />
 
     <ImageView
-        android:id = "@+id/no_internet_image"
+        android:id="@+id/no_internet_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src = "@drawable/placeholder_carpet"
-        android:layout_marginTop="@dimen/margin_282"
+        android:layout_marginBottom="@dimen/margin_16"
+        android:src="@drawable/placeholder_carpet"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/no_internet_text"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/no_internet_text"
+        style="@style/Text_Medium_22_500"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_395"
         android:gravity="center"
         android:text="@string/error_get_list"
         android:textColor="?attr/text_color"
         android:visibility="gone"
-        style="@style/Text_Medium_22_500"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/region_edit_text"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/no_internet_image" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/region_recycler"
@@ -116,10 +119,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_144"
         android:visibility="gone"
-        tools:listitem="@layout/item_country"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        tools:listitem="@layout/item_country" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
