@@ -53,8 +53,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     override fun onResume() {
         super.onResume()
         setupDefaultUI()
-        setFragmentResultListener(SET_FILTERS_KEY)
-        { _, bundle ->
+        setFragmentResultListener(SET_FILTERS_KEY) { _, bundle ->
             if (!binding.searchEditText.text.isNullOrEmpty()) {
                 viewModel.searchVacancies(binding.searchEditText.text.toString())
             }
@@ -73,9 +72,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             onVacancyClickDebounce(vacancy)
         }
         onVacancyClickDebounce = debounce(
-            CLICK_DEBOUNCE_DELAY_MILLIS,
-            viewLifecycleOwner.lifecycleScope,
-            false
+            CLICK_DEBOUNCE_DELAY_MILLIS, viewLifecycleOwner.lifecycleScope, false
         ) { item ->
             navigateToVacancyDetail(item.id)
         }
@@ -124,16 +121,21 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             placeholderNoVacancies.isVisible = false
             noInternetPlaceholder.isVisible = false
             recyclerView.isVisible = false
+            chip.isVisible = false
             vacancyList.clear()
 
             // Обработка конкретного состояния
             when (searchUIState) {
                 SearchUIState.CONNECTION_ERROR -> placeholderServerError.isVisible = true
-                SearchUIState.EMPTY_SEARCH -> placeholderNoVacancies.isVisible = true
+                SearchUIState.EMPTY_SEARCH -> {
+                    placeholderNoVacancies.isVisible = true
+                    chip.visibility = View.VISIBLE
+                    val message = getString(R.string.no_vacansy)
+                    chip.text = message
+                }
                 SearchUIState.NO_INTERNET -> noInternetPlaceholder.isVisible = true
                 SearchUIState.LOADING -> progressBar.isVisible = true
             }
-
             iconSearch.setImageResource(R.drawable.ic_search)
             vacancyAdapter.notifyDataSetChanged()
         }
@@ -149,6 +151,19 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             noInternetPlaceholder.isVisible = false
             progressBar.isVisible = false
 
+            val isEmptyResult = items.isEmpty()
+            if (isEmptyResult) {
+                chip.visibility = View.VISIBLE
+                val message = getString(R.string.no_vacansy)
+                chip.text = message
+            } else {
+                chip.visibility = View.VISIBLE
+                val vacancyCount = items.size
+                val message = resources.getQuantityString(
+                    R.plurals.search_result_count, vacancyCount, vacancyCount
+                )
+                chip.text = message
+            }
         }
         vacancyList.clear()
         vacancyList.addAll(items)
@@ -171,6 +186,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             placeholderServerError.isVisible = false
             placeholderNoVacancies.isVisible = false
             noInternetPlaceholder.isVisible = false
+            chip.isVisible = false
             iconSearch.setImageResource(R.drawable.ic_search)
         }
         vacancyList.clear()
@@ -209,8 +225,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun navigateToVacancyDetail(item: String) {
         findNavController().navigate(
-            R.id.action_searchFragment_to_vacancyFragment,
-            VacancyFragment.createArgs(item)
+            R.id.action_searchFragment_to_vacancyFragment, VacancyFragment.createArgs(item)
         )
     }
 }

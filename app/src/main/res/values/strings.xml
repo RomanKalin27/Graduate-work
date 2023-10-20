@@ -85,7 +85,7 @@
     <string name="no">Нет</string>
     <string name="delete_vacancy">Удалить вакансию из избранного?</string>
 
-    <plurals name="search_result_number">
+    <plurals name="search_result_count">
         <item quantity="zero">Найдено %d вакансий</item>
         <item quantity="one">Найдена %d вакансия</item>
         <item quantity="two">Найдено %d вакансии</item>
