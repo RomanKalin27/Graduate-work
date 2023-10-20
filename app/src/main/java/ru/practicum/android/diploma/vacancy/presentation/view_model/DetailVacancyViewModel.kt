@@ -16,11 +16,16 @@ class DetailVacancyViewModel(private val detailVacancyInteractor: DetailVacancyI
     private val _detailVacancyResult: MutableLiveData<DetailVacancyResult> = MutableLiveData()
     val detailVacancyResult: LiveData<DetailVacancyResult> = _detailVacancyResult
     private var isFavourite = false
+    private val _shareUrl = MutableLiveData<String?>()
+    val shareUrl: LiveData<String?> get() = _shareUrl
 
     fun showDetailVacancy(id: String) {
         viewModelScope.launch {
             detailVacancyInteractor.getDetailVacancyById(id).collect { result ->
                 _detailVacancyResult.value = result
+                if (result is DetailVacancyResult.Success) {
+                    _shareUrl.value = result.response.alternateUrl
+                }
             }
         }
     }
