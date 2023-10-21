@@ -25,6 +25,7 @@ import ru.practicum.android.diploma.vacancy.presentation.view_model.DetailVacanc
 
 class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
     private val viewModel by viewModel<DetailVacancyViewModel>()
+    private val vacancy: VacancyDetailnfo? = null
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -81,6 +82,8 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private fun setupDefaultUI(vacancy: VacancyDetailnfo) {
         showDataContent(vacancy)
+        favoriteClickInit(vacancy)
+        viewModel.checkFavorite(vacancy)
     }
 
     private fun observeViewModel() {
@@ -199,6 +202,11 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
             } else {
                 vacancyKeySkillsValue.text = vacancy.keySkills
             }
+        }
+    }
+    private fun favoriteClickInit(vacancy: VacancyDetailnfo){
+        binding.icFavorites.setOnClickListener{
+                viewModel.clickToFavoriteButton(vacancy)
         }
     }
 

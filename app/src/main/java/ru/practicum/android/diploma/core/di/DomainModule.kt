@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.core.di
 
 import org.koin.dsl.module
+import ru.practicum.android.diploma.favorites.domain.api.FavoriteInteractor
+import ru.practicum.android.diploma.favorites.domain.impl.FavoriteInteractorImpl
 import ru.practicum.android.diploma.filters.domain.api.ChooseCountryInteractor
 import ru.practicum.android.diploma.filters.domain.api.ChooseIndustryInteractor
 import ru.practicum.android.diploma.filters.domain.api.ChooseRegionInteractor
@@ -48,6 +50,12 @@ val domainModule = module {
     single {
         SimilarVacancyInteractor(
             similarVacancyRepository = get()
+        )
+    }
+
+    single<FavoriteInteractor> {
+        FavoriteInteractorImpl(
+            repository = get()
         )
     }
 }
