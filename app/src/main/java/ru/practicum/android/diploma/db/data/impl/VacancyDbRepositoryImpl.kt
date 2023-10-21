@@ -25,10 +25,6 @@ class VacancyDbRepositoryImpl(
         )
     }
 
-//    override suspend fun showIfInFavouriteById(id: String): Flow<Boolean> {
-//        return appDataBase.vacancyDao().showIfInFavouriteById(id).map { it }
-//    }
-
     override suspend fun isVacancyInFavs(id: String): Boolean {
         return appDataBase.vacancyDao().isVacancyInFavs(id)
     }

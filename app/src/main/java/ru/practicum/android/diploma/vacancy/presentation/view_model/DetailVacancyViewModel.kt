@@ -30,19 +30,31 @@ class DetailVacancyViewModel(private val detailVacancyInteractor: DetailVacancyI
         }
     }
 
-    private fun clickToFavoriteButton(vacancy: VacancyDetailnfo) {
+    fun clickToFavoriteButton(vacancy: VacancyDetailnfo) {
         viewModelScope.launch(Dispatchers.IO) {
             isFavourite = detailVacancyInteractor.checkIfVacancyInFavorite(vacancy.id)
             if (isFavourite) {
                 detailVacancyInteractor.removeVacancyFromFavorites(vacancy.id).collect {
-                    _detailVacancyResult.value = DetailVacancyResult.NoFavorite
+                    _detailVacancyResult.postValue(DetailVacancyResult.NoFavorite)
                 }
             } else {
                 detailVacancyInteractor.addVacancyToFavorites(vacancy).collect {
-                    _detailVacancyResult.value = DetailVacancyResult.AddedToFavorite
+                    _detailVacancyResult.postValue(DetailVacancyResult.AddedToFavorite)
+
                 }
             }
 
+        }
+    }
+     fun checkFavorite(vacancy: VacancyDetailnfo){
+        viewModelScope.launch(Dispatchers.IO) {
+            isFavourite = detailVacancyInteractor.checkIfVacancyInFavorite(vacancy.id)
+            if (isFavourite) {
+                _detailVacancyResult.postValue(DetailVacancyResult.AddedToFavorite)
+            }
+            else {
+                _detailVacancyResult.postValue(DetailVacancyResult.NoFavorite)
+            }
         }
     }
 

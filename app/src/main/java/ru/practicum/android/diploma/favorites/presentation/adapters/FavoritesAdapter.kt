@@ -4,7 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemSearchBinding
-import ru.practicum.android.diploma.db.domain.models.Vacancy
+import ru.practicum.android.diploma.search.domain.models.Vacancy
+
 
 class FavoritesAdapter(private val vacancyList: List<Vacancy>) :
     RecyclerView.Adapter<FavoritesViewHolder>() {
