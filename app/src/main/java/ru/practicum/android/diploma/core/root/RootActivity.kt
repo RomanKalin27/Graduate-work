@@ -29,7 +29,8 @@ class RootActivity : AppCompatActivity() {
             R.id.choosePlaceWorkFragment,
             R.id.chooseRegionFragment,
             R.id.chooseIndustry,
-            R.id.vacancyFragment
+            R.id.vacancyFragment,
+            R.id.similarVacancyFragment
         )
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.bottomNavigationView.visibility =
