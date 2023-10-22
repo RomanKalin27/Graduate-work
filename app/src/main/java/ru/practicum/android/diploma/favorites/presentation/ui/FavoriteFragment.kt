@@ -18,6 +18,7 @@ import ru.practicum.android.diploma.favorites.presentation.adapters.FavoritesAda
 import ru.practicum.android.diploma.favorites.presentation.models.FavoritesScreenState
 import ru.practicum.android.diploma.favorites.presentation.view_model.FavoriteViewModel
 import ru.practicum.android.diploma.search.domain.models.Vacancy
+import ru.practicum.android.diploma.vacancy.presentation.ui.VacancyFragment
 
 class FavoriteFragment : Fragment() {
     private lateinit var binding: FragmentFavoriteBinding
@@ -91,7 +92,7 @@ class FavoriteFragment : Fragment() {
         onVacancyClickDebounce = debounce<Vacancy>(CLICK_DEBOUNCE_DELAY_MILLIS,
             coroutineScope = viewLifecycleOwner.lifecycleScope,
             cancelPrevious = false)  { vacancy ->
-            // Навигация на экран Вакансии
+            navigateToVacancyDetail(vacancy.id)
         }
 
         onLongVacancyClickDebounce = debounce<Vacancy>(CLICK_DEBOUNCE_DELAY_MILLIS,
@@ -118,6 +119,12 @@ class FavoriteFragment : Fragment() {
             adapter = favoriteAdapter
             layoutManager = LinearLayoutManager(context)
         }
+    }
+
+    private fun navigateToVacancyDetail(item: String) {
+        findNavController().navigate(
+            R.id.action_favoriteFragment_to_vacancyFragment, VacancyFragment.createArgs(item)
+        )
     }
     private fun goBack() {
         findNavController().navigateUp()

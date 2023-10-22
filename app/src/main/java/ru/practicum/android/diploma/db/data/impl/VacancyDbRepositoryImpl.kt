@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.db.data.impl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import ru.practicum.android.diploma.db.domain.AppDB
 import ru.practicum.android.diploma.db.domain.api.VacancyDbRepository
 import ru.practicum.android.diploma.search.data.network.ModelConverter
@@ -31,7 +32,7 @@ class VacancyDbRepositoryImpl(
 
     override suspend fun getFavoritesById(id: String): Flow<VacancyDetailnfo> {
         return appDataBase.vacancyDao().getFavoritesById(id)
-            .map { vacancyDbConverter.entityToModel(it) }
+            .mapNotNull { vacancyDbConverter.entityToModel(it) }
     }
 
     override suspend fun getFavsVacancies(): Flow<List<Vacancy>> {

@@ -22,4 +22,8 @@ class DetailVacancyInteractor(private val detailVacancyRepository: DetailVacancy
         return detailVacancyRepository.removeVacancyFromFavorites(id)
     }
 
+    suspend fun getDetailVacancyByIdFromBD(id: String): Flow<VacancyDetailnfo>{
+        return detailVacancyRepository.getDetailVacancyByIdFromBD(id)
+    }
+
 }

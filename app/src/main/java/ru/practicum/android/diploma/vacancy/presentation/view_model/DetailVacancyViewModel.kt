@@ -21,10 +21,17 @@ class DetailVacancyViewModel(private val detailVacancyInteractor: DetailVacancyI
 
     fun showDetailVacancy(id: String) {
         viewModelScope.launch {
-            detailVacancyInteractor.getDetailVacancyById(id).collect { result ->
-                _detailVacancyResult.value = result
-                if (result is DetailVacancyResult.Success) {
-                    _shareUrl.value = result.response.alternateUrl
+            if (detailVacancyInteractor.checkIfVacancyInFavorite(id)) {
+                detailVacancyInteractor.getDetailVacancyByIdFromBD(id).collect { result ->
+                    _detailVacancyResult.value = DetailVacancyResult.Success(result)
+                    _shareUrl.value = result.alternateUrl
+                }
+            } else {
+                detailVacancyInteractor.getDetailVacancyById(id).collect { result ->
+                    _detailVacancyResult.value = result
+                    if (result is DetailVacancyResult.Success) {
+                        _shareUrl.value = result.response.alternateUrl
+                    }
                 }
             }
         }
