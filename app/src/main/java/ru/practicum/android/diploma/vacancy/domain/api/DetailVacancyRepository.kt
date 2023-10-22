@@ -9,6 +9,7 @@ interface DetailVacancyRepository {
     suspend fun checkIfVacancyInFavorites(id: String): Boolean
     suspend fun getDetailVacancyById(id: String): Flow<DetailVacancyResult>
     suspend fun removeVacancyFromFavorites(id: String): Flow<Int>
+    suspend fun getDetailVacancyByIdFromBD(id: String): Flow<VacancyDetailnfo>
 
 
 }

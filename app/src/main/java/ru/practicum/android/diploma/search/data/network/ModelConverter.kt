@@ -130,29 +130,32 @@ class ModelConverter(private val context: Context) {
         }
     }
 
-    fun entityToModel(vacancyEntity: VacancyFullInfoEntity): VacancyDetailnfo {
-        return with(vacancyEntity) {
-            VacancyDetailnfo(
-                id = id,
-                experience = experience,
-                employment = employment,
-                schedule = schedule,
-                description = description,
-                keySkills = keySkills,
-                area = area,
-                salary = salary,
-                date = date,
-                company = company,
-                logo = logo,
-                title = title,
-                contactEmail = contactEmail,
-                contactName = contactName,
-                contactComment = contactComment,
-                contactPhones = Json.decodeFromString(contactPhones),
-                alternateUrl = alternativeUrl,
-                isInFavorite = true
-            )
+    fun entityToModel(vacancyEntity: VacancyFullInfoEntity?): VacancyDetailnfo? {
+        if (vacancyEntity != null) {
+            return with(vacancyEntity) {
+                VacancyDetailnfo(
+                    id = id,
+                    experience = experience,
+                    employment = employment,
+                    schedule = schedule,
+                    description = description,
+                    keySkills = keySkills,
+                    area = area,
+                    salary = salary,
+                    date = date,
+                    company = company,
+                    logo = logo,
+                    title = title,
+                    contactEmail = contactEmail,
+                    contactName = contactName,
+                    contactComment = contactComment,
+                    contactPhones = Json.decodeFromString(contactPhones),
+                    alternateUrl = alternativeUrl,
+                    isInFavorite = true
+                )
+            }
         }
+        else {return null}
     }
 
     private fun keySkillsToString(keySkills: List<KeySkillDto>?): String {
