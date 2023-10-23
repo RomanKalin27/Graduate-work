@@ -11,16 +11,16 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
 
 class RootActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityRootBinding
+    private var binding: ActivityRootBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRootBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.rootFragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
-        binding.bottomNavigationView.setupWithNavController(navController)
+        binding?.bottomNavigationView?.setupWithNavController(navController)
 
         //Скрытие bottomNav
         val hideBottomNavForDestinations = setOf(
@@ -33,7 +33,7 @@ class RootActivity : AppCompatActivity() {
             R.id.similarVacancyFragment
         )
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.bottomNavigationView.visibility =
+            binding?.bottomNavigationView?.visibility =
                 if (destination.id in hideBottomNavForDestinations) {
                     View.GONE
                 } else {
@@ -46,11 +46,14 @@ class RootActivity : AppCompatActivity() {
     }
 
     fun animateBottomNavigationView() {
-        binding.bottomNavigationView.visibility = View.GONE
+        binding?.bottomNavigationView?.visibility = View.GONE
     }
 
     private fun networkRequestExample(accessToken: String) {
         // ...
     }
-
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
 }
