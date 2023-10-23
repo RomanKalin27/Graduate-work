@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.BindingFragment
 import ru.practicum.android.diploma.common.utils.Constants
 import ru.practicum.android.diploma.common.utils.debounce
@@ -105,12 +106,12 @@ class SimilarVacancyFragment : BindingFragment<FragmentSimilarVacanciesBinding>(
         vacancyAdapter.notifyDataSetChanged()
     }
 
-    fun navigateToVacancyDetail(item: String) {
+    private fun navigateToVacancyDetail(item: String) {
         setFragmentResult(
             SIMILAR_VACANCY_KEY,
             bundleOf(SIMILAR_VACANCY to item)
         )
-        findNavController().navigateUp()
+        findNavController().navigate(R.id.action_similarVacancyFragment_to_vacancyFragment, VacancyFragment.createArgs(item))
     }
 
     companion object {
