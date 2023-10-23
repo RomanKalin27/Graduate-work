@@ -87,6 +87,9 @@ dependencies {
     // ksp "androidx.room:room-compiler:$room_version"
     implementation("androidx.room:room-ktx:2.5.2")
 
+    //Pagging
+    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+
     //Tests
     testImplementation("junit:junit:4.13.2")
     testImplementation("io.insert-koin:koin-test:3.4.3")

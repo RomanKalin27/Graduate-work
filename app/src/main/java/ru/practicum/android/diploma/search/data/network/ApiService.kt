@@ -23,49 +23,25 @@ interface ApiService {
         @QueryMap queryParams: Map<String, String>,
     ): VacanciesResponse
 
-    @Headers(
-        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
-        "HH-User-Agent: HH_vacancy_search (g-926@ya.ru)"
-    )
     @GET("/vacancies/{vacancy_id}")
     suspend fun getVacancyById(
         @Path("vacancy_id") id: String,
     ): VacancyDetailModelDTO
 
-    @Headers(
-        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
-        "HH-User-Agent: HH_vacancy_search (g-926@ya.ru)"
-    )
     @GET("/vacancies/{vacancy_id}/similar_vacancies")
     suspend fun getSimilarVacanciesById(
         @Path("vacancy_id") id: String,
     ): VacanciesResponse
 
-    @Headers(
-        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
-        "HH-User-Agent: HH_vacancy_search (g-926@ya.ru)"
-    )
     @GET("/areas")
     suspend fun getAreas(): List<AreasDTO>
 
-    @Headers(
-        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
-        "HH-User-Agent: HH_vacancy_search (g-926@ya.ru)"
-    )
     @GET("/industries")
     suspend fun getIndustries(): List<IndustryDTO>
 
-    @Headers(
-        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
-        "HH-User-Agent: HH_vacancy_search (g-926@ya.ru)"
-    )
     @GET("/areas/countries")
     suspend fun getCountry(): List<CountryDTO>
 
-    @Headers(
-        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
-        "HH-User-Agent: HH_vacancy_search (g-926@ya.ru)"
-    )
     @GET("/professional_roles")
     suspend fun getSpecializations(): CategoriesDTO
 }
