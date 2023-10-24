@@ -34,7 +34,7 @@ class ChooseIndustry : Fragment() {
     private var industryListFilter = ArrayList<Industry>()
     private lateinit var textWatcher: TextWatcher
     private var savedIndustryList = ArrayList<Industry>()
-    private lateinit var selectedIndustry: Industry
+    private var selectedIndustry: Industry? = null
     private lateinit var industryRecyclerView: RecyclerView
     private val viewModel by viewModel<FiltersViewModel>()
     private var hasInternet: Boolean = false
@@ -78,7 +78,8 @@ class ChooseIndustry : Fragment() {
 
         industryAdapter = IndustryAdapter(
             industryList,
-            { industry -> selectedIndustry = industry },
+            { industry -> selectedIndustry = industry
+            },
             industryText)
 
         industryRecyclerView.adapter = industryAdapter
@@ -117,15 +118,20 @@ class ChooseIndustry : Fragment() {
     }
 
     private fun initListeners() {
+        binding.selectBtn.visibility = View.GONE
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
         industryAdapter.itemClickListener = { position, vacancy ->
             industryAdapter.notifyDataSetChanged()
-            println(vacancy.industries)
+            binding.selectBtn.visibility = View.VISIBLE
         }
         binding.selectBtn.setOnClickListener {
-            btSelectClicked(selectedIndustry)
+            if (selectedIndustry == null)
+            {
+                return@setOnClickListener
+            }
+            btSelectClicked(selectedIndustry!!)
         }
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
