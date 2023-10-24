@@ -38,12 +38,11 @@ class IndustryAdapter(
 
         fun bind(industry: Industry) {
             binding.region.text = industry.name
-            binding.radioButton.isChecked =
-                (isIndustryTextNotEmptyAndNameMatches(industry) || industry.name == clickedName)
+            binding.radioButton.isChecked = isIndustrySelected(industry)
+
             itemView.setOnClickListener {
                 if (industry.name != clickedName) {
                     clickedName = industry.name
-                    industryText = industry.name
                     notifyDataSetChanged()
                     onIndustrySelected(industry)
                     itemClickListener?.invoke(adapterPosition, industry)
@@ -51,8 +50,8 @@ class IndustryAdapter(
             }
         }
 
-        private fun isIndustryTextNotEmptyAndNameMatches(industry: Industry): Boolean {
-            return industryText?.isNotEmpty() == true && industry.name == industryText
+        private fun isIndustrySelected(industry: Industry): Boolean {
+            return (clickedName == null && industry.name == industryText) || clickedName == industry.name
         }
     }
 }
