@@ -5,7 +5,13 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.db.data.entity.VacancyFullInfoEntity
+import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
+import ru.practicum.android.diploma.filters.data.dto.models.RegionsDTO
+import ru.practicum.android.diploma.filters.domain.models.AreaDomain
+import ru.practicum.android.diploma.filters.domain.models.Areas
+import ru.practicum.android.diploma.filters.domain.models.Regions
 import ru.practicum.android.diploma.search.data.dto.VacanciesResponse
+import ru.practicum.android.diploma.search.data.dto.response_models.Area
 import ru.practicum.android.diploma.search.data.dto.response_models.Salary
 import ru.practicum.android.diploma.search.domain.models.ConvertedResponse
 import ru.practicum.android.diploma.search.domain.models.Vacancy
@@ -177,5 +183,27 @@ class ModelConverter(private val context: Context) {
 
         return phoneList
     }
+
+    fun convertAreasDTOListToAreasList(areasDTOList: List<AreasDTO>): List<Areas> {
+        return areasDTOList.map { convertAreasDTOtoAreas(it) }
+    }
+
+    fun convertAreasDTOtoAreas(areasDTO: AreasDTO): Areas {
+        val regions = areasDTO.areas.map { convertRegionsDTOtoRegions(it) }
+        return Areas(areasDTO.id, areasDTO.name, regions)
+    }
+
+    fun convertRegionsDTOtoRegions(regionsDTO: RegionsDTO): Regions {
+        val areas = regionsDTO.areas.map { convertAreatoAreaDomain(it) }
+        return Regions(regionsDTO.id, regionsDTO.name, regionsDTO.parentId, areas)
+    }
+
+    fun convertAreatoAreaDomain(area: Area): AreaDomain {
+        return AreaDomain(area.id, area.name, area.parentId)
+    }
+
+
+
+
 
 }

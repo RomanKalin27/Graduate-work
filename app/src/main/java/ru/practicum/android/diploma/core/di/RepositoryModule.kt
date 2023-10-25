@@ -40,7 +40,8 @@ val repositoryModule = module {
     single<ChooseCountryRepository> {
         ChooseCountryRepositoryImpl(
             apiService = get(),
-            networkControl = get()
+            networkControl = get(),
+            converter = get()
         )
     }
 
@@ -48,6 +49,7 @@ val repositoryModule = module {
         ChooseRegionRepositoryImpl(
             apiService = get(),
             networkControl = get(),
+            converter = get()
         )
     }
     single<ChooseIndustryRepository> {

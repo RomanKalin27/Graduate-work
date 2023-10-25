@@ -6,16 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.filters.data.converter.FilterModelConverter
-import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
 import ru.practicum.android.diploma.filters.domain.api.ChooseCountryInteractor
 import ru.practicum.android.diploma.filters.domain.api.ChooseIndustryInteractor
 import ru.practicum.android.diploma.filters.domain.api.ChooseRegionInteractor
 import ru.practicum.android.diploma.filters.domain.api.FilterInteractor
+import ru.practicum.android.diploma.filters.domain.models.AreaDomain
+import ru.practicum.android.diploma.filters.domain.models.Areas
 import ru.practicum.android.diploma.filters.domain.models.ChooseIndustryResult
 import ru.practicum.android.diploma.filters.domain.models.ChooseRegionsResult
 import ru.practicum.android.diploma.filters.domain.models.ChooseResult
 import ru.practicum.android.diploma.filters.domain.models.FiltersState
-import ru.practicum.android.diploma.search.data.dto.response_models.Area
 
 class FiltersViewModel(
     private val filterInteractor: FilterInteractor,
@@ -34,8 +34,8 @@ class FiltersViewModel(
     val chooseRegionResult: LiveData<ChooseRegionsResult> = _chooseRegionResult
     private val _chooseIndustryResult: MutableLiveData<ChooseIndustryResult> = MutableLiveData()
     val chooseIndustryResult: LiveData<ChooseIndustryResult> = _chooseIndustryResult
-    private val _convert: MutableLiveData<List<Area>> = MutableLiveData()
-    val convert: LiveData<List<Area>> = _convert
+    private val _convert: MutableLiveData<List<AreaDomain>> = MutableLiveData()
+    val convert: LiveData<List<AreaDomain>> = _convert
 
     init {
         loadFilters()
@@ -49,8 +49,8 @@ class FiltersViewModel(
         }
     }
 
-    fun convert(areas: List<AreasDTO>, country: AreasDTO) {
-        if (country != AreasDTO.emptyArea) {
+    fun convert(areas: List<Areas>, country: Areas) {
+        if (country != Areas.emptyArea) {
             val result = converter.regionDTOListToAreaList(areas.flatMap { it.areas }
                 .filter { it.parentId == country.id })
             _convert.postValue(result)

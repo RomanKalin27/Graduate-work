@@ -8,10 +8,12 @@ import ru.practicum.android.diploma.filters.domain.api.ChooseRegionRepository
 import ru.practicum.android.diploma.filters.domain.models.ChooseRegionsResult
 import ru.practicum.android.diploma.search.data.network.ApiService
 import ru.practicum.android.diploma.search.data.network.ConnectivityHelper
+import ru.practicum.android.diploma.search.data.network.ModelConverter
 
 class ChooseRegionRepositoryImpl(
     private val apiService: ApiService,
     private val networkControl: ConnectivityHelper,
+    private val converter: ModelConverter
 ) : ChooseRegionRepository {
     override suspend fun getRegions(): Flow<ChooseRegionsResult> =
         flow {
@@ -24,7 +26,8 @@ class ChooseRegionRepositoryImpl(
                 if (response.isEmpty()) {
                     emit(ChooseRegionsResult.EmptyResult)
                 } else {
-                    emit(ChooseRegionsResult.Success(response))
+                    val convertedResponse = converter.convertAreasDTOListToAreasList(response)
+                    emit(ChooseRegionsResult.Success(convertedResponse))
                 }
             } catch (e: Exception) {
                 emit(ChooseRegionsResult.Error(e))
