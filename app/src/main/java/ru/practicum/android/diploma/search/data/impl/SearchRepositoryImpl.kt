@@ -56,23 +56,23 @@ class SearchRepositoryImpl(
         if (!country.isNullOrEmpty()) {
             if (!region.isNullOrEmpty()) {
                 val regionId = Json.decodeFromString<Area>(region).id
-                params += Pair("area", regionId ?: "")
+                params["area"] = regionId ?: ""
             } else {
                 val countryId = Json.decodeFromString<Area>(country).id
-                params += Pair("area", countryId ?: "")
+                params["area"] = countryId ?: ""
             }
         }
         val industry = sharedPreferences.getString(INDUSTRY_KEY, null)
         if (!industry.isNullOrEmpty()) {
             val industryId = Json.decodeFromString<Industry>(industry).id
-            params += Pair("industry", industryId)
+            params["industry"] = industryId
         }
         val salary = sharedPreferences.getString(EXPECTED_SALARY_KEY, null)
         if (!salary.isNullOrEmpty()) {
-            params += Pair("salary", salary)
+            params["salary"] = salary
         }
         val noSalary = sharedPreferences.getBoolean(NO_SALARY_KEY, false)
-        params += Pair("only_with_salary", "$noSalary")
+        params["only_with_salary"] = "$noSalary"
         return params
     }
 

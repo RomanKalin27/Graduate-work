@@ -1,10 +1,13 @@
 package ru.practicum.android.diploma.filters.presentation.ui
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -83,6 +86,7 @@ class FiltersFragment : Fragment() {
             changeIndustryField()
         }
         binding.salaryEditText.addTextChangedListener {
+            binding.salaryEditText.isCursorVisible = true
             if (binding.salaryEditText.text.isEmpty()) {
                 binding.textExpectedSalary.setTextColor(requireContext().getColor(R.color.hint))
                 binding.salaryClearBtn.isVisible = false
@@ -91,6 +95,20 @@ class FiltersFragment : Fragment() {
                 binding.salaryClearBtn.isVisible = true
             }
             showRemoveBtn()
+        }
+        binding.salaryEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if(!binding.salaryEditText.text.isNullOrEmpty()) {
+                    binding.textExpectedSalary.setTextColor(requireContext().getColor(R.color.yp_black))
+                    binding.salaryClearBtn.isVisible = false
+                }
+                binding.salaryEditText.isCursorVisible = false
+                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+                true
+            } else {
+                false
+            }
         }
         binding.salaryClearBtn.setOnClickListener {
             binding.salaryEditText.text.clear()

@@ -70,6 +70,8 @@ class SimilarVacancyFragment : BindingFragment<FragmentSimilarVacanciesBinding>(
                 SearchVacancyResult.EmptyResult -> updateUI(SearchUIState.EMPTY_SEARCH)
                 SearchVacancyResult.NoInternet -> updateUI(SearchUIState.NO_INTERNET)
                 is SearchVacancyResult.Success -> showVacancy(state.response.vacancies)
+                SearchVacancyResult.Loading -> updateUI(SearchUIState.LOADING)
+                else -> {}
             }
         }
     }

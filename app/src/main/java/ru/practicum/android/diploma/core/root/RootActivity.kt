@@ -5,8 +5,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-//import org.koin.android.BuildConfig
-//import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
 
@@ -40,19 +38,12 @@ class RootActivity : AppCompatActivity() {
                     View.VISIBLE
                 }
         }
-
-        // Пример использования access token для HeadHunter API
-//        networkRequestExample(accessToken = BuildConfig.HH_ACCESS_TOKEN)
     }
 
     fun animateBottomNavigationView() {
         binding?.bottomNavigationView?.visibility = View.GONE
     }
-
-    private fun networkRequestExample(accessToken: String) {
-        // ...
-    }
-
+    
     override fun onDestroy() {
         super.onDestroy()
         binding = null

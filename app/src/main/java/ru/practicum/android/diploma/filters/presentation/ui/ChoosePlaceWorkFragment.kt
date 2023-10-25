@@ -35,7 +35,7 @@ class ChoosePlaceWorkFragment : Fragment() {
     private var areasList = ArrayList<AreasDTO>()
     private var areasRegionList = ArrayList<AreasDTO>()
     private var area = ArrayList<AreasDTO>()
-    private var countryArea = AreasDTO.emptyArea
+    private var matchCountry = true
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,8 +51,8 @@ class ChoosePlaceWorkFragment : Fragment() {
         getCountry()
         getRegions()
         observeViewModel()
-        setFilters()
         setSavedFilters()
+        setFilters()
         showChooseBtn()
     }
 
@@ -62,28 +62,28 @@ class ChoosePlaceWorkFragment : Fragment() {
         getCountry()
         initListeners()
     }
-
-    private fun setSavedFilters() {
-        setFragmentResultListener(COUNTRY_AND_REGION) { _, bundle ->
-            val country = (bundle.getString(COUNTRY_JSON_KEY)?.let {
+    private fun setSavedFilters(){
+        setFragmentResultListener(COUNTRY_AND_REGION){_,bundle ->
+            matchCountry = false
+            country = (bundle.getString(COUNTRY_JSON_KEY)?.let {
                 Json.decodeFromString<AreasDTO>(it)
             } ?: AreasDTO.emptyArea)
             if (country != AreasDTO.emptyArea) {
                 binding.countryEditText.setText(country.name)
             }
-            val region = (bundle.getString(REGION_JSON_KEY)?.let {
+            region = (bundle.getString(REGION_JSON_KEY)?.let {
                 Json.decodeFromString<Area>(it)
             } ?: Area.emptyArea)
             if (region != Area.emptyArea) {
                 binding.regionEditText.setText(region.name)
             }
-            setFragmentResult(
-                ChooseCountryFragment.FILTER_KEY,
-                bundleOf(FILTER_COUNTRY to Json.encodeToString(country))
-            )
             changeCountryField()
             changeRegionField()
         }
+        setFragmentResult(
+            ChooseCountryFragment.FILTER_KEY,
+            bundleOf(FILTER_COUNTRY to Json.encodeToString(country))
+        )
     }
 
     private fun setFilters() {
@@ -93,6 +93,8 @@ class ChoosePlaceWorkFragment : Fragment() {
                 ?: AreasDTO.emptyArea)
             if (country != AreasDTO.emptyArea) {
                 binding.countryEditText.setText(country.name)
+                region = Area.emptyArea
+                binding.regionEditText.setText("")
             }
         }
         setFragmentResultListener(KEY_R)
@@ -103,26 +105,28 @@ class ChoosePlaceWorkFragment : Fragment() {
                 binding.regionEditText.setText(region.name)
             }
         }
-        if (region != Area.emptyArea) {
-            area.clear()
-            if (region.parentId?.length!! <= 3) {
-                areasList.removeIf { it.id != region.parentId }
-                area.addAll(areasList)
-            } else {
-                val a = areasRegionList.flatMap { it.areas }.filter { it.id == region.parentId }
-                areasList.removeIf { it.id != a[0].parentId }
-                area.addAll(areasList)
+        if(matchCountry) {
+            if (region != Area.emptyArea) {
+                area.clear()
+                if (region.parentId?.length!! <= 3) {
+                    areasList.removeIf { it.id != region.parentId }
+                    area.addAll(areasList)
+                } else {
+                    val a = areasRegionList.flatMap { it.areas }.filter { it.id == region.parentId }
+                    areasList.removeIf { it.id != a[0].parentId }
+                    area.addAll(areasList)
+                }
+                country = area[0]
+                binding.countryEditText.setText(area[0].name)
+                setFragmentResult(
+                    ChooseCountryFragment.FILTER_KEY,
+                    bundleOf(FILTER_COUNTRY to Json.encodeToString(country))
+                )
             }
-            countryArea = area[0]
-            binding.countryEditText.setText(area[0].name)
-            setFragmentResult(
-                ChooseCountryFragment.FILTER_KEY,
-                bundleOf(FILTER_COUNTRY to Json.encodeToString(area[0]))
-            )
-            country = AreasDTO(id = area[0].id, name = area[0].name, emptyList())
         }
         changeCountryField()
         changeRegionField()
+        matchCountry = true
     }
 
     private fun getCountry() {
@@ -174,7 +178,7 @@ class ChoosePlaceWorkFragment : Fragment() {
         var countryJson: String? = null
         var regionJson: String? = null
         if (binding.countryEditText.text.toString().isNotEmpty()) {
-            countryJson = Json.encodeToString(countryArea)
+            countryJson = Json.encodeToString(country)
         }
         if (binding.regionEditText.text.toString().isNotEmpty()) {
             regionJson = Json.encodeToString(region)
