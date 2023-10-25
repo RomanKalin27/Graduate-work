@@ -16,7 +16,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.ChangeTextFieldUtil
 import ru.practicum.android.diploma.databinding.FragmentSelectLocationBinding
-import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
+import ru.practicum.android.diploma.filters.domain.models.AreaDomain
+import ru.practicum.android.diploma.filters.domain.models.Areas
 import ru.practicum.android.diploma.filters.domain.models.ChooseRegionsResult
 import ru.practicum.android.diploma.filters.domain.models.ChooseResult
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.BUNDLE_KEY
@@ -25,16 +26,15 @@ import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragmen
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseRegionFragment.Companion.KEY_R
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseRegionFragment.Companion.REGION_KEY
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
-import ru.practicum.android.diploma.search.data.dto.response_models.Area
 
 class ChoosePlaceWorkFragment : Fragment() {
     private lateinit var binding: FragmentSelectLocationBinding
-    private var country: AreasDTO = AreasDTO.emptyArea
-    private var region: Area = Area.emptyArea
+    private var country: Areas = Areas.emptyArea
+    private var region: AreaDomain = AreaDomain.emptyArea
     private val viewModel by viewModel<FiltersViewModel>()
-    private var areasList = ArrayList<AreasDTO>()
-    private var areasRegionList = ArrayList<AreasDTO>()
-    private var area = ArrayList<AreasDTO>()
+    private var areasList = ArrayList<Areas>()
+    private var areasRegionList = ArrayList<Areas>()
+    private var area = ArrayList<Areas>()
     private var matchCountry = true
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,15 +66,16 @@ class ChoosePlaceWorkFragment : Fragment() {
         setFragmentResultListener(COUNTRY_AND_REGION){_,bundle ->
             matchCountry = false
             country = (bundle.getString(COUNTRY_JSON_KEY)?.let {
-                Json.decodeFromString<AreasDTO>(it)
-            } ?: AreasDTO.emptyArea)
-            if (country != AreasDTO.emptyArea) {
+                Json.decodeFromString<Areas>(it)
+            }?: Areas.emptyArea)
+            if (country != Areas.emptyArea) {
                 binding.countryEditText.setText(country.name)
             }
             region = (bundle.getString(REGION_JSON_KEY)?.let {
-                Json.decodeFromString<Area>(it)
-            } ?: Area.emptyArea)
-            if (region != Area.emptyArea) {
+                Json.decodeFromString<AreaDomain>(it)
+            }?: AreaDomain.emptyArea)
+            if (region != AreaDomain.emptyArea) {
+
                 binding.regionEditText.setText(region.name)
             }
             changeCountryField()
@@ -89,24 +90,24 @@ class ChoosePlaceWorkFragment : Fragment() {
     private fun setFilters() {
         setFragmentResultListener(KEY)
         { _, bundle ->
-            country = (bundle.getString(BUNDLE_KEY)?.let { Json.decodeFromString<AreasDTO>(it) }
-                ?: AreasDTO.emptyArea)
-            if (country != AreasDTO.emptyArea) {
+            country = (bundle.getString(BUNDLE_KEY)?.let { Json.decodeFromString<Areas>(it) }
+                ?: Areas.emptyArea)
+            if (country != Areas.emptyArea) {
                 binding.countryEditText.setText(country.name)
-                region = Area.emptyArea
+                region = AreaDomain.emptyArea
                 binding.regionEditText.setText("")
             }
         }
         setFragmentResultListener(KEY_R)
         { _, bundle ->
-            region = (bundle.getString(REGION_KEY)?.let { Json.decodeFromString<Area>(it) }
-                ?: Area.emptyArea)
-            if (region != Area.emptyArea) {
+            region = (bundle.getString(REGION_KEY)?.let { Json.decodeFromString<AreaDomain>(it) }
+                ?: AreaDomain.emptyArea)
+            if (region != AreaDomain.emptyArea) {
                 binding.regionEditText.setText(region.name)
             }
         }
         if(matchCountry) {
-            if (region != Area.emptyArea) {
+            if (region != AreaDomain.emptyArea) {
                 area.clear()
                 if (region.parentId?.length!! <= 3) {
                     areasList.removeIf { it.id != region.parentId }
@@ -206,7 +207,7 @@ class ChoosePlaceWorkFragment : Fragment() {
             binding.countryEditText.text?.clear()
             setFragmentResult(
                 ChooseCountryFragment.FILTER_KEY,
-                bundleOf(FILTER_COUNTRY to Json.encodeToString(AreasDTO.emptyArea))
+                bundleOf(FILTER_COUNTRY to Json.encodeToString(Areas.emptyArea))
             )
             changeCountryField()
             showChooseBtn()
@@ -215,7 +216,7 @@ class ChoosePlaceWorkFragment : Fragment() {
             findNavController().navigate(R.id.action_choosePlaceWorkFragment_to_chooseRegionFragment)
         }
         binding.regionClearBtn.setOnClickListener {
-            region = Area.emptyArea
+            region = AreaDomain.emptyArea
             showChooseBtn()
             changeRegionField()
         }

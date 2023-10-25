@@ -20,20 +20,20 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.ChangeTextFieldUtil
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
-import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
+import ru.practicum.android.diploma.filters.domain.models.AreaDomain
+import ru.practicum.android.diploma.filters.domain.models.Areas
 import ru.practicum.android.diploma.filters.domain.models.Industry
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.COUNTRY_AND_REGION
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.COUNTRY_JSON_KEY
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.KEY_CHOOSE
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.REGION_JSON_KEY
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
-import ru.practicum.android.diploma.search.data.dto.response_models.Area
 
 class FiltersFragment : Fragment() {
     private lateinit var binding: FragmentFilterBinding
     private var isChecked = false
-    private var country: AreasDTO = AreasDTO.emptyArea
-    private var region: Area = Area.emptyArea
+    private var country: Areas = Areas.emptyArea
+    private var region: AreaDomain = AreaDomain.emptyArea
     private var industry: Industry = Industry.emptyIndustry
     private val vm by viewModel<FiltersViewModel>()
 
@@ -150,12 +150,12 @@ class FiltersFragment : Fragment() {
                     val location = country.name + "," + region.name
                     binding.locationEditText.setText(location)
                 } else {
-                    region = Area.emptyArea
+                    region = AreaDomain.emptyArea
                     binding.locationEditText.setText(country.name)
                 }
             } else {
-                country = AreasDTO.emptyArea
-                region = Area.emptyArea
+                country = Areas.emptyArea
+                region = AreaDomain.emptyArea
             }
             if (!it.industry.isNullOrEmpty()) {
                 industry = Json.decodeFromString(it.industry ?: "")

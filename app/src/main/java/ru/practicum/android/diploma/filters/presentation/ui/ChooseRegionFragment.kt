@@ -17,13 +17,13 @@ import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.common.utils.debounce
 import ru.practicum.android.diploma.databinding.FragmentRegionsBinding
-import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
+import ru.practicum.android.diploma.filters.domain.models.AreaDomain
+import ru.practicum.android.diploma.filters.domain.models.Areas
 import ru.practicum.android.diploma.filters.domain.models.ChooseRegionsResult
 import ru.practicum.android.diploma.filters.presentation.rv.RegionAdapter
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.FILTER_COUNTRY
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.FILTER_KEY
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
-import ru.practicum.android.diploma.search.data.dto.response_models.Area
 
 
 class ChooseRegionFragment : Fragment() {
@@ -32,10 +32,10 @@ class ChooseRegionFragment : Fragment() {
     private lateinit var textWatcher: TextWatcher
     private var debounce: ((String) -> Unit)? = null
     private val viewModel by viewModel<FiltersViewModel>()
-    private var regionList = ArrayList<Area>()
-    private var regionListSaved = ArrayList<Area>()
-    private var regionListFilter = ArrayList<Area>()
-    private var country: AreasDTO = AreasDTO.emptyArea
+    private var regionList = ArrayList<AreaDomain>()
+    private var regionListSaved = ArrayList<AreaDomain>()
+    private var regionListFilter = ArrayList<AreaDomain>()
+    private var country: Areas = Areas.emptyArea
     private var hasInternet: Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,7 +88,7 @@ class ChooseRegionFragment : Fragment() {
         }
     }
 
-    private fun showRegions(regions: List<AreasDTO>) {
+    private fun showRegions(regions: List<Areas>) {
         hasInternet = true
         viewModel.convert(regions, setFilters())
     }
@@ -178,7 +178,7 @@ class ChooseRegionFragment : Fragment() {
             })
     }
 
-    private fun setResult(region: Area) {
+    private fun setResult(region: AreaDomain) {
         setFragmentResult(
             KEY_R,
             bundleOf(REGION_KEY to Json.encodeToString(region))
@@ -186,11 +186,11 @@ class ChooseRegionFragment : Fragment() {
         findNavController().navigateUp()
     }
 
-    private fun setFilters(): AreasDTO {
+    private fun setFilters(): Areas {
         setFragmentResultListener(FILTER_KEY)
         { _, bundle ->
-            country = (bundle.getString(FILTER_COUNTRY)?.let { Json.decodeFromString<AreasDTO>(it) }
-                ?: AreasDTO.emptyArea)
+            country = (bundle.getString(FILTER_COUNTRY)?.let { Json.decodeFromString<Areas>(it) }
+                ?: Areas.emptyArea)
         }
         return country
     }

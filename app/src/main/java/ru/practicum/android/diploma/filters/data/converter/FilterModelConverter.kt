@@ -1,9 +1,9 @@
 package ru.practicum.android.diploma.filters.data.converter
 
 import ru.practicum.android.diploma.filters.data.dto.models.IndustryDTO
-import ru.practicum.android.diploma.filters.data.dto.models.RegionsDTO
+import ru.practicum.android.diploma.filters.domain.models.AreaDomain
 import ru.practicum.android.diploma.filters.domain.models.Industry
-import ru.practicum.android.diploma.search.data.dto.response_models.Area
+import ru.practicum.android.diploma.filters.domain.models.Regions
 
 class FilterModelConverter {
 
@@ -19,9 +19,9 @@ class FilterModelConverter {
             .sortedBy { it.name }
     }
 
-    fun regionDTOListToAreaList(list: List<RegionsDTO>): List<Area> {
+    fun regionDTOListToAreaList(list: List<Regions>): List<AreaDomain> {
         val resultList = list.map {
-            Area(
+            AreaDomain(
                 id = it.id ?: "",
                 name = it.name ?: "",
                 parentId = it.parentId ?: ""

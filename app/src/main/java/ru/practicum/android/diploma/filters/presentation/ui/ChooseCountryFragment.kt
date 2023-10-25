@@ -12,7 +12,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentSelectCountryBinding
-import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
+import ru.practicum.android.diploma.filters.domain.models.Areas
 import ru.practicum.android.diploma.filters.domain.models.ChooseResult
 import ru.practicum.android.diploma.filters.presentation.rv.CountryAdapter
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
@@ -28,7 +28,7 @@ class ChooseCountryFragment : Fragment() {
     private lateinit var binding: FragmentSelectCountryBinding
     private lateinit var countryAdapter: CountryAdapter
     private val viewModel by viewModel<FiltersViewModel>()
-    private var countryList = ArrayList<AreasDTO>()
+    private var countryList = ArrayList<Areas>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +46,7 @@ class ChooseCountryFragment : Fragment() {
         getCountry()
         observeViewModel()
         binding.btnBack.setOnClickListener {
-            setResult(AreasDTO.emptyArea)
+            setResult(Areas.emptyArea)
         }
     }
 
@@ -59,7 +59,7 @@ class ChooseCountryFragment : Fragment() {
         return countryAdapter
     }
 
-    private fun setResult(country: AreasDTO) {
+    private fun setResult(country: Areas) {
         setFragmentResult(
             KEY,
             bundleOf(BUNDLE_KEY to Json.encodeToString(country))
@@ -81,7 +81,7 @@ class ChooseCountryFragment : Fragment() {
         }
     }
 
-    private fun showCountry(countries: List<AreasDTO>) {
+    private fun showCountry(countries: List<Areas>) {
         hideError()
         countryList.clear()
         countryList.addAll(countries.slice(listOf(0, 1, 2, 3, 4, 5, 7, 8, 6)))
