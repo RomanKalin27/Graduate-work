@@ -11,14 +11,21 @@ import ru.practicum.android.diploma.search.domain.impl.SearchInteractor
 import ru.practicum.android.diploma.search.domain.models.SearchVacancyResult
 
 class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewModel() {
-
+    private var currentPage = 1
+    var maxPages = 0
+    var isNextPageLoading = true
     private val _searchVacancyResult: MutableLiveData<SearchVacancyResult> = MutableLiveData()
     val searchVacancyResult: LiveData<SearchVacancyResult> = _searchVacancyResult
 
     fun searchVacancies(query: String) {
         viewModelScope.launch {
-            searchInteractor.execute(query).collect { result ->
-                _searchVacancyResult.value = result
+            if (isNextPageLoading) {
+                if (currentPage != maxPages) {
+                    isNextPageLoading = false
+                    searchInteractor.execute(query, currentPage).collect { result ->
+                        _searchVacancyResult.value = result
+                    }
+                }
             }
         }
     }
@@ -29,5 +36,17 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         } else {
             iconFilter.setImageResource(R.drawable.ic_filter_off)
         }
+    }
+
+    fun currentPageInc() {
+        currentPage += 1
+    }
+
+    fun MaxPagesSet(max: Int) {
+        maxPages = max
+    }
+
+    fun clearCurrentPage(){
+        currentPage = 1
     }
 }

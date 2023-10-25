@@ -9,7 +9,7 @@ import ru.practicum.android.diploma.filters.domain.models.Industry
 class IndustryAdapter(
     private val items: List<Industry>,
     private val onIndustrySelected: (Industry) -> Unit,
-    private var industryText: String?
+    private var industryText: String?,
 ) :
     RecyclerView.Adapter<IndustryAdapter.ViewHolderIndustry>() {
     var clickedName: String? = null
@@ -32,7 +32,7 @@ class IndustryAdapter(
 
     inner class ViewHolderIndustry(
         private val binding: ItemRegionBinding,
-        private var industryText: String?
+        private var industryText: String?,
     ) :
         RecyclerView.ViewHolder(binding.root) {
 

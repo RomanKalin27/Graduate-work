@@ -131,13 +131,13 @@
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/margin_30"
+        android:layout_marginBottom="@dimen/margin_72"
         android:indeterminateTint="@color/blue"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/chip"

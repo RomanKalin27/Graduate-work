@@ -52,6 +52,7 @@ class RootActivity : AppCompatActivity() {
     private fun networkRequestExample(accessToken: String) {
         // ...
     }
+
     override fun onDestroy() {
         super.onDestroy()
         binding = null

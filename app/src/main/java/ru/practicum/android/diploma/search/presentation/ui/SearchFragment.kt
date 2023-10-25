@@ -11,6 +11,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -36,6 +37,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private lateinit var onVacancyClickDebounce: (Vacancy) -> Unit
     private val vacancyAdapter = VacancyAdapter(vacancyList)
     private var timerJob: Job? = null
+    private var savedText = ""
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -76,6 +78,24 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         ) { item ->
             navigateToVacancyDetail(item.id)
         }
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0) {
+                    val pos =
+                        (binding.recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val itemsCount = vacancyAdapter.itemCount
+                    if (pos >= itemsCount - 1) {
+                        if (savedText != "") {
+                            binding.progressBar.visibility = View.VISIBLE
+                            viewModel.currentPageInc()
+                            viewModel.searchVacancies(savedText)
+                        }
+                    }
+                }
+            }
+        })
         setupDefaultUI()
         setupTextWatcher()
         setupRecyclerView()
@@ -108,7 +128,11 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 is SearchVacancyResult.Error -> updateUI(SearchUIState.CONNECTION_ERROR)
                 SearchVacancyResult.EmptyResult -> updateUI(SearchUIState.EMPTY_SEARCH)
                 SearchVacancyResult.NoInternet -> updateUI(SearchUIState.NO_INTERNET)
-                is SearchVacancyResult.Success -> showVacancy(state.response.vacancies)
+                is SearchVacancyResult.Success -> {
+                    viewModel.MaxPagesSet(state.response.pages)
+                    viewModel.isNextPageLoading = true
+                    showVacancy(state.response.vacancies)
+                }
             }
         }
     }
@@ -133,6 +157,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                     val message = getString(R.string.no_vacansy)
                     chip.text = message
                 }
+
                 SearchUIState.NO_INTERNET -> noInternetPlaceholder.isVisible = true
                 SearchUIState.LOADING -> progressBar.isVisible = true
             }
@@ -150,7 +175,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             placeholderNoVacancies.isVisible = false
             noInternetPlaceholder.isVisible = false
             progressBar.isVisible = false
-
+            progressBar.visibility = View.GONE
             val isEmptyResult = items.isEmpty()
             if (isEmptyResult) {
                 chip.visibility = View.VISIBLE
@@ -158,14 +183,13 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 chip.text = message
             } else {
                 chip.visibility = View.VISIBLE
-                val vacancyCount = items.size
+                val vacancyCount = viewModel.maxPages * 20
                 val message = resources.getQuantityString(
                     R.plurals.search_result_count, vacancyCount, vacancyCount
                 )
                 chip.text = message
             }
         }
-        vacancyList.clear()
         vacancyList.addAll(items)
         vacancyAdapter.notifyDataSetChanged()
         updateIconBasedOnText()
@@ -189,6 +213,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             chip.isVisible = false
             iconSearch.setImageResource(R.drawable.ic_search)
         }
+        viewModel.clearCurrentPage()
         vacancyList.clear()
         vacancyAdapter.notifyDataSetChanged()
         timerJob?.cancel()
@@ -210,7 +235,9 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s.isNullOrEmpty()) {
                     clearUI()
+                    savedText = ""
                 } else {
+                    savedText = s.toString()
                     binding.iconSearch.setImageResource(R.drawable.ic_clear)
                     debounceSearch(s.toString())
                 }

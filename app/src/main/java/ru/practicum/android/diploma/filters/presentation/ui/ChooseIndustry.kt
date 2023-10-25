@@ -78,9 +78,11 @@ class ChooseIndustry : Fragment() {
 
         industryAdapter = IndustryAdapter(
             industryList,
-            { industry -> selectedIndustry = industry
+            { industry ->
+                selectedIndustry = industry
             },
-            industryText)
+            industryText
+        )
 
         industryRecyclerView.adapter = industryAdapter
         return industryRecyclerView.adapter as IndustryAdapter
@@ -127,8 +129,7 @@ class ChooseIndustry : Fragment() {
             binding.selectBtn.visibility = View.VISIBLE
         }
         binding.selectBtn.setOnClickListener {
-            if (selectedIndustry == null)
-            {
+            if (selectedIndustry == null) {
                 return@setOnClickListener
             }
             btSelectClicked(selectedIndustry!!)

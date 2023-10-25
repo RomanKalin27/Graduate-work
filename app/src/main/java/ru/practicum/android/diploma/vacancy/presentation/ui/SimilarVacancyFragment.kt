@@ -111,7 +111,10 @@ class SimilarVacancyFragment : BindingFragment<FragmentSimilarVacanciesBinding>(
             SIMILAR_VACANCY_KEY,
             bundleOf(SIMILAR_VACANCY to item)
         )
-        findNavController().navigate(R.id.action_similarVacancyFragment_to_vacancyFragment, VacancyFragment.createArgs(item))
+        findNavController().navigate(
+            R.id.action_similarVacancyFragment_to_vacancyFragment,
+            VacancyFragment.createArgs(item)
+        )
     }
 
     companion object {

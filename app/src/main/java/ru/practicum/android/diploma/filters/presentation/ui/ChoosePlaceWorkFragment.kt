@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.filters.presentation.ui
 
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,17 +62,18 @@ class ChoosePlaceWorkFragment : Fragment() {
         getCountry()
         initListeners()
     }
-    private fun setSavedFilters(){
-        setFragmentResultListener(COUNTRY_AND_REGION){_,bundle ->
+
+    private fun setSavedFilters() {
+        setFragmentResultListener(COUNTRY_AND_REGION) { _, bundle ->
             val country = (bundle.getString(COUNTRY_JSON_KEY)?.let {
                 Json.decodeFromString<AreasDTO>(it)
-            }?: AreasDTO.emptyArea)
+            } ?: AreasDTO.emptyArea)
             if (country != AreasDTO.emptyArea) {
                 binding.countryEditText.setText(country.name)
             }
             val region = (bundle.getString(REGION_JSON_KEY)?.let {
                 Json.decodeFromString<Area>(it)
-            }?: Area.emptyArea)
+            } ?: Area.emptyArea)
             if (region != Area.emptyArea) {
                 binding.regionEditText.setText(region.name)
             }
@@ -202,7 +202,7 @@ class ChoosePlaceWorkFragment : Fragment() {
             binding.countryEditText.text?.clear()
             setFragmentResult(
                 ChooseCountryFragment.FILTER_KEY,
-                bundleOf(ChooseCountryFragment.FILTER_COUNTRY to Json.encodeToString(AreasDTO.emptyArea))
+                bundleOf(FILTER_COUNTRY to Json.encodeToString(AreasDTO.emptyArea))
             )
             changeCountryField()
             showChooseBtn()

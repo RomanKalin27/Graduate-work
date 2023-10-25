@@ -53,13 +53,13 @@ class DetailVacancyViewModel(private val detailVacancyInteractor: DetailVacancyI
 
         }
     }
-     fun checkFavorite(vacancy: VacancyDetailnfo){
+
+    fun checkFavorite(vacancy: VacancyDetailnfo) {
         viewModelScope.launch(Dispatchers.IO) {
             isFavourite = detailVacancyInteractor.checkIfVacancyInFavorite(vacancy.id)
             if (isFavourite) {
                 _detailVacancyResult.postValue(DetailVacancyResult.AddedToFavorite)
-            }
-            else {
+            } else {
                 _detailVacancyResult.postValue(DetailVacancyResult.NoFavorite)
             }
         }

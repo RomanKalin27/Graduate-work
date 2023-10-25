@@ -52,7 +52,8 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
             val emailAddress = binding.vacancyContactEmailValue.text.toString()
             val emailIntent = Intent(
                 Intent.ACTION_SENDTO,
-                Uri.parse("mailto:$emailAddress"))
+                Uri.parse("mailto:$emailAddress")
+            )
             requireContext().startActivity(emailIntent)
         }
 
@@ -60,7 +61,8 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
             val phoneNumber = binding.vacancyContactPhoneValue.text.toString()
             val call = Intent(
                 Intent.ACTION_DIAL,
-                Uri.fromParts("tel", phoneNumber, null))
+                Uri.fromParts("tel", phoneNumber, null)
+            )
             requireContext().startActivity(call)
         }
         viewModel.shareUrl.observe(viewLifecycleOwner) { url ->
@@ -204,9 +206,10 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
             }
         }
     }
-    private fun favoriteClickInit(vacancy: VacancyDetailnfo){
-        binding.icFavorites.setOnClickListener{
-                viewModel.clickToFavoriteButton(vacancy)
+
+    private fun favoriteClickInit(vacancy: VacancyDetailnfo) {
+        binding.icFavorites.setOnClickListener {
+            viewModel.clickToFavoriteButton(vacancy)
         }
     }
 
