@@ -123,17 +123,17 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private fun observeViewModel() {
         viewModel.searchVacancyResult.observe(viewLifecycleOwner) { state ->
             binding.iconSearch.setImageResource(R.drawable.ic_search)
-
-
             when (state) {
                 is SearchVacancyResult.Error -> updateUI(SearchUIState.CONNECTION_ERROR)
                 SearchVacancyResult.EmptyResult -> updateUI(SearchUIState.EMPTY_SEARCH)
                 SearchVacancyResult.NoInternet -> updateUI(SearchUIState.NO_INTERNET)
                 is SearchVacancyResult.Success -> {
-                    viewModel.MaxPagesSet(state.response.pages)
+                    viewModel.maxPagesSet(state.response.pages)
                     viewModel.isNextPageLoading = true
                     showVacancy(state.response.vacancies)
                 }
+                SearchVacancyResult.Loading -> {}
+                is SearchVacancyResult.StartScreen -> setFilterIcon(state.isFiltersOn)
             }
         }
     }
