@@ -30,9 +30,8 @@ class ModelConverter(private val context: Context) {
                 company = item.employer?.name ?: "",
                 salary = convertSalary(item.salary)
             )
-
         }
-        return ConvertedResponse(vacancies)
+        return ConvertedResponse(vacancies, response.pages)
     }
 
     fun convertSalary(salary: Salary?): String {
@@ -160,8 +159,9 @@ class ModelConverter(private val context: Context) {
                     isInFavorite = true
                 )
             }
+        } else {
+            return null
         }
-        else {return null}
     }
 
     private fun keySkillsToString(keySkills: List<KeySkillDto>?): String {

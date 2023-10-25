@@ -28,6 +28,7 @@ class FilterModelConverter {
             )
         }.sortedBy { it.id }
         return (resultList + list.flatMap { it.areas }).sortedBy { it.id }
-            .filterNot { it.parentId == "1001" }
+            .filterNot { it.parentId == "1001" }.filterNot { it.parentId == "316" }
+            .filterNot { it.parentId == "62" }
     }
 }

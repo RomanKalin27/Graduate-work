@@ -41,12 +41,15 @@ class DetailVacancyRepositoryImpl(
     override suspend fun addVacancyToFavorites(vacancy: VacancyDetailnfo): Flow<Unit> {
         return vacancyDb.addVacancyToFavorite(vacancy)
     }
+
     override suspend fun checkIfVacancyInFavorites(id: String): Boolean {
         return vacancyDb.isVacancyInFavs(id)
     }
+
     override suspend fun removeVacancyFromFavorites(id: String): Flow<Int> {
         return vacancyDb.removeVacancyFromFavorite(id)
     }
+
     override suspend fun getDetailVacancyByIdFromBD(id: String): Flow<VacancyDetailnfo> {
         return vacancyDb.getFavoritesById(id)
     }

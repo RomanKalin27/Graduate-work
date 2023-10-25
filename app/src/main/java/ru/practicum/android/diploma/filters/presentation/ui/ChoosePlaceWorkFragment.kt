@@ -75,6 +75,7 @@ class ChoosePlaceWorkFragment : Fragment() {
                 Json.decodeFromString<AreaDomain>(it)
             }?: AreaDomain.emptyArea)
             if (region != AreaDomain.emptyArea) {
+
                 binding.regionEditText.setText(region.name)
             }
             changeCountryField()
