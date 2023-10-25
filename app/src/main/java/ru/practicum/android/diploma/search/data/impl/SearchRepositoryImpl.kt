@@ -49,7 +49,7 @@ class SearchRepositoryImpl(
 
 
     private fun requestMaker(query: String, page: Int): Map<String, String> {
-        var params = (mapOf("text" to "${query}", "per_page" to "20"))
+        var params = (mutableMapOf("text" to "${query}", "per_page" to "20"))
         params += Pair("page", page.toString())
         val country = sharedPreferences.getString(COUNTRY_KEY, null)
         val region = sharedPreferences.getString(REGION_KEY, null)

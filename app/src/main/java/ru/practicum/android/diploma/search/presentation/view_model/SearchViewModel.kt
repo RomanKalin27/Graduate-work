@@ -38,7 +38,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         currentPage += 1
     }
 
-    fun MaxPagesSet(max: Int) {
+    fun maxPagesSet(max: Int) {
         maxPages = max
     }
 
