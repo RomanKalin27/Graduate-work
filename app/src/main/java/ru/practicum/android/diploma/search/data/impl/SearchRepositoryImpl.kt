@@ -26,9 +26,9 @@ class SearchRepositoryImpl(
     private val converter: ModelConverter,
     private val sharedPreferences: SharedPreferences,
 ) : SearchRepository {
-    override suspend fun searchVacancies(query: String): Flow<SearchVacancyResult> =
+    override suspend fun searchVacancies(query: String, page: Int): Flow<SearchVacancyResult> =
         flow {
-            val queryParams = requestMaker(query)
+            val queryParams = requestMaker(query, page)
             try {
                 if (!networkControl.isInternetAvailable()) {
                     emit(SearchVacancyResult.NoInternet)
@@ -48,8 +48,9 @@ class SearchRepositoryImpl(
         }.flowOn(Dispatchers.IO)
 
 
-    private fun requestMaker(query: String): Map<String, String> {
-        val params = (mutableMapOf("text" to query, "per_page" to "50"))
+    private fun requestMaker(query: String, page: Int): Map<String, String> {
+        var params = (mapOf("text" to "${query}", "per_page" to "20"))
+        params += Pair("page", page.toString())
         val country = sharedPreferences.getString(COUNTRY_KEY, null)
         val region = sharedPreferences.getString(REGION_KEY, null)
         if (!country.isNullOrEmpty()) {

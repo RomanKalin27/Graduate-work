@@ -43,7 +43,7 @@ class RootActivity : AppCompatActivity() {
     fun animateBottomNavigationView() {
         binding?.bottomNavigationView?.visibility = View.GONE
     }
-
+    
     override fun onDestroy() {
         super.onDestroy()
         binding = null

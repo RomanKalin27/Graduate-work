@@ -67,13 +67,13 @@ class ChoosePlaceWorkFragment : Fragment() {
             matchCountry = false
             country = (bundle.getString(COUNTRY_JSON_KEY)?.let {
                 Json.decodeFromString<AreasDTO>(it)
-            }?: AreasDTO.emptyArea)
+            } ?: AreasDTO.emptyArea)
             if (country != AreasDTO.emptyArea) {
                 binding.countryEditText.setText(country.name)
             }
             region = (bundle.getString(REGION_JSON_KEY)?.let {
                 Json.decodeFromString<Area>(it)
-            }?: Area.emptyArea)
+            } ?: Area.emptyArea)
             if (region != Area.emptyArea) {
                 binding.regionEditText.setText(region.name)
             }

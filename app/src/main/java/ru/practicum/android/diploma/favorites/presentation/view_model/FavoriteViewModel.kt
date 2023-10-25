@@ -28,17 +28,20 @@ class FavoriteViewModel(private val favoriteVacancyInteractor: FavoriteInteracto
                 }
         }
     }
+
     private fun processResult(vacancyList: List<Vacancy>) {
 
         when {
             vacancyList.isEmpty() -> {
                 contentStateLiveData.value = FavoritesScreenState.Empty
             }
+
             else -> {
                 contentStateLiveData.value = FavoritesScreenState.Content(vacancyList)
             }
         }
     }
+
     fun removeVacancy(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
             favoriteVacancyInteractor

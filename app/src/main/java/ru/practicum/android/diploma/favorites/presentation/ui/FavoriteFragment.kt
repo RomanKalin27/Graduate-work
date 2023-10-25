@@ -41,7 +41,8 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
         initListeners()
 
     }
-        private fun observeOnContentState() {
+
+    private fun observeOnContentState() {
         viewModel.observeContentState().observe(viewLifecycleOwner) { contentState ->
             render(contentState)
         }
@@ -69,11 +70,11 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
             placeHolder.visibility = View.GONE
             placeHolderImage.visibility = View.GONE
             placeHolderText.visibility = View.GONE
-            recycler.visibility= View.VISIBLE
+            recycler.visibility = View.VISIBLE
         }
     }
 
-    private fun initListeners(){
+    private fun initListeners() {
 
         favoriteAdapter.itemClickListener = { position, track ->
             onVacancyClickDebounce?.let { it(track) }
@@ -83,18 +84,23 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
             onLongVacancyClickDebounce?.let { it(track) }
         }
 
-        onVacancyClickDebounce = debounce<Vacancy>(CLICK_DEBOUNCE_DELAY_MILLIS,
+        onVacancyClickDebounce = debounce<Vacancy>(
+            CLICK_DEBOUNCE_DELAY_MILLIS,
             coroutineScope = viewLifecycleOwner.lifecycleScope,
-            cancelPrevious = false)  { vacancy ->
+            cancelPrevious = false
+        ) { vacancy ->
             navigateToVacancyDetail(vacancy.id)
         }
 
-        onLongVacancyClickDebounce = debounce<Vacancy>(CLICK_DEBOUNCE_DELAY_MILLIS,
+        onLongVacancyClickDebounce = debounce<Vacancy>(
+            CLICK_DEBOUNCE_DELAY_MILLIS,
             coroutineScope = viewLifecycleOwner.lifecycleScope,
-            cancelPrevious = false)  { vacancy ->
+            cancelPrevious = false
+        ) { vacancy ->
             showDialog(vacancy)
         }
     }
+
     private fun showDialog(vacancy: Vacancy) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.delete_vacancy))
@@ -119,6 +125,7 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
             R.id.action_favoriteFragment_to_vacancyFragment, VacancyFragment.createArgs(item)
         )
     }
+
     private fun goBack() {
         findNavController().navigateUp()
     }

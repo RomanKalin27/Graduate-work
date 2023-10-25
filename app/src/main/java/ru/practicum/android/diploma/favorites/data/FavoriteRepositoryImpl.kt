@@ -10,15 +10,16 @@ import ru.practicum.android.diploma.search.domain.models.Vacancy
 
 class FavoriteRepositoryImpl(
     private val converter: ModelConverter,
-    private val appDataBase: AppDB
+    private val appDataBase: AppDB,
 ) : FavoriteVacancyRepository {
 
     private val vacancyDb = appDataBase.vacancyDao()
 
     override suspend fun getFavoriteVacancies(): Flow<List<Vacancy>> {
-       return vacancyDb.getFavorites().map {converter.mapToVacancies(it)}
+        return vacancyDb.getFavorites().map { converter.mapToVacancies(it) }
     }
+
     override suspend fun removeVacancy(id: String): Flow<Int> {
-        return flowOf( vacancyDb.delete(id))
+        return flowOf(vacancyDb.delete(id))
     }
 }

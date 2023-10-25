@@ -75,7 +75,10 @@ class FiltersFragment : Fragment() {
         binding.btnIndustry.setOnClickListener {
             val currentIndustry = binding.industryEditText.text.toString()
             val bundleIndustry = bundleOf("INDUSTRY_TEXT" to currentIndustry)
-            findNavController().navigate(R.id.action_filtersFragment_to_chooseIndustry, bundleIndustry)
+            findNavController().navigate(
+                R.id.action_filtersFragment_to_chooseIndustry,
+                bundleIndustry
+            )
         }
         binding.industryClearBtn.setOnClickListener {
             binding.industryEditText.text?.clear()
@@ -133,9 +136,13 @@ class FiltersFragment : Fragment() {
         }
 
         vm.observeState().observe(viewLifecycleOwner) {
-            setFragmentResult(COUNTRY_AND_REGION,
-                bundleOf(COUNTRY_JSON_KEY to it.country,
-                    REGION_JSON_KEY to  it.region))
+            setFragmentResult(
+                COUNTRY_AND_REGION,
+                bundleOf(
+                    COUNTRY_JSON_KEY to it.country,
+                    REGION_JSON_KEY to it.region
+                )
+            )
             if (!it.country.isNullOrEmpty()) {
                 country = Json.decodeFromString(it.country ?: "")
                 if (!it.region.isNullOrEmpty()) {
