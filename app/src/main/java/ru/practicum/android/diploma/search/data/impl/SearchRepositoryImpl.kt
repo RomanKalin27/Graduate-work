@@ -12,6 +12,7 @@ import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl
 import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.INDUSTRY_KEY
 import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.NO_SALARY_KEY
 import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.REGION_KEY
+import ru.practicum.android.diploma.filters.domain.models.Areas
 import ru.practicum.android.diploma.filters.domain.models.Industry
 import ru.practicum.android.diploma.search.data.dto.response_models.Area
 import ru.practicum.android.diploma.search.data.network.ApiService
@@ -58,7 +59,7 @@ class SearchRepositoryImpl(
                 val regionId = Json.decodeFromString<Area>(region).id
                 params["area"] = regionId ?: ""
             } else {
-                val countryId = Json.decodeFromString<Area>(country).id
+                val countryId = Json.decodeFromString<Areas>(country).id
                 params["area"] = countryId ?: ""
             }
         }
