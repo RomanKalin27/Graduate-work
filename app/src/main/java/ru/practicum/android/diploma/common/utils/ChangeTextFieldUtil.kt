@@ -1,14 +1,13 @@
 package ru.practicum.android.diploma.common.utils
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.ImageButton
+import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import ru.practicum.android.diploma.R
 
 object ChangeTextFieldUtil {
-    @SuppressLint("UseCompatLoadingForDrawables")
     fun changeTextField(
         editText: TextInputEditText,
         textField: TextInputLayout,
@@ -22,7 +21,7 @@ object ChangeTextFieldUtil {
             )
             textField.isEnabled = true
             textField.setHintTextAppearance(R.style.Text_Regular_12_400)
-            clearBtn.setImageDrawable(context.getDrawable(R.drawable.ic_clear))
+            clearBtn.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_clear))
             clearBtn.isClickable = true
         } else {
             textField.setPadding(
@@ -31,7 +30,7 @@ object ChangeTextFieldUtil {
             )
             textField.isEnabled = false
             textField.setHintTextAppearance(R.style.Text_Regular_16_400)
-            clearBtn.setImageDrawable(context.getDrawable(R.drawable.arrow_forward))
+            clearBtn.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.arrow_forward))
             clearBtn.isClickable = false
         }
     }

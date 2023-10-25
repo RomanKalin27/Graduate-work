@@ -35,7 +35,6 @@ class ChoosePlaceWorkFragment : Fragment() {
     private var areasList = ArrayList<AreasDTO>()
     private var areasRegionList = ArrayList<AreasDTO>()
     private var area = ArrayList<AreasDTO>()
-    private var countryArea = AreasDTO.emptyArea
     private var matchCountry = true
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,13 +77,13 @@ class ChoosePlaceWorkFragment : Fragment() {
             if (region != Area.emptyArea) {
                 binding.regionEditText.setText(region.name)
             }
-            setFragmentResult(
-                ChooseCountryFragment.FILTER_KEY,
-                bundleOf(FILTER_COUNTRY to Json.encodeToString(country))
-            )
             changeCountryField()
             changeRegionField()
         }
+        setFragmentResult(
+            ChooseCountryFragment.FILTER_KEY,
+            bundleOf(FILTER_COUNTRY to Json.encodeToString(country))
+        )
     }
 
     private fun setFilters() {
@@ -94,6 +93,8 @@ class ChoosePlaceWorkFragment : Fragment() {
                 ?: AreasDTO.emptyArea)
             if (country != AreasDTO.emptyArea) {
                 binding.countryEditText.setText(country.name)
+                region = Area.emptyArea
+                binding.regionEditText.setText("")
             }
         }
         setFragmentResultListener(KEY_R)
@@ -119,9 +120,8 @@ class ChoosePlaceWorkFragment : Fragment() {
                 binding.countryEditText.setText(area[0].name)
                 setFragmentResult(
                     ChooseCountryFragment.FILTER_KEY,
-                    bundleOf(FILTER_COUNTRY to Json.encodeToString(area[0]))
+                    bundleOf(FILTER_COUNTRY to Json.encodeToString(country))
                 )
-                 //country = AreasDTO(id = area[0].id, name = area[0].name, emptyList())
             }
         }
         changeCountryField()
@@ -206,7 +206,7 @@ class ChoosePlaceWorkFragment : Fragment() {
             binding.countryEditText.text?.clear()
             setFragmentResult(
                 ChooseCountryFragment.FILTER_KEY,
-                bundleOf(ChooseCountryFragment.FILTER_COUNTRY to Json.encodeToString(AreasDTO.emptyArea))
+                bundleOf(FILTER_COUNTRY to Json.encodeToString(AreasDTO.emptyArea))
             )
             changeCountryField()
             showChooseBtn()

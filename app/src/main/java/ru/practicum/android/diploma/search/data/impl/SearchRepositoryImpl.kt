@@ -28,7 +28,6 @@ class SearchRepositoryImpl(
 ) : SearchRepository {
     override suspend fun searchVacancies(query: String): Flow<SearchVacancyResult> =
         flow {
-            //val queryParams = (mapOf("text" to "${query}", "per_page" to "50"))
             val queryParams = requestMaker(query)
             try {
                 if (!networkControl.isInternetAvailable()) {
@@ -38,7 +37,6 @@ class SearchRepositoryImpl(
                 val response = apiService.searchVacancies(queryParams)
 
                 if (response.items.isEmpty()) {
-                    4
                     emit(SearchVacancyResult.EmptyResult)
                 } else {
                     val convertedResponse = converter.convertVacanciesResponse(response)
@@ -51,29 +49,29 @@ class SearchRepositoryImpl(
 
 
     private fun requestMaker(query: String): Map<String, String> {
-        var params = (mapOf("text" to "${query}", "per_page" to "50"))
+        val params = (mutableMapOf("text" to query, "per_page" to "50"))
         val country = sharedPreferences.getString(COUNTRY_KEY, null)
         val region = sharedPreferences.getString(REGION_KEY, null)
         if (!country.isNullOrEmpty()) {
             if (!region.isNullOrEmpty()) {
                 val regionId = Json.decodeFromString<Area>(region).id
-                params += Pair("area", regionId ?: "")
+                params["area"] = regionId ?: ""
             } else {
                 val countryId = Json.decodeFromString<Area>(country).id
-                params += Pair("area", countryId ?: "")
+                params["area"] = countryId ?: ""
             }
         }
         val industry = sharedPreferences.getString(INDUSTRY_KEY, null)
         if (!industry.isNullOrEmpty()) {
             val industryId = Json.decodeFromString<Industry>(industry).id
-            params += Pair("industry", industryId)
+            params["industry"] = industryId
         }
         val salary = sharedPreferences.getString(EXPECTED_SALARY_KEY, null)
         if (!salary.isNullOrEmpty()) {
-            params += Pair("salary", salary)
+            params["salary"] = salary
         }
         val noSalary = sharedPreferences.getBoolean(NO_SALARY_KEY, false)
-        params += Pair("only_with_salary", "$noSalary")
+        params["only_with_salary"] = "$noSalary"
         return params
     }
 

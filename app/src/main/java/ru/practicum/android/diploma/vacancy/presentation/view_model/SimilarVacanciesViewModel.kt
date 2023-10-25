@@ -15,6 +15,7 @@ class SimilarVacanciesViewModel(private val similarVacancyInteractor: SimilarVac
 
 
     fun searchVacancies(id: String) {
+        _similarVacanciesResult.value = SearchVacancyResult.Loading
         viewModelScope.launch {
             similarVacancyInteractor.execute(id).collect { result ->
                 _similarVacanciesResult.value = result

@@ -47,12 +47,13 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
-        observeViewModel()
+        viewModel.isFilterOn()
     }
 
     override fun onResume() {
         super.onResume()
         setupDefaultUI()
+        observeViewModel()
         setFragmentResultListener(SET_FILTERS_KEY) { _, bundle ->
             if (!binding.searchEditText.text.isNullOrEmpty()) {
                 viewModel.searchVacancies(binding.searchEditText.text.toString())
@@ -92,7 +93,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private fun setupDefaultUI() {
         with(binding) {
             searchPlaceholder.setImageResource(R.drawable.placeholder_search)
-            viewModel.isFiltersOn(iconFilter)
             if (searchEditText.text.isNullOrEmpty()) {
                 clearUI()
             }
@@ -104,11 +104,14 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         viewModel.searchVacancyResult.observe(viewLifecycleOwner) { state ->
             binding.iconSearch.setImageResource(R.drawable.ic_search)
 
+
             when (state) {
                 is SearchVacancyResult.Error -> updateUI(SearchUIState.CONNECTION_ERROR)
                 SearchVacancyResult.EmptyResult -> updateUI(SearchUIState.EMPTY_SEARCH)
                 SearchVacancyResult.NoInternet -> updateUI(SearchUIState.NO_INTERNET)
                 is SearchVacancyResult.Success -> showVacancy(state.response.vacancies)
+                SearchVacancyResult.Loading -> updateUI(SearchUIState.LOADING)
+                is SearchVacancyResult.StartScreen -> setFilterIcon(state.isFiltersOn)
             }
         }
     }
@@ -140,6 +143,13 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             vacancyAdapter.notifyDataSetChanged()
         }
         updateIconBasedOnText()
+    }
+    private fun setFilterIcon(isFilterOn: Boolean){
+        if(isFilterOn){
+            binding.iconFilter.setImageResource(R.drawable.ic_filter_on)
+        } else {
+            binding.iconFilter.setImageResource(R.drawable.ic_filter_off)
+        }
     }
 
     private fun showVacancy(items: List<Vacancy>) {
