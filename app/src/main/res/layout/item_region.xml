@@ -19,7 +19,7 @@
         android:layout_marginEnd="@dimen/margin_20"
         android:gravity="start"
         android:textColor="?attr/colorOnPrimary"
-        tools:text="Россия" />
+        tools:text="Ленинград" />
 
     <RadioButton
         android:id="@+id/radioButton"
