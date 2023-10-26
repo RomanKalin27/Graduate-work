@@ -38,7 +38,7 @@
         android:layout_marginTop="@dimen/margin_27"
         android:layout_marginRight="@dimen/margin_16"
         android:background="@drawable/rounded_search_edit_text"
-        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:hint="@string/enter_request"
         android:imeOptions="actionDone|flagNoExtractUi"
         android:inputType="text"

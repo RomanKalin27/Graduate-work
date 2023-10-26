@@ -86,23 +86,15 @@ class FiltersFragment : Fragment() {
             changeIndustryField()
         }
         binding.salaryEditText.addTextChangedListener {
-            binding.salaryEditText.isCursorVisible = true
-            if (binding.salaryEditText.text.isEmpty()) {
-                binding.textExpectedSalary.setTextColor(requireContext().getColor(R.color.hint))
-                binding.salaryClearBtn.isVisible = false
-            } else {
-                binding.textExpectedSalary.setTextColor(requireContext().getColor(R.color.blue))
-                binding.salaryClearBtn.isVisible = true
-            }
-            showRemoveBtn()
+            changeSalaryField()
+        }
+        binding.salaryEditText.setOnFocusChangeListener { _, _ ->
+            changeSalaryField()
         }
         binding.salaryEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                if(!binding.salaryEditText.text.isNullOrEmpty()) {
-                    binding.textExpectedSalary.setTextColor(requireContext().getColor(R.color.yp_black))
-                    binding.salaryClearBtn.isVisible = false
-                }
-                binding.salaryEditText.isCursorVisible = false
+                binding.salaryEditText.isFocusable = false
+                binding.salaryEditText.isFocusableInTouchMode = true
                 val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view.windowToken, 0)
                 true
@@ -188,6 +180,23 @@ class FiltersFragment : Fragment() {
             binding.industryClearBtn,
             requireContext(),
         )
+        showRemoveBtn()
+    }
+
+    private fun changeSalaryField(){
+       // binding.salaryEditText.isCursorVisible = true
+        if (binding.salaryEditText.text.isEmpty()) {
+            binding.textExpectedSalary.setTextColor(requireContext().getColor(R.color.hint))
+            binding.salaryClearBtn.isVisible = false
+        } else {
+            if(!binding.salaryEditText.isFocused){
+                binding.textExpectedSalary.setTextColor(requireContext().getColor(R.color.yp_black))
+                binding.salaryClearBtn.isVisible = false
+            } else {
+                binding.textExpectedSalary.setTextColor(requireContext().getColor(R.color.blue))
+                binding.salaryClearBtn.isVisible = true
+            }
+        }
         showRemoveBtn()
     }
 

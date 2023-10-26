@@ -115,6 +115,7 @@
             android:paddingHorizontal="@dimen/margin_16"
             android:paddingTop="@dimen/margin_16"
             android:singleLine="true"
+            android:focusableInTouchMode="true"
             android:textColor="@color/yp_black"
             android:textColorHint="?attr/text_hint_search"
             android:textCursorDrawable="@drawable/cursor_search"

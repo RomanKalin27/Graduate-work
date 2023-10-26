@@ -20,6 +20,7 @@
         app:defaultNavHost="true" />
 
     <View
+        android:id="@+id/topBorder"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/light_gray"

@@ -1,12 +1,16 @@
 package ru.practicum.android.diploma.search.presentation.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -49,12 +53,12 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
-        viewModel.isFilterOn()
     }
 
     override fun onResume() {
         super.onResume()
         setupDefaultUI()
+        viewModel.isFilterOn()
         observeViewModel()
         setFragmentResultListener(SET_FILTERS_KEY) { _, bundle ->
             if (!binding.searchEditText.text.isNullOrEmpty()) {
@@ -107,6 +111,10 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         timerJob = viewLifecycleOwner.lifecycleScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
             viewModel.searchVacancies(p0)
+            binding.searchEditText.isFocusable = false
+            binding.searchEditText.isFocusableInTouchMode = true
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view?.windowToken, 0)
         }
     }
 
@@ -122,7 +130,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun observeViewModel() {
         viewModel.searchVacancyResult.observe(viewLifecycleOwner) { state ->
-            binding.iconSearch.setImageResource(R.drawable.ic_search)
             when (state) {
                 is SearchVacancyResult.Error -> updateUI(SearchUIState.CONNECTION_ERROR)
                 SearchVacancyResult.EmptyResult -> updateUI(SearchUIState.EMPTY_SEARCH)
@@ -162,10 +169,9 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 SearchUIState.NO_INTERNET -> noInternetPlaceholder.isVisible = true
                 SearchUIState.LOADING -> progressBar.isVisible = true
             }
-            iconSearch.setImageResource(R.drawable.ic_search)
             vacancyAdapter.notifyDataSetChanged()
         }
-        updateIconBasedOnText()
+       // updateIconBasedOnText()
     }
     private fun setFilterIcon(isFilterOn: Boolean){
         if(isFilterOn){
@@ -200,7 +206,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         }
         vacancyList.addAll(items)
         vacancyAdapter.notifyDataSetChanged()
-        updateIconBasedOnText()
+       // updateIconBasedOnText()
     }
 
     private fun setupRecyclerView() {
@@ -219,25 +225,24 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             placeholderNoVacancies.isVisible = false
             noInternetPlaceholder.isVisible = false
             chip.isVisible = false
-            iconSearch.setImageResource(R.drawable.ic_search)
         }
         viewModel.clearCurrentPage()
         vacancyList.clear()
         vacancyAdapter.notifyDataSetChanged()
         timerJob?.cancel()
-        updateIconBasedOnText()
+        //updateIconBasedOnText()
     }
 
-    private fun updateIconBasedOnText() {
+    /*private fun updateIconBasedOnText() {
         if (binding.searchEditText.text.isNullOrEmpty()) {
             binding.iconSearch.setImageResource(R.drawable.ic_search)
         } else {
             binding.iconSearch.setImageResource(R.drawable.ic_clear)
         }
-    }
+    }*/
 
     private fun setupTextWatcher() {
-        val searchTextWatcher = object : TextWatcher {
+        /*val searchTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -255,7 +260,47 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 updateIconBasedOnText()
             }
         }
-        binding.searchEditText.addTextChangedListener(searchTextWatcher)
+        binding.searchEditText.addTextChangedListener(searchTextWatcher)*/
+        binding.searchEditText.addTextChangedListener {
+            changeSearchField()
+            if(!binding.searchEditText.text.isNullOrEmpty()) {
+                savedText = binding.searchEditText.text.toString()
+                debounceSearch(binding.searchEditText.text.toString())
+            }
+        }
+        binding.searchEditText.setOnFocusChangeListener { _, _ ->
+            changeSearchField()
+        }
+        binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if(!binding.searchEditText.text.isNullOrEmpty()) {
+                    viewModel.searchVacancies(binding.searchEditText.text.toString())
+                }
+                binding.searchEditText.isFocusable = false
+                binding.searchEditText.isFocusableInTouchMode = true
+                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view?.windowToken, 0)
+                true
+            } else {
+                false
+            }
+        }
+    }
+    private fun changeSearchField(){
+        if (binding.searchEditText.text.isEmpty()) {
+            clearUI()
+            savedText = ""
+            binding.iconSearch.setImageResource(R.drawable.ic_search)
+            binding.iconSearch.isEnabled = false
+        } else {
+            if(!binding.searchEditText.isFocused){
+                binding.iconSearch.setImageResource(R.drawable.ic_search)
+                binding.iconSearch.isEnabled = false
+            } else {
+                binding.iconSearch.setImageResource(R.drawable.ic_clear)
+                binding.iconSearch.isEnabled = true
+            }
+        }
     }
 
     private fun navigateToVacancyDetail(item: String) {
