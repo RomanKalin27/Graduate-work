@@ -67,12 +67,12 @@
 
     <ImageView
         android:id="@+id/search_placeholder"
-        android:layout_width="@dimen/match_constraint"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_16"
         android:scaleType="fitStart"
         android:src="@drawable/placeholder_search"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
