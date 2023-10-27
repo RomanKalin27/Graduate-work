@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_marginStart="@dimen/margin_8"
-        app:contentInsetStart="0dp"
+        app:contentInsetStart="@dimen/match_constraint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +70,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/industry_text_field"
         style="@style/filterTextField"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="@dimen/match_constraint"
         android:hint="@string/industry"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
