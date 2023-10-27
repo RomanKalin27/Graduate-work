@@ -2,8 +2,6 @@ package ru.practicum.android.diploma.search.presentation.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,6 +58,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         setupDefaultUI()
         viewModel.isFilterOn()
         observeViewModel()
+        viewModel.isFilterOn()
         setFragmentResultListener(SET_FILTERS_KEY) { _, bundle ->
             if (!binding.searchEditText.text.isNullOrEmpty()) {
                 viewModel.searchVacancies(binding.searchEditText.text.toString())
@@ -126,7 +125,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 clearUI()
             }
         }
-        println("Test")
     }
 
     private fun observeViewModel() {
@@ -138,13 +136,12 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 is SearchVacancyResult.Success -> {
                     viewModel.maxPagesSet(state.response.pages)
                     viewModel.isNextPageLoading = true
-                    showVacancy(state.response.vacancies)
-                }
+                    showVacancy(state.response.vacancies)}
                 SearchVacancyResult.Loading -> updateUI(SearchUIState.LOADING)
                 is SearchVacancyResult.StartScreen -> setFilterIcon(state.isFiltersOn)
+                }
             }
         }
-    }
 
     private fun updateUI(searchUIState: SearchUIState) {
         with(binding) {
@@ -178,6 +175,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 SearchUIState.LOADING -> {
                     progressBarLoader.isVisible = true
                 }
+
             }
             vacancyAdapter.notifyDataSetChanged()
         }

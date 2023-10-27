@@ -1,11 +1,13 @@
 package ru.practicum.android.diploma.vacancy.presentation.ui
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
@@ -25,7 +27,6 @@ import ru.practicum.android.diploma.vacancy.presentation.view_model.DetailVacanc
 
 class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
     private val viewModel by viewModel<DetailVacancyViewModel>()
-    private val vacancy: VacancyDetailnfo? = null
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -54,9 +55,17 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
                 Intent.ACTION_SENDTO,
                 Uri.parse("mailto:$emailAddress")
             )
-            requireContext().startActivity(emailIntent)
-        }
 
+            try {
+                requireContext().startActivity(emailIntent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.no_app_for_send),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
         binding.vacancyContactPhoneValue.setOnClickListener {
             val phoneNumber = binding.vacancyContactPhoneValue.text.toString()
             val call = Intent(
