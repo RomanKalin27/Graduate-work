@@ -19,7 +19,6 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
     }
 
     fun searchVacancies(query: String) {
-        _searchVacancyResult.value = SearchVacancyResult.Loading
         viewModelScope.launch {
             if (isNextPageLoading) {
                 if (currentPage != maxPages) {
@@ -28,6 +27,15 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
                         _searchVacancyResult.value = result
                     }
                 }
+            }
+        }
+    }
+
+    fun newSearchVacancies(query: String) {
+        _searchVacancyResult.value = SearchVacancyResult.Loading
+        viewModelScope.launch {
+            searchInteractor.execute(query, currentPage).collect { result ->
+                        _searchVacancyResult.value = result
             }
         }
     }
@@ -44,5 +52,9 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
 
     fun clearCurrentPage(){
         currentPage = 1
+    }
+
+    fun allowSearch(){
+        isNextPageLoading = true
     }
 }

@@ -110,7 +110,8 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         timerJob?.cancel()
         timerJob = viewLifecycleOwner.lifecycleScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
-            viewModel.searchVacancies(p0)
+            viewModel.newSearchVacancies(p0)
+            binding.progressBarLoader.visibility = View.VISIBLE
             binding.searchEditText.isFocusable = false
             binding.searchEditText.isFocusableInTouchMode = true
             val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -139,7 +140,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                     viewModel.isNextPageLoading = true
                     showVacancy(state.response.vacancies)
                 }
-                SearchVacancyResult.Loading -> {}
+                SearchVacancyResult.Loading -> updateUI(SearchUIState.LOADING)
                 is SearchVacancyResult.StartScreen -> setFilterIcon(state.isFiltersOn)
             }
         }
@@ -158,16 +159,25 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
             // Обработка конкретного состояния
             when (searchUIState) {
-                SearchUIState.CONNECTION_ERROR -> placeholderServerError.isVisible = true
+                SearchUIState.CONNECTION_ERROR -> {
+                    placeholderServerError.isVisible = true
+                    viewModel.allowSearch()
+                }
                 SearchUIState.EMPTY_SEARCH -> {
+                    viewModel.allowSearch()
                     placeholderNoVacancies.isVisible = true
                     chip.visibility = View.VISIBLE
                     val message = getString(R.string.no_vacansy)
                     chip.text = message
                 }
 
-                SearchUIState.NO_INTERNET -> noInternetPlaceholder.isVisible = true
-                SearchUIState.LOADING -> progressBar.isVisible = true
+                SearchUIState.NO_INTERNET -> {
+                    noInternetPlaceholder.isVisible = true
+                    viewModel.allowSearch()
+                }
+                SearchUIState.LOADING -> {
+                    progressBarLoader.isVisible = true
+                }
             }
             vacancyAdapter.notifyDataSetChanged()
         }
@@ -188,8 +198,8 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             placeholderServerError.isVisible = false
             placeholderNoVacancies.isVisible = false
             noInternetPlaceholder.isVisible = false
-            progressBar.isVisible = false
             progressBar.visibility = View.GONE
+            progressBarLoader.visibility = View.GONE
             val isEmptyResult = items.isEmpty()
             if (isEmptyResult) {
                 chip.visibility = View.VISIBLE
@@ -220,7 +230,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         with(binding) {
             searchPlaceholder.isVisible = true
             recyclerView.isVisible = false
-            progressBar.isVisible = false
+            progressBarLoader.isVisible = false
             placeholderServerError.isVisible = false
             placeholderNoVacancies.isVisible = false
             noInternetPlaceholder.isVisible = false
