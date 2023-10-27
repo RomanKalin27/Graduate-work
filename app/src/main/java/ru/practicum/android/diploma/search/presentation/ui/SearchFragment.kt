@@ -181,7 +181,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             }
             vacancyAdapter.notifyDataSetChanged()
         }
-       // updateIconBasedOnText()
     }
     private fun setFilterIcon(isFilterOn: Boolean){
         if(isFilterOn){
@@ -216,7 +215,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         }
         vacancyList.addAll(items)
         vacancyAdapter.notifyDataSetChanged()
-       // updateIconBasedOnText()
     }
 
     private fun setupRecyclerView() {
@@ -240,40 +238,12 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         vacancyList.clear()
         vacancyAdapter.notifyDataSetChanged()
         timerJob?.cancel()
-        //updateIconBasedOnText()
     }
 
-    /*private fun updateIconBasedOnText() {
-        if (binding.searchEditText.text.isNullOrEmpty()) {
-            binding.iconSearch.setImageResource(R.drawable.ic_search)
-        } else {
-            binding.iconSearch.setImageResource(R.drawable.ic_clear)
-        }
-    }*/
-
     private fun setupTextWatcher() {
-        /*val searchTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.isNullOrEmpty()) {
-                    clearUI()
-                    savedText = ""
-                } else {
-                    savedText = s.toString()
-                    binding.iconSearch.setImageResource(R.drawable.ic_clear)
-                    debounceSearch(s.toString())
-                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                updateIconBasedOnText()
-            }
-        }
-        binding.searchEditText.addTextChangedListener(searchTextWatcher)*/
         binding.searchEditText.addTextChangedListener {
             changeSearchField()
-            if(!binding.searchEditText.text.isNullOrEmpty()) {
+            if (!binding.searchEditText.text.isNullOrEmpty()) {
                 savedText = binding.searchEditText.text.toString()
                 debounceSearch(binding.searchEditText.text.toString())
             }
@@ -283,12 +253,13 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         }
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                if(!binding.searchEditText.text.isNullOrEmpty()) {
+                if (!binding.searchEditText.text.isNullOrEmpty()) {
                     viewModel.searchVacancies(binding.searchEditText.text.toString())
                 }
                 binding.searchEditText.isFocusable = false
                 binding.searchEditText.isFocusableInTouchMode = true
-                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val imm =
+                    requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view?.windowToken, 0)
                 true
             } else {
@@ -296,14 +267,15 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             }
         }
     }
-    private fun changeSearchField(){
+
+    private fun changeSearchField() {
         if (binding.searchEditText.text.isEmpty()) {
             clearUI()
             savedText = ""
             binding.iconSearch.setImageResource(R.drawable.ic_search)
             binding.iconSearch.isEnabled = false
         } else {
-            if(!binding.searchEditText.isFocused){
+            if (!binding.searchEditText.isFocused) {
                 binding.iconSearch.setImageResource(R.drawable.ic_search)
                 binding.iconSearch.isEnabled = false
             } else {

@@ -184,7 +184,6 @@ class FiltersFragment : Fragment() {
     }
 
     private fun changeSalaryField(){
-       // binding.salaryEditText.isCursorVisible = true
         if (binding.salaryEditText.text.isEmpty()) {
             binding.textExpectedSalary.setTextColor(requireContext().getColor(R.color.hint))
             binding.salaryClearBtn.isVisible = false

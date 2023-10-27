@@ -1,12 +1,16 @@
 package ru.practicum.android.diploma.filters.presentation.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.Constants.SEARCH_DEBOUNCE_DELAY_MILLIS
 import ru.practicum.android.diploma.common.utils.debounce
 import ru.practicum.android.diploma.databinding.FragmentIndustryBinding
@@ -115,6 +120,10 @@ class ChooseIndustry : Fragment() {
                     }
                     industryList.addAll(industryListFilter)
                     industryAdapter.notifyDataSetChanged()
+                    binding.industryEditText.isFocusable = false
+                    binding.industryEditText.isFocusableInTouchMode = true
+                    val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(view?.windowToken, 0)
                 }
             })
     }
@@ -134,20 +143,33 @@ class ChooseIndustry : Fragment() {
             }
             btSelectClicked(selectedIndustry!!)
         }
-        textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (hasInternet) {
-                    debounceSearch(p0.toString().trim())
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
+        binding.iconSearch.setOnClickListener {
+            binding.industryEditText.text.clear()
+        }
+        binding.industryEditText.addTextChangedListener {
+            changeSearchField()
+            if (!binding.industryEditText.text.isNullOrEmpty() || hasInternet) {
+                debounceSearch(binding.industryEditText.text.toString())
             }
         }
-        binding.industryEditText.addTextChangedListener(textWatcher)
+        binding.industryEditText.setOnFocusChangeListener { _, _ ->
+            changeSearchField()
+        }
+        binding.industryEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (!binding.industryEditText.text.isNullOrEmpty()) {
+                    debounceSearch(binding.industryEditText.text.toString())
+                }
+                binding.industryEditText.isFocusable = false
+                binding.industryEditText.isFocusableInTouchMode = true
+                val imm =
+                    requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view?.windowToken, 0)
+                true
+            } else {
+                false
+            }
+        }
     }
 
     private fun btSelectClicked(industry: Industry) {
@@ -195,6 +217,20 @@ class ChooseIndustry : Fragment() {
         industryList.addAll(industry)
         savedIndustryList.addAll(industry)
         industryAdapter.notifyDataSetChanged()
+    }
+    private fun changeSearchField() {
+        if (binding.industryEditText.text.isEmpty()) {
+            binding.iconSearch.setImageResource(R.drawable.ic_search)
+            binding.iconSearch.isEnabled = false
+        } else {
+            if (!binding.industryEditText.isFocused) {
+                binding.iconSearch.setImageResource(R.drawable.ic_search)
+                binding.iconSearch.isEnabled = false
+            } else {
+                binding.iconSearch.setImageResource(R.drawable.ic_clear)
+                binding.iconSearch.isEnabled = true
+            }
+        }
     }
 
 
