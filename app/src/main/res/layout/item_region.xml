@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/region"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         style="@style/Text_Regular_16_400"
@@ -24,8 +24,8 @@
     <RadioButton
         android:id="@+id/radioButton"
         android:clickable="false"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/pic_size_48"
+        android:layout_height="@dimen/pic_size_48"
         android:layout_gravity="center"
         android:gravity="center"
         android:layoutDirection="rtl"

@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context = "ru.practicum.android.diploma.vacancy.presentation.ui.VacancyFragment">
+    tools:context="ru.practicum.android.diploma.vacancy.presentation.ui.VacancyFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        tools:context=".vacancy.presentation.ui.VacancyFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/margin_16"
         android:paddingBottom="@dimen/margin_24"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        tools:context=".vacancy.presentation.ui.VacancyFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:contentInsetStart="0dp"
+            app:contentInsetStart="@dimen/match_constraint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,11 +26,11 @@
 
             <ImageView
                 android:id="@+id/back_btn"
-                tools:contentDescription="back_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:src="@drawable/back_btn"/>
+                android:src="@drawable/back_btn"
+                tools:contentDescription="back_btn" />
 
             <TextView
                 style="@style/Text_Medium_22_500"
@@ -43,21 +42,21 @@
 
             <ImageView
                 android:id="@+id/ic_favorites"
-                tools:contentDescription="ic_favourites"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/margin_4"
-                android:src="@drawable/ic_favorites_off" />
+                android:src="@drawable/ic_favorites_off"
+                tools:contentDescription="ic_favourites" />
 
             <ImageView
                 android:id="@+id/ic_sharing"
-                tools:contentDescription="ic_sharing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/margin_16"
-                android:src="@drawable/ic_share" />
+                android:src="@drawable/ic_share"
+                tools:contentDescription="ic_sharing" />
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.constraintlayout.widget.Group
@@ -72,58 +71,58 @@
             style="@style/Text_Bold_32_700"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Android-разработчик"
+            android:layout_marginTop="@dimen/margin_24"
             android:textColor="?attr/black_to_white_color"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-            android:layout_marginTop="@dimen/margin_24" />
+            tools:text="Android-разработчик" />
 
         <TextView
             android:id="@+id/salary"
             style="@style/Text_Medium_22_500"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="от 100 000 ₽"
             android:textColor="?attr/black_to_white_color"
-            app:layout_constraintTop_toBottomOf="@id/vacancy_name" />
+            app:layout_constraintTop_toBottomOf="@id/vacancy_name"
+            tools:text="от 100 000 ₽" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/employer_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/salary"
             android:layout_marginTop="@dimen/margin_24"
+            android:background="@drawable/card_grey_rectangle"
             android:padding="@dimen/margin_16"
-            android:background="@drawable/card_grey_rectangle">
+            app:layout_constraintTop_toBottomOf="@id/salary">
 
             <ImageView
                 android:id="@+id/placeholder"
-                tools:contentDescription="placeholder"
                 android:layout_width="@dimen/margin_48"
                 android:layout_height="@dimen/margin_48"
-                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/vacancy_placeholder"
                 app:layout_constraintStart_toStartOf="parent"
-                android:src="@drawable/vacancy_placeholder" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:contentDescription="placeholder" />
 
             <TextView
                 android:id="@+id/employer_name"
                 style="@style/Text_Medium_22_500"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Еда"
+                android:layout_marginStart="@dimen/margin_8"
                 android:textColor="@color/black"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/placeholder"
-                android:layout_marginStart="@dimen/margin_8" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Еда" />
 
             <TextView
                 android:id="@+id/city"
                 style="@style/Text_Regular_16_400"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Москва"
                 android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="@id/employer_name"
                 app:layout_constraintTop_toBottomOf="@id/employer_name"
-                app:layout_constraintStart_toStartOf="@id/employer_name" />
+                tools:text="Москва" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -131,66 +130,65 @@
             android:id="@+id/details_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/employer_card"
-            android:visibility="visible">
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/employer_card">
 
             <TextView
                 android:id="@+id/required_experience_field"
                 style="@style/Text_Medium_16_500"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_24"
                 android:text="@string/required_experience"
                 android:textColor="?attr/black_to_white_color"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="@dimen/margin_24"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/required_experience_value"
                 style="@style/Text_Regular_16_400"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="От 1 года до 3 лет"
+                android:layout_marginTop="@dimen/margin_4"
                 android:textColor="?attr/black_to_white_color"
                 app:layout_constraintTop_toBottomOf="@id/required_experience_field"
-                android:layout_marginTop="@dimen/margin_4"/>
+                tools:text="От 1 года до 3 лет" />
 
             <TextView
                 android:id="@+id/schedule_value"
                 style="@style/Text_Regular_16_400"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Полная занятость, Удаленная работа"
+                android:layout_marginTop="@dimen/margin_8"
                 android:textColor="?attr/black_to_white_color"
                 app:layout_constraintTop_toBottomOf="@id/required_experience_value"
-                android:layout_marginTop="@dimen/margin_8"/>
+                tools:text="Полная занятость, Удаленная работа" />
 
             <TextView
                 android:id="@+id/vacancy_description"
                 style="@style/Text_Medium_22_500"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_32"
                 android:text="@string/vacancy_description"
                 android:textColor="?attr/black_to_white_color"
-                app:layout_constraintTop_toBottomOf="@id/schedule_value"
-                android:layout_marginTop="@dimen/margin_32"/>
+                app:layout_constraintTop_toBottomOf="@id/schedule_value" />
 
             <TextView
                 android:id="@+id/vacancy_description_value"
                 style="@style/Text_Regular_16_400"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Обязанности, Требования, Условия"
+                android:layout_marginTop="@dimen/margin_16"
                 android:textColor="?attr/black_to_white_color"
                 app:layout_constraintTop_toBottomOf="@id/vacancy_description"
-                android:layout_marginTop="@dimen/margin_16"/>
-
+                tools:text="Обязанности, Требования, Условия" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/key_skills_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/vacancy_description_value"
-                android:layout_marginTop="@dimen/margin_24">
+                android:layout_marginTop="@dimen/margin_24"
+                app:layout_constraintTop_toBottomOf="@id/vacancy_description_value">
 
                 <TextView
                     android:id="@+id/vacancy_key_skills"
@@ -206,10 +204,10 @@
                     style="@style/Text_Regular_16_400"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Знание классических алгоритмов и структуры данных\nПрограммирование для Android больше одного года\nЗнание WebRTC"
+                    android:layout_marginTop="@dimen/margin_16"
                     android:textColor="?attr/black_to_white_color"
                     app:layout_constraintTop_toBottomOf="@id/vacancy_key_skills"
-                    android:layout_marginTop="@dimen/margin_16"/>
+                    tools:text="Знание классических алгоритмов и структуры данных\nПрограммирование для Android больше одного года\nЗнание WebRTC" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -217,8 +215,8 @@
                 android:id="@+id/contacts_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/key_skills_container"
-                android:layout_marginTop="@dimen/margin_24">
+                android:layout_marginTop="@dimen/margin_24"
+                app:layout_constraintTop_toBottomOf="@id/key_skills_container">
 
                 <TextView
                     android:id="@+id/vacancy_contacts"
@@ -234,80 +232,80 @@
                     style="@style/Text_Medium_16_500"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
                     android:text="@string/contact_person"
                     android:textColor="?attr/black_to_white_color"
-                    app:layout_constraintTop_toBottomOf="@id/vacancy_contacts"
-                    android:layout_marginTop="@dimen/margin_16"/>
+                    app:layout_constraintTop_toBottomOf="@id/vacancy_contacts" />
 
                 <TextView
                     android:id="@+id/vacancy_contact_person_value"
                     style="@style/Text_Regular_16_400"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Василий"
+                    android:layout_marginTop="@dimen/margin_4"
                     android:textColor="?attr/black_to_white_color"
                     app:layout_constraintTop_toBottomOf="@id/vacancy_contact_person"
-                    android:layout_marginTop="@dimen/margin_4"/>
+                    tools:text="Василий" />
 
                 <TextView
                     android:id="@+id/vacancy_contact_email"
                     style="@style/Text_Medium_16_500"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
                     android:text="@string/mail"
                     android:textColor="?attr/black_to_white_color"
-                    app:layout_constraintTop_toBottomOf="@id/vacancy_contact_person_value"
-                    android:layout_marginTop="@dimen/margin_16"/>
+                    app:layout_constraintTop_toBottomOf="@id/vacancy_contact_person_value" />
 
                 <TextView
                     android:id="@+id/vacancy_contact_email_value"
                     style="@style/Text_Regular_16_400"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="g-926@ya.ru"
+                    android:layout_marginTop="@dimen/margin_4"
                     android:textColor="@color/blue"
                     app:layout_constraintTop_toBottomOf="@id/vacancy_contact_email"
-                    android:layout_marginTop="@dimen/margin_4"/>
+                    tools:text="g-926@ya.ru" />
 
                 <TextView
                     android:id="@+id/vacancy_contact_phone"
                     style="@style/Text_Medium_16_500"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
                     android:text="@string/phone"
                     android:textColor="?attr/black_to_white_color"
-                    app:layout_constraintTop_toBottomOf="@id/vacancy_contact_email_value"
-                    android:layout_marginTop="@dimen/margin_16"/>
+                    app:layout_constraintTop_toBottomOf="@id/vacancy_contact_email_value" />
 
                 <TextView
                     android:id="@+id/vacancy_contact_phone_value"
                     style="@style/Text_Regular_16_400"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="+7 (916) 916-16-16"
+                    android:layout_marginTop="@dimen/margin_4"
                     android:textColor="@color/blue"
                     app:layout_constraintTop_toBottomOf="@id/vacancy_contact_phone"
-                    android:layout_marginTop="@dimen/margin_4"/>
+                    tools:text="+7 (916) 916-16-16" />
 
                 <TextView
                     android:id="@+id/vacancy_phone_comment"
                     style="@style/Text_Medium_16_500"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
                     android:text="@string/comment"
                     android:textColor="?attr/black_to_white_color"
-                    app:layout_constraintTop_toBottomOf="@id/vacancy_contact_phone_value"
-                    android:layout_marginTop="@dimen/margin_16"/>
+                    app:layout_constraintTop_toBottomOf="@id/vacancy_contact_phone_value" />
 
                 <TextView
                     android:id="@+id/vacancy_phone_comment_value"
                     style="@style/Text_Regular_16_400"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Заполнить анкету по форме можно на нашем сайте"
+                    android:layout_marginTop="@dimen/margin_4"
                     android:textColor="?attr/black_to_white_color"
                     app:layout_constraintTop_toBottomOf="@id/vacancy_phone_comment"
-                    android:layout_marginTop="@dimen/margin_4"/>
+                    tools:text="Заполнить анкету по форме можно на нашем сайте" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -316,22 +314,22 @@
                 style="@style/Text_Medium_16_500"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_59"
+                android:layout_marginTop="@dimen/margin_24"
                 android:background="@drawable/blue_button"
+                android:gravity="center"
                 android:text="@string/similar_vacancies"
                 android:textColor="@color/white"
-                android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/contacts_container"
-                android:layout_marginTop="@dimen/margin_24" />
+                app:layout_constraintTop_toBottomOf="@id/contacts_container" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-          <ProgressBar
+        <ProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_282"
             android:indeterminateTint="@color/blue"
             android:visibility="gone"
-            android:layout_marginTop="@dimen/margin_282"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />

@@ -41,7 +41,6 @@
         android:textColor="?attr/text_color"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_worked_application"
-
         />
 
     <TextView
