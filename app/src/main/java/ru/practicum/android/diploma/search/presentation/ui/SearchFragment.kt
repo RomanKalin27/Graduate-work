@@ -93,7 +93,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                     val itemsCount = vacancyAdapter.itemCount
                     if (pos >= itemsCount - 1) {
                         if (savedText != "") {
-                            binding.progressBar.visibility = View.VISIBLE
+                            binding.progressBarPaging.visibility = View.VISIBLE
                             viewModel.currentPageInc()
                             viewModel.searchVacancies(savedText)
                         }
@@ -107,6 +107,8 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     }
 
     private fun debounceSearch(p0: String) {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.searchPlaceholder.isVisible = false
         timerJob?.cancel()
         timerJob = viewLifecycleOwner.lifecycleScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
@@ -151,6 +153,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             searchPlaceholder.isVisible = false
             placeholderServerError.isVisible = false
             placeholderNoVacancies.isVisible = false
+            progressBar.isVisible = false
             noInternetPlaceholder.isVisible = false
             recyclerView.isVisible = false
             chip.isVisible = false
@@ -188,15 +191,15 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             placeholderServerError.isVisible = false
             placeholderNoVacancies.isVisible = false
             noInternetPlaceholder.isVisible = false
+            progressBarPaging.isVisible = false
             progressBar.isVisible = false
-            progressBar.visibility = View.GONE
             val isEmptyResult = items.isEmpty()
             if (isEmptyResult) {
-                chip.visibility = View.VISIBLE
+                chip.isVisible = true
                 val message = getString(R.string.no_vacansy)
                 chip.text = message
             } else {
-                chip.visibility = View.VISIBLE
+                chip.isVisible = true
                 val vacancyCount = viewModel.maxPages * 20
                 val message = resources.getQuantityString(
                     R.plurals.search_result_count, vacancyCount, vacancyCount
@@ -221,6 +224,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             searchPlaceholder.isVisible = true
             recyclerView.isVisible = false
             progressBar.isVisible = false
+            progressBarPaging.isVisible = false
             placeholderServerError.isVisible = false
             placeholderNoVacancies.isVisible = false
             noInternetPlaceholder.isVisible = false
@@ -261,6 +265,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             }
         }
         binding.searchEditText.addTextChangedListener(searchTextWatcher)*/
+
         binding.searchEditText.addTextChangedListener {
             changeSearchField()
             if(!binding.searchEditText.text.isNullOrEmpty()) {
