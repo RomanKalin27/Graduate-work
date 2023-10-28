@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.search.presentation.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -40,6 +42,9 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private val vacancyAdapter = VacancyAdapter(vacancyList)
     private var timerJob: Job? = null
     private var savedText = ""
+    private var doSearchAgain = true
+    private var doSearch = true
+    //private var recyclerState: Parcelable? = null
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -55,10 +60,9 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     override fun onResume() {
         super.onResume()
-        setupDefaultUI()
         viewModel.isFilterOn()
         observeViewModel()
-        viewModel.isFilterOn()
+        setupDefaultUI()
         setFragmentResultListener(SET_FILTERS_KEY) { _, bundle ->
             if (!binding.searchEditText.text.isNullOrEmpty()) {
                 viewModel.searchVacancies(binding.searchEditText.text.toString())
@@ -68,6 +72,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun setupViews() {
         binding.iconFilter.setOnClickListener {
+            doSearchAgain = false
             findNavController().navigate(R.id.action_searchFragment_to_filtersFragment)
         }
         binding.iconSearch.setOnClickListener {
@@ -80,6 +85,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         onVacancyClickDebounce = debounce(
             CLICK_DEBOUNCE_DELAY_MILLIS, viewLifecycleOwner.lifecycleScope, false
         ) { item ->
+            doSearchAgain = false
             navigateToVacancyDetail(item.id)
         }
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -140,21 +146,21 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 SearchVacancyResult.Loading -> updateUI(SearchUIState.LOADING)
                 is SearchVacancyResult.StartScreen -> setFilterIcon(state.isFiltersOn)
             }
+            doSearch = false
         }
     }
 
     private fun updateUI(searchUIState: SearchUIState) {
         with(binding) {
-            // Скрываем searchPlaceholder и другие плейсхолдеры
             searchPlaceholder.isVisible = false
             placeholderServerError.isVisible = false
             placeholderNoVacancies.isVisible = false
             noInternetPlaceholder.isVisible = false
+            progressBarLoader.isVisible = false
             recyclerView.isVisible = false
             chip.isVisible = false
             vacancyList.clear()
 
-            // Обработка конкретного состояния
             when (searchUIState) {
                 SearchUIState.CONNECTION_ERROR -> {
                     placeholderServerError.isVisible = true
@@ -241,10 +247,13 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private fun setupTextWatcher() {
         binding.searchEditText.addTextChangedListener {
             changeSearchField()
+            savedText = binding.searchEditText.text.toString()
             if (!binding.searchEditText.text.isNullOrEmpty()) {
-                savedText = binding.searchEditText.text.toString()
-                debounceSearch(binding.searchEditText.text.toString())
+                if(doSearchAgain) {
+                    debounceSearch(binding.searchEditText.text.toString())
+                }
             }
+            doSearchAgain = true
         }
         binding.searchEditText.setOnFocusChangeListener { _, _ ->
             changeSearchField()

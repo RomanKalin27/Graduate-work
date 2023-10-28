@@ -14,9 +14,6 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
     var isNextPageLoading = true
     private val _searchVacancyResult: MutableLiveData<SearchVacancyResult> = MutableLiveData()
     val searchVacancyResult: LiveData<SearchVacancyResult> = _searchVacancyResult
-    init {
-        isFilterOn()
-    }
 
     fun searchVacancies(query: String) {
         viewModelScope.launch {
@@ -40,7 +37,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         }
     }
     fun isFilterOn(){
-        _searchVacancyResult.value = SearchVacancyResult.StartScreen(searchInteractor.isFiltersOn())
+       //. _searchVacancyResult.value = SearchVacancyResult.StartScreen(searchInteractor.isFiltersOn())
     }
     fun currentPageInc() {
         currentPage += 1
