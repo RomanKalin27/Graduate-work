@@ -24,7 +24,8 @@ val domainModule = module {
 
     single<FilterInteractor> {
         FilterInteractorImpl(
-            filterRepository = get()
+            filterRepository = get(),
+            converter = get()
         )
     }
     single<ChooseCountryInteractor> {

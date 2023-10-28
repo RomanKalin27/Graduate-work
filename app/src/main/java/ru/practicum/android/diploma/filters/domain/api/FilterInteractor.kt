@@ -1,5 +1,8 @@
 package ru.practicum.android.diploma.filters.domain.api
 
+import ru.practicum.android.diploma.filters.domain.models.AreaDomain
+import ru.practicum.android.diploma.filters.domain.models.Areas
+
 interface FilterInteractor {
     fun saveFilters(
         countryJson: String?,
@@ -15,4 +18,7 @@ interface FilterInteractor {
     fun getExpectedSalary(): String?
     fun getRemoveNoSalary(): Boolean
     fun removeFilters()
+    fun filterConvertCountry(areas: List<Areas>, country: Areas): List<AreaDomain>
+    fun filterConvertRegions(areas: List<Areas>): List<AreaDomain>
+
 }
