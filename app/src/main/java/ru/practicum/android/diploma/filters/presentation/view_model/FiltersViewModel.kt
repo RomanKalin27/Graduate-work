@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.filters.data.converter.FilterModelConverter
 import ru.practicum.android.diploma.filters.domain.api.ChooseCountryInteractor
 import ru.practicum.android.diploma.filters.domain.api.ChooseIndustryInteractor
 import ru.practicum.android.diploma.filters.domain.api.ChooseRegionInteractor
@@ -22,7 +21,6 @@ class FiltersViewModel(
     private val chooseCountryInteractor: ChooseCountryInteractor,
     private val chooseRegionInteractor: ChooseRegionInteractor,
     private val chooseIndustryInteractor: ChooseIndustryInteractor,
-    private val converter: FilterModelConverter,
 ) : ViewModel() {
     private val _stateLiveData = MutableLiveData<FiltersState>()
     private var emptyFilters = FiltersState(null, null, null, null, false)
@@ -51,11 +49,10 @@ class FiltersViewModel(
 
     fun convert(areas: List<Areas>, country: Areas) {
         if (country != Areas.emptyArea) {
-            val result = converter.regionDTOListToAreaList(areas.flatMap { it.areas }
-                .filter { it.parentId == country.id })
+            val result = filterInteractor.filterConvertCountry(areas, country)
             _convert.postValue(result)
         } else {
-            _convert.postValue(converter.regionDTOListToAreaList(areas.flatMap { it.areas }))
+            _convert.postValue(filterInteractor.filterConvertRegions(areas))
         }
     }
 
