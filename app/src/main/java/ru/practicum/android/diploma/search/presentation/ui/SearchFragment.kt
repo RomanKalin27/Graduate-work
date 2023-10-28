@@ -169,6 +169,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 SearchUIState.EMPTY_SEARCH -> {
                     viewModel.allowSearch()
                     placeholderNoVacancies.isVisible = true
+                  //2023.11.28  progressBarLoader.isVisible = false
                     chip.visibility = View.VISIBLE
                     val message = getString(R.string.no_vacansy)
                     chip.text = message

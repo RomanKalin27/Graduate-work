@@ -78,6 +78,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/industry_edit_text"
+
             style="@style/filterEditText2" />
     </com.google.android.material.textfield.TextInputLayout>
 
