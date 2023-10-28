@@ -23,7 +23,7 @@
         <item name="android:paddingBottom">0dp</item>
     </style>
     <style name="filterTextField">
-        <item name="android:layout_height">@dimen/margin_60</item>
+        <item name="android:layout_height">@dimen/margin_64</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginTop">@dimen/margin_80</item>
         <item name="android:layout_marginHorizontal">@dimen/margin_16</item>
