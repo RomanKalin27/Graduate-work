@@ -7,13 +7,16 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.search.domain.impl.SearchInteractor
 import ru.practicum.android.diploma.search.domain.models.SearchVacancyResult
+import ru.practicum.android.diploma.search.presentation.models.SearchScreenState
 
 class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewModel() {
     private var currentPage = 1
     var maxPages = 0
     var isNextPageLoading = true
-    private val _searchVacancyResult: MutableLiveData<SearchVacancyResult> = MutableLiveData()
-    val searchVacancyResult: LiveData<SearchVacancyResult> = _searchVacancyResult
+    private var isFiltersOn = false
+    private var vacanyResult: SearchVacancyResult? = null
+    private val _searchVacancyResult: MutableLiveData<SearchScreenState> = MutableLiveData()
+    val searchVacancyResult: LiveData<SearchScreenState> = _searchVacancyResult
 
     fun searchVacancies(query: String) {
         viewModelScope.launch {
@@ -21,7 +24,8 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
                 if (currentPage != maxPages) {
                     isNextPageLoading = false
                     searchInteractor.execute(query, currentPage).collect { result ->
-                        _searchVacancyResult.value = result
+                        vacanyResult = result
+                        _searchVacancyResult.postValue(SearchScreenState(result, isFiltersOn))
                     }
                 }
             }
@@ -29,15 +33,18 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
     }
 
     fun newSearchVacancies(query: String) {
-        _searchVacancyResult.value = SearchVacancyResult.Loading
+        vacanyResult = SearchVacancyResult.Loading
+        _searchVacancyResult.postValue(SearchScreenState(vacanyResult, isFiltersOn))
         viewModelScope.launch {
             searchInteractor.execute(query, currentPage).collect { result ->
-                        _searchVacancyResult.value = result
+                vacanyResult = result
+                _searchVacancyResult.postValue(SearchScreenState(result, isFiltersOn))
             }
         }
     }
     fun isFilterOn(){
-       //. _searchVacancyResult.value = SearchVacancyResult.StartScreen(searchInteractor.isFiltersOn())
+        isFiltersOn = searchInteractor.isFiltersOn()
+        _searchVacancyResult.postValue(SearchScreenState(vacanyResult, isFiltersOn))
     }
     fun currentPageInc() {
         currentPage += 1

@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.search.presentation.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -44,7 +42,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private var savedText = ""
     private var doSearchAgain = true
     private var doSearch = true
-    //private var recyclerState: Parcelable? = null
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -62,10 +59,9 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         super.onResume()
         viewModel.isFilterOn()
         observeViewModel()
-        setupDefaultUI()
         setFragmentResultListener(SET_FILTERS_KEY) { _, bundle ->
             if (!binding.searchEditText.text.isNullOrEmpty()) {
-                viewModel.searchVacancies(binding.searchEditText.text.toString())
+                viewModel.newSearchVacancies(binding.searchEditText.text.toString())
             }
         }
     }
@@ -106,7 +102,9 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 }
             }
         })
-        setupDefaultUI()
+        if (doSearchAgain) {
+            setupDefaultUI()
+        }
         setupTextWatcher()
         setupRecyclerView()
     }
@@ -119,7 +117,8 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             binding.progressBarLoader.visibility = View.VISIBLE
             binding.searchEditText.isFocusable = false
             binding.searchEditText.isFocusableInTouchMode = true
-            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view?.windowToken, 0)
         }
     }
@@ -127,7 +126,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private fun setupDefaultUI() {
         with(binding) {
             searchPlaceholder.setImageResource(R.drawable.placeholder_search)
-            if (searchEditText.text.isNullOrEmpty()) {
+            if (searchEditText.text.isEmpty()) {
                 clearUI()
             }
         }
@@ -135,17 +134,20 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun observeViewModel() {
         viewModel.searchVacancyResult.observe(viewLifecycleOwner) { state ->
-            when (state) {
+            when (state.result) {
                 is SearchVacancyResult.Error -> updateUI(SearchUIState.CONNECTION_ERROR)
                 SearchVacancyResult.EmptyResult -> updateUI(SearchUIState.EMPTY_SEARCH)
                 SearchVacancyResult.NoInternet -> updateUI(SearchUIState.NO_INTERNET)
                 is SearchVacancyResult.Success -> {
-                    viewModel.maxPagesSet(state.response.pages)
+                    viewModel.maxPagesSet(state.result.response.pages)
                     viewModel.isNextPageLoading = true
-                    showVacancy(state.response.vacancies)}
+                    showVacancy(state.result.response.vacancies)
+                }
+
                 SearchVacancyResult.Loading -> updateUI(SearchUIState.LOADING)
-                is SearchVacancyResult.StartScreen -> setFilterIcon(state.isFiltersOn)
+                else -> {}
             }
+            setFilterIcon(state.isFilterOn)
             doSearch = false
         }
     }
@@ -166,10 +168,10 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                     placeholderServerError.isVisible = true
                     viewModel.allowSearch()
                 }
+
                 SearchUIState.EMPTY_SEARCH -> {
                     viewModel.allowSearch()
                     placeholderNoVacancies.isVisible = true
-                  //2023.11.28  progressBarLoader.isVisible = false
                     chip.visibility = View.VISIBLE
                     val message = getString(R.string.no_vacansy)
                     chip.text = message
@@ -179,6 +181,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                     noInternetPlaceholder.isVisible = true
                     viewModel.allowSearch()
                 }
+
                 SearchUIState.LOADING -> {
                     progressBarLoader.isVisible = true
                 }
@@ -187,8 +190,9 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             vacancyAdapter.notifyDataSetChanged()
         }
     }
-    private fun setFilterIcon(isFilterOn: Boolean){
-        if(isFilterOn){
+
+    private fun setFilterIcon(isFilterOn: Boolean) {
+        if (isFilterOn) {
             binding.iconFilter.setImageResource(R.drawable.ic_filter_on)
         } else {
             binding.iconFilter.setImageResource(R.drawable.ic_filter_off)
@@ -250,7 +254,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             changeSearchField()
             savedText = binding.searchEditText.text.toString()
             if (!binding.searchEditText.text.isNullOrEmpty()) {
-                if(doSearchAgain) {
+                if (doSearchAgain) {
                     debounceSearch(binding.searchEditText.text.toString())
                 }
             }
@@ -262,7 +266,8 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (!binding.searchEditText.text.isNullOrEmpty()) {
-                    viewModel.searchVacancies(binding.searchEditText.text.toString())
+                    viewModel.newSearchVacancies(binding.searchEditText.text.toString())
+                    timerJob?.cancel()
                 }
                 binding.searchEditText.isFocusable = false
                 binding.searchEditText.isFocusableInTouchMode = true
