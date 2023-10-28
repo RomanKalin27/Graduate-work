@@ -44,6 +44,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.showDetailVacancy(retrieveVacancy())
+        binding.group.visibility = View.GONE
         observeViewModel()
         binding.backBtn.setOnClickListener {
             findNavController().popBackStack()
