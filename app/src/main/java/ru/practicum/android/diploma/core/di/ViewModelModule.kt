@@ -31,7 +31,7 @@ val viewModelModule = module {
     }
     viewModel {
         DetailVacancyViewModel(
-            detailVacancyInteractor = get()
+            favoriteVacancyInteractor = get()
         )
     }
     viewModel {
