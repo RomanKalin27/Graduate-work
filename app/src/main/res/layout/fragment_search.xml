@@ -163,7 +163,6 @@
         android:text="@string/no_vacansy"
         android:textAlignment="center"
         android:textColor="@color/yp_white"
-        android:textStyle="italic"
         android:visibility="visible"
         app:chipBackgroundColor="@color/blue"
         app:chipCornerRadius="@dimen/corner_radius_12"

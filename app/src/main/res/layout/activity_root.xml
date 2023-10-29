@@ -19,7 +19,7 @@
     <View
         android:id="@+id/topBorder"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/margin_1"
         android:background="@color/light_gray"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent" />

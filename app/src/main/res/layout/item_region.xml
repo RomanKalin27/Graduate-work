@@ -19,7 +19,7 @@
         android:layout_marginEnd="@dimen/margin_20"
         android:gravity="start"
         android:textColor="?attr/colorOnPrimary"
-        tools:text="Ленинград" />
+        tools:text="@string/city_mock" />
 
     <RadioButton
         android:id="@+id/radioButton"

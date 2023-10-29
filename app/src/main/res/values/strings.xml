@@ -86,6 +86,19 @@
     <string name="no">Нет</string>
     <string name="delete_vacancy">Удалить вакансию из избранного?</string>
 
+    <string name="andr_dev_mock">Android-разработчик</string>
+    <string name="from_money_mock">от 100 000 ₽</string>
+    <string name="country_mock">Россия</string>
+    <string name="city_mock">Москва</string>
+    <string name="expirience_mock">От 1 года до 3 лет</string>
+    <string name="full_time_mock">Полная занятость, Удаленная работа</string>
+    <string name="discription_mock">Обязанности, Требования, Условия</string>
+    <string name="skills_mock">Знание классических алгоритмов и структуры данных\nПрограммирование для Android больше одного года\nЗнание WebRTC</string>
+    <string name="man_mock">Василий</string>
+    <string name="mail_mock">g-926@ya.ru</string>
+    <string name="phone_mock">+7 (916) 916-16-16</string>
+    <string name="comment_mock">Заполнить анкету по форме можно на нашем сайте</string>
+
     <plurals name="search_result_count">
         <item quantity="zero">Найдено %d вакансий</item>
         <item quantity="one">Найдена %d вакансия</item>

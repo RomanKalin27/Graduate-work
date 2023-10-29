@@ -74,7 +74,7 @@
             android:layout_marginTop="@dimen/margin_24"
             android:textColor="?attr/black_to_white_color"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-            tools:text="Android-разработчик" />
+            tools:text="@string/andr_dev_mock" />
 
         <TextView
             android:id="@+id/salary"
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:textColor="?attr/black_to_white_color"
             app:layout_constraintTop_toBottomOf="@id/vacancy_name"
-            tools:text="от 100 000 ₽" />
+            tools:text="@string/from_money_mock" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/employer_card"
@@ -112,7 +112,7 @@
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@id/placeholder"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Еда" />
+                tools:text="@string/departament" />
 
             <TextView
                 android:id="@+id/city"
@@ -122,7 +122,7 @@
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="@id/employer_name"
                 app:layout_constraintTop_toBottomOf="@id/employer_name"
-                tools:text="Москва" />
+                tools:text="@string/city_mock" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -151,7 +151,7 @@
                 android:layout_marginTop="@dimen/margin_4"
                 android:textColor="?attr/black_to_white_color"
                 app:layout_constraintTop_toBottomOf="@id/required_experience_field"
-                tools:text="От 1 года до 3 лет" />
+                tools:text="@string/expirience_mock" />
 
             <TextView
                 android:id="@+id/schedule_value"
@@ -161,7 +161,7 @@
                 android:layout_marginTop="@dimen/margin_8"
                 android:textColor="?attr/black_to_white_color"
                 app:layout_constraintTop_toBottomOf="@id/required_experience_value"
-                tools:text="Полная занятость, Удаленная работа" />
+                tools:text="@string/full_time_mock" />
 
             <TextView
                 android:id="@+id/vacancy_description"
@@ -181,7 +181,7 @@
                 android:layout_marginTop="@dimen/margin_16"
                 android:textColor="?attr/black_to_white_color"
                 app:layout_constraintTop_toBottomOf="@id/vacancy_description"
-                tools:text="Обязанности, Требования, Условия" />
+                tools:text="@string/discription_mock" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/key_skills_container"
@@ -207,7 +207,7 @@
                     android:layout_marginTop="@dimen/margin_16"
                     android:textColor="?attr/black_to_white_color"
                     app:layout_constraintTop_toBottomOf="@id/vacancy_key_skills"
-                    tools:text="Знание классических алгоритмов и структуры данных\nПрограммирование для Android больше одного года\nЗнание WebRTC" />
+                    tools:text="@string/skills_mock" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -245,7 +245,7 @@
                     android:layout_marginTop="@dimen/margin_4"
                     android:textColor="?attr/black_to_white_color"
                     app:layout_constraintTop_toBottomOf="@id/vacancy_contact_person"
-                    tools:text="Василий" />
+                    tools:text="@string/man_mock" />
 
                 <TextView
                     android:id="@+id/vacancy_contact_email"
@@ -265,7 +265,7 @@
                     android:layout_marginTop="@dimen/margin_4"
                     android:textColor="@color/blue"
                     app:layout_constraintTop_toBottomOf="@id/vacancy_contact_email"
-                    tools:text="g-926@ya.ru" />
+                    tools:text="@string/mail_mock" />
 
                 <TextView
                     android:id="@+id/vacancy_contact_phone"
@@ -285,7 +285,7 @@
                     android:layout_marginTop="@dimen/margin_4"
                     android:textColor="@color/blue"
                     app:layout_constraintTop_toBottomOf="@id/vacancy_contact_phone"
-                    tools:text="+7 (916) 916-16-16" />
+                    tools:text="@string/phone_mock" />
 
                 <TextView
                     android:id="@+id/vacancy_phone_comment"
@@ -305,7 +305,7 @@
                     android:layout_marginTop="@dimen/margin_4"
                     android:textColor="?attr/black_to_white_color"
                     app:layout_constraintTop_toBottomOf="@id/vacancy_phone_comment"
-                    tools:text="Заполнить анкету по форме можно на нашем сайте" />
+                    tools:text="@string/comment_mock" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

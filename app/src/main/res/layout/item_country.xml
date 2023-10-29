@@ -18,5 +18,5 @@
         android:paddingStart="@dimen/match_constraint"
         android:textColor="?attr/colorOnPrimary"
         app:drawableEndCompat="@drawable/arrow_forward"
-        tools:text="Россия" />
+        tools:text="@string/country_mock" />
 </FrameLayout>
