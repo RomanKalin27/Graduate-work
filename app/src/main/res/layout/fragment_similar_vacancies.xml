@@ -6,13 +6,15 @@
     android:layout_height="match_parent"
     android:background="?attr/background">
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:gravity="center_vertical"
-        app:contentInsetStart="@dimen/margin_16"
+        android:layout_marginStart="@dimen/margin_8"
+        app:contentInsetStart="@dimen/match_constraint"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -21,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:src="@drawable/back_btn"
+            android:src="@drawable/back_btn40"
             tools:contentDescription="back_btn" />
 
         <TextView
@@ -29,7 +31,7 @@
             style="@style/Text_Medium_22_500"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_40"
+            android:layout_marginStart="@dimen/margin_8"
             android:text="@string/similar_vacancies"
             android:textColor="?attr/black_to_white_color" />
     </androidx.appcompat.widget.Toolbar>
@@ -44,7 +46,7 @@
         android:text="@string/error_no_internet"
         android:textAlignment="center"
         android:visibility="gone"
-        app:drawableTopCompat="@drawable/placeholder_sad"
+        app:drawableTopCompat="@drawable/placeholder_skull"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +62,7 @@
         android:text="@string/server_error"
         android:textAlignment="center"
         android:visibility="gone"
-        app:drawableTopCompat="@drawable/placeholder_skull"
+        app:drawableTopCompat="@drawable/placeholder_sad"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

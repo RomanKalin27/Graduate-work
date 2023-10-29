@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/background">
 
-    <ImageButton
-        android:id="@+id/btn_back"
-        android:layout_width="@dimen/margin_24"
-        android:layout_height="@dimen/margin_24"
-        android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginTop="@dimen/margin_16"
-        android:background="@null"
-        android:src="@drawable/back_btn"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginStart="@dimen/margin_8"
+        app:contentInsetStart="@dimen/match_constraint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/text_select_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_20"
-        android:layout_marginTop="15dp"
-        style="@style/Text_Medium_22_500"
-        android:text="@string/select_job"
-        android:textColor="?attr/text_color"
-        app:layout_constraintStart_toEndOf="@+id/btn_back"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:src="@drawable/back_btn40"
+            tools:contentDescription="back_btn" />
+
+        <TextView
+            style="@style/Text_Medium_22_500"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8"
+            android:text="@string/select_job"
+            android:textColor="?attr/black_to_white_color" />
+    </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/country_text_field"
@@ -53,17 +59,16 @@
         android:id="@+id/country_clear_btn"
         android:layout_width="@dimen/margin_24"
         android:layout_height="@dimen/margin_24"
-        android:layout_marginHorizontal="@dimen/margin_14"
-        android:layout_marginTop="@dimen/margin_98"
         android:background="@null"
         android:src="@drawable/arrow_forward"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/country_text_field"
+        app:layout_constraintEnd_toEndOf="@+id/country_text_field"
+        app:layout_constraintTop_toTopOf="@+id/country_text_field" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/region_text_field"
         style="@style/filterTextField"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="@dimen/match_constraint"
         android:hint="@string/region"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,20 +91,19 @@
         android:id="@+id/region_clear_btn"
         android:layout_width="@dimen/margin_24"
         android:layout_height="@dimen/margin_24"
-        android:layout_marginHorizontal="@dimen/margin_14"
-        android:layout_marginTop="@dimen/margin_158"
         android:background="@null"
         android:src="@drawable/arrow_forward"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/region_text_field"
+        app:layout_constraintEnd_toEndOf="@+id/region_text_field"
+        app:layout_constraintTop_toTopOf="@+id/region_text_field" />
 
     <Button
         android:id="@+id/btn_choose"
+        style="@style/Text_Medium_16_500"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_60"
         android:layout_marginHorizontal="@dimen/margin_17"
         android:layout_marginBottom="@dimen/margin_24"
-        style="@style/Text_Medium_16_500"
         android:background="@drawable/select_btn_background"
         android:text="@string/select"
         android:textColor="@color/yp_white"

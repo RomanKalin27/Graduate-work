@@ -6,58 +6,62 @@
     android:layout_height="match_parent"
     android:background="?attr/background">
 
-    <ImageButton
-        android:id="@+id/btn_back"
-        android:layout_width="@dimen/margin_24"
-        android:layout_height="@dimen/margin_24"
-        android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginTop="@dimen/margin_16"
-        android:background="@null"
-        android:src="@drawable/back_btn"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginStart="@dimen/margin_8"
+        app:contentInsetStart="@dimen/match_constraint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/text_select_region"
-        style="@style/Text_Medium_22_500"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_20"
-        android:layout_marginTop="15dp"
-        android:text="@string/select_region"
-        android:textColor="?attr/text_color"
-        app:layout_constraintStart_toEndOf="@+id/btn_back"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:src="@drawable/back_btn40"
+            tools:contentDescription="back_btn" />
 
-    <EditText
+        <TextView
+            style="@style/Text_Medium_22_500"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8"
+            android:text="@string/select_region"
+            android:textColor="?attr/black_to_white_color" />
+    </androidx.appcompat.widget.Toolbar>
+
+   <EditText
         android:id="@+id/region_edit_text"
-        style="@style/Text_Regular_16_400"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_56"
         android:layout_marginHorizontal="@dimen/margin_16"
-        android:layout_marginTop="@dimen/margin_64"
-        android:background="@drawable/salary_background"
-        android:focusable="true"
+        android:background="@drawable/rounded_search_edit_text"
+        android:focusableInTouchMode="true"
         android:hint="@string/enter_region"
         android:imeOptions="actionDone|flagNoExtractUi"
         android:inputType="text"
-        android:paddingStart="@dimen/margin_16"
+        android:lines="1"
+        android:paddingLeft="@dimen/margin_16"
         android:singleLine="true"
-        android:textColor="@color/black"
+        android:textColor="@color/yp_black"
         android:textColorHint="?attr/text_hint_search"
         android:textCursorDrawable="@drawable/cursor_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/icon_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8"
-        android:layout_marginRight="@dimen/margin_20"
         android:src="@drawable/ic_search"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/region_edit_text"
+        app:layout_constraintEnd_toEndOf="@id/region_edit_text"
         app:layout_constraintTop_toTopOf="@+id/region_edit_text" />
 
     <ImageView
@@ -117,11 +121,11 @@
         android:id="@+id/region_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_144"
+        android:layout_marginTop="@dimen/margin_20"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/region_edit_text"
         tools:listitem="@layout/item_country" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

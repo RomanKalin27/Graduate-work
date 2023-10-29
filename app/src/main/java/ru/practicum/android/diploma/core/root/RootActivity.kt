@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.core.root
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import ru.practicum.android.diploma.R
@@ -31,11 +32,12 @@ class RootActivity : AppCompatActivity() {
             R.id.similarVacancyFragment
         )
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding?.bottomNavigationView?.visibility =
                 if (destination.id in hideBottomNavForDestinations) {
-                    View.GONE
+                    binding?.topBorder?.isVisible = false
+                    binding?.bottomNavigationView?.isVisible = false
                 } else {
-                    View.VISIBLE
+                    binding?.topBorder?.isVisible = true
+                    binding?.bottomNavigationView?.isVisible = true
                 }
         }
     }

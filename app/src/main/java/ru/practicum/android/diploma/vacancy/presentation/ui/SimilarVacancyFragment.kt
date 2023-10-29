@@ -82,6 +82,7 @@ class SimilarVacancyFragment : BindingFragment<FragmentSimilarVacanciesBinding>(
             placeholderNoVacancies.isVisible = false
             noInternetPlaceholder.isVisible = false
             recyclerView.isVisible = false
+            progressBar.isVisible = false
             similarVacancyList.clear()
 
             when (searchUIState) {

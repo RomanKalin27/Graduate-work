@@ -1,12 +1,14 @@
 package ru.practicum.android.diploma.search.presentation.ui
 
+import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -38,6 +40,9 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private val vacancyAdapter = VacancyAdapter(vacancyList)
     private var timerJob: Job? = null
     private var savedText = ""
+    private var doSearchAgain = true
+    private var refreshList = true
+
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -49,18 +54,27 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
-        viewModel.isFilterOn()
+
     }
 
     override fun onResume() {
         super.onResume()
-        setupDefaultUI()
+        viewModel.isFilterOn()
         observeViewModel()
         setFragmentResultListener(SET_FILTERS_KEY) { _, bundle ->
             if (!binding.searchEditText.text.isNullOrEmpty()) {
-                viewModel.searchVacancies(binding.searchEditText.text.toString())
+                clearUI()
+                refreshList = true
+                binding.recyclerView.scrollToPosition(0)
+                viewModel.newSearchVacancies(binding.searchEditText.text.toString())
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        doSearchAgain = false
+        refreshList = false
     }
 
     private fun setupViews() {
@@ -89,6 +103,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                     val itemsCount = vacancyAdapter.itemCount
                     if (pos >= itemsCount - 1) {
                         if (savedText != "") {
+                            refreshList = true
                             binding.progressBar.visibility = View.VISIBLE
                             viewModel.currentPageInc()
                             viewModel.searchVacancies(savedText)
@@ -97,78 +112,98 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 }
             }
         })
-        setupDefaultUI()
+        if (doSearchAgain) {
+            setupDefaultUI()
+        }
         setupTextWatcher()
         setupRecyclerView()
     }
 
     private fun debounceSearch(p0: String) {
+        refreshList = true
         timerJob?.cancel()
         timerJob = viewLifecycleOwner.lifecycleScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
-            viewModel.searchVacancies(p0)
+            clearUI()
+            viewModel.newSearchVacancies(p0)
+            binding.recyclerView.scrollToPosition(0)
+            binding.progressBarLoader.visibility = View.VISIBLE
+            binding.searchEditText.isFocusable = false
+            binding.searchEditText.isFocusableInTouchMode = true
+            val imm =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view?.windowToken, 0)
         }
     }
 
     private fun setupDefaultUI() {
         with(binding) {
             searchPlaceholder.setImageResource(R.drawable.placeholder_search)
-            if (searchEditText.text.isNullOrEmpty()) {
+            if (searchEditText.text.isEmpty()) {
                 clearUI()
             }
         }
-        println("Test")
     }
 
     private fun observeViewModel() {
         viewModel.searchVacancyResult.observe(viewLifecycleOwner) { state ->
-            binding.iconSearch.setImageResource(R.drawable.ic_search)
-            when (state) {
+            when (state.result) {
                 is SearchVacancyResult.Error -> updateUI(SearchUIState.CONNECTION_ERROR)
                 SearchVacancyResult.EmptyResult -> updateUI(SearchUIState.EMPTY_SEARCH)
                 SearchVacancyResult.NoInternet -> updateUI(SearchUIState.NO_INTERNET)
                 is SearchVacancyResult.Success -> {
-                    viewModel.maxPagesSet(state.response.pages)
+                    viewModel.maxPagesSet(state.result.response.pages)
                     viewModel.isNextPageLoading = true
-                    showVacancy(state.response.vacancies)
+                    showVacancy(state.result.response.vacancies)
                 }
-                SearchVacancyResult.Loading -> {}
-                is SearchVacancyResult.StartScreen -> setFilterIcon(state.isFiltersOn)
+                SearchVacancyResult.Loading -> updateUI(SearchUIState.LOADING)
+                else -> Unit
             }
+            setFilterIcon(state.isFilterOn)
         }
     }
 
     private fun updateUI(searchUIState: SearchUIState) {
         with(binding) {
-            // Скрываем searchPlaceholder и другие плейсхолдеры
             searchPlaceholder.isVisible = false
             placeholderServerError.isVisible = false
             placeholderNoVacancies.isVisible = false
             noInternetPlaceholder.isVisible = false
+            progressBarLoader.isVisible = false
             recyclerView.isVisible = false
             chip.isVisible = false
             vacancyList.clear()
 
-            // Обработка конкретного состояния
             when (searchUIState) {
-                SearchUIState.CONNECTION_ERROR -> placeholderServerError.isVisible = true
+                SearchUIState.CONNECTION_ERROR -> {
+                    placeholderServerError.isVisible = true
+                    viewModel.allowSearch()
+                }
+
                 SearchUIState.EMPTY_SEARCH -> {
+                    viewModel.allowSearch()
                     placeholderNoVacancies.isVisible = true
                     chip.visibility = View.VISIBLE
                     val message = getString(R.string.no_vacansy)
                     chip.text = message
                 }
 
-                SearchUIState.NO_INTERNET -> noInternetPlaceholder.isVisible = true
-                SearchUIState.LOADING -> progressBar.isVisible = true
+                SearchUIState.NO_INTERNET -> {
+                    noInternetPlaceholder.isVisible = true
+                    viewModel.allowSearch()
+                }
+
+                SearchUIState.LOADING -> {
+                    progressBarLoader.isVisible = true
+                }
+
             }
-            iconSearch.setImageResource(R.drawable.ic_search)
             vacancyAdapter.notifyDataSetChanged()
         }
-        updateIconBasedOnText()
     }
-    private fun setFilterIcon(isFilterOn: Boolean){
-        if(isFilterOn){
+
+    private fun setFilterIcon(isFilterOn: Boolean) {
+        if (isFilterOn) {
             binding.iconFilter.setImageResource(R.drawable.ic_filter_on)
         } else {
             binding.iconFilter.setImageResource(R.drawable.ic_filter_off)
@@ -182,8 +217,8 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             placeholderServerError.isVisible = false
             placeholderNoVacancies.isVisible = false
             noInternetPlaceholder.isVisible = false
-            progressBar.isVisible = false
             progressBar.visibility = View.GONE
+            progressBarLoader.visibility = View.GONE
             val isEmptyResult = items.isEmpty()
             if (isEmptyResult) {
                 chip.visibility = View.VISIBLE
@@ -198,9 +233,10 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 chip.text = message
             }
         }
-        vacancyList.addAll(items)
+        if(refreshList) {
+            vacancyList.addAll(items)
+        }
         vacancyAdapter.notifyDataSetChanged()
-        updateIconBasedOnText()
     }
 
     private fun setupRecyclerView() {
@@ -214,48 +250,66 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         with(binding) {
             searchPlaceholder.isVisible = true
             recyclerView.isVisible = false
-            progressBar.isVisible = false
+            progressBarLoader.isVisible = false
             placeholderServerError.isVisible = false
             placeholderNoVacancies.isVisible = false
             noInternetPlaceholder.isVisible = false
             chip.isVisible = false
-            iconSearch.setImageResource(R.drawable.ic_search)
         }
         viewModel.clearCurrentPage()
         vacancyList.clear()
         vacancyAdapter.notifyDataSetChanged()
         timerJob?.cancel()
-        updateIconBasedOnText()
-    }
-
-    private fun updateIconBasedOnText() {
-        if (binding.searchEditText.text.isNullOrEmpty()) {
-            binding.iconSearch.setImageResource(R.drawable.ic_search)
-        } else {
-            binding.iconSearch.setImageResource(R.drawable.ic_clear)
-        }
     }
 
     private fun setupTextWatcher() {
-        val searchTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.isNullOrEmpty()) {
-                    clearUI()
-                    savedText = ""
-                } else {
-                    savedText = s.toString()
-                    binding.iconSearch.setImageResource(R.drawable.ic_clear)
-                    debounceSearch(s.toString())
-                }
+        binding.searchEditText.addTextChangedListener {
+            changeSearchField()
+            savedText = binding.searchEditText.text.toString()
+            if (!binding.searchEditText.text.isNullOrEmpty() && doSearchAgain) {
+                debounceSearch(binding.searchEditText.text.toString())
             }
-
-            override fun afterTextChanged(s: Editable?) {
-                updateIconBasedOnText()
+            doSearchAgain = true
+        }
+        binding.searchEditText.setOnFocusChangeListener { _, _ ->
+            changeSearchField()
+        }
+        binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (!binding.searchEditText.text.isNullOrEmpty()) {
+                    refreshList = true
+                    clearUI()
+                    binding.recyclerView.scrollToPosition(0)
+                    viewModel.newSearchVacancies(binding.searchEditText.text.toString())
+                    timerJob?.cancel()
+                }
+                binding.searchEditText.isFocusable = false
+                binding.searchEditText.isFocusableInTouchMode = true
+                val imm =
+                    requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view?.windowToken, 0)
+                true
+            } else {
+                false
             }
         }
-        binding.searchEditText.addTextChangedListener(searchTextWatcher)
+    }
+
+    private fun changeSearchField() {
+        if (binding.searchEditText.text.isEmpty()) {
+            clearUI()
+            savedText = ""
+            binding.iconSearch.setImageResource(R.drawable.ic_search)
+            binding.iconSearch.isEnabled = false
+        } else {
+            if (!binding.searchEditText.isFocused) {
+                binding.iconSearch.setImageResource(R.drawable.ic_search)
+                binding.iconSearch.isEnabled = false
+            } else {
+                binding.iconSearch.setImageResource(R.drawable.ic_clear)
+                binding.iconSearch.isEnabled = true
+            }
+        }
     }
 
     private fun navigateToVacancyDetail(item: String) {

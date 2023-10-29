@@ -22,7 +22,6 @@ val viewModelModule = module {
             chooseCountryInteractor = get(),
             chooseRegionInteractor = get(),
             chooseIndustryInteractor = get(),
-            get()
         )
     }
     viewModel {
@@ -32,7 +31,7 @@ val viewModelModule = module {
     }
     viewModel {
         DetailVacancyViewModel(
-            detailVacancyInteractor = get()
+            favoriteVacancyInteractor = get()
         )
     }
     viewModel {

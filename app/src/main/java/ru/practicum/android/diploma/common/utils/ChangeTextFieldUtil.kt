@@ -21,7 +21,7 @@ object ChangeTextFieldUtil {
             )
             textField.isEnabled = true
             textField.setHintTextAppearance(R.style.Text_Regular_12_400)
-            clearBtn.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_clear))
+            clearBtn.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_clear_day_night))
             clearBtn.isClickable = true
         } else {
             textField.setPadding(

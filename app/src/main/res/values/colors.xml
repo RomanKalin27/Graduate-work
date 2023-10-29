@@ -15,5 +15,5 @@
     <color name="edit_text_hint_color">?attr/black_to_white_color</color>
     <color name="gray_75">#BFAEAFB4</color>
     <color name="light_gray_75">#BFE6E8EB</color>
-
+    <color name="app_background">#FDFDFD</color>
 </resources>

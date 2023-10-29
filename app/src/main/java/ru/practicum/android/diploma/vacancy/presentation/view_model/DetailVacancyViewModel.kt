@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.vacancy.domain.impl.DetailVacancyInteractor
+import ru.practicum.android.diploma.favorites.domain.api.FavoriteInteractor
 import ru.practicum.android.diploma.vacancy.domain.models.DetailVacancyResult
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetailnfo
 
-class DetailVacancyViewModel(private val detailVacancyInteractor: DetailVacancyInteractor) :
+class DetailVacancyViewModel(private val favoriteVacancyInteractor: FavoriteInteractor) :
     ViewModel() {
 
     private val _detailVacancyResult: MutableLiveData<DetailVacancyResult> = MutableLiveData()
@@ -21,13 +21,13 @@ class DetailVacancyViewModel(private val detailVacancyInteractor: DetailVacancyI
 
     fun showDetailVacancy(id: String) {
         viewModelScope.launch {
-            if (detailVacancyInteractor.checkIfVacancyInFavorite(id)) {
-                detailVacancyInteractor.getDetailVacancyByIdFromBD(id).collect { result ->
+            if (favoriteVacancyInteractor.checkIfVacancyInFavorite(id)) {
+                favoriteVacancyInteractor.getDetailVacancyByIdFromBD(id).collect { result ->
                     _detailVacancyResult.value = DetailVacancyResult.Success(result)
                     _shareUrl.value = result.alternateUrl
                 }
             } else {
-                detailVacancyInteractor.getDetailVacancyById(id).collect { result ->
+                favoriteVacancyInteractor.getDetailVacancyById(id).collect { result ->
                     _detailVacancyResult.value = result
                     if (result is DetailVacancyResult.Success) {
                         _shareUrl.value = result.response.alternateUrl
@@ -39,13 +39,13 @@ class DetailVacancyViewModel(private val detailVacancyInteractor: DetailVacancyI
 
     fun clickToFavoriteButton(vacancy: VacancyDetailnfo) {
         viewModelScope.launch(Dispatchers.IO) {
-            isFavourite = detailVacancyInteractor.checkIfVacancyInFavorite(vacancy.id)
+            isFavourite = favoriteVacancyInteractor.checkIfVacancyInFavorite(vacancy.id)
             if (isFavourite) {
-                detailVacancyInteractor.removeVacancyFromFavorites(vacancy.id).collect {
+                favoriteVacancyInteractor.removeVacancyFromFavorites(vacancy.id).collect {
                     _detailVacancyResult.postValue(DetailVacancyResult.NoFavorite)
                 }
             } else {
-                detailVacancyInteractor.addVacancyToFavorites(vacancy).collect {
+                favoriteVacancyInteractor.addVacancyToFavorites(vacancy).collect {
                     _detailVacancyResult.postValue(DetailVacancyResult.AddedToFavorite)
 
                 }
@@ -56,7 +56,7 @@ class DetailVacancyViewModel(private val detailVacancyInteractor: DetailVacancyI
 
     fun checkFavorite(vacancy: VacancyDetailnfo) {
         viewModelScope.launch(Dispatchers.IO) {
-            isFavourite = detailVacancyInteractor.checkIfVacancyInFavorite(vacancy.id)
+            isFavourite = favoriteVacancyInteractor.checkIfVacancyInFavorite(vacancy.id)
             if (isFavourite) {
                 _detailVacancyResult.postValue(DetailVacancyResult.AddedToFavorite)
             } else {

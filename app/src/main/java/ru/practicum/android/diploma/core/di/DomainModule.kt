@@ -12,50 +12,47 @@ import ru.practicum.android.diploma.filters.domain.impl.ChooseIndustryInteractor
 import ru.practicum.android.diploma.filters.domain.impl.ChooseRegionsInteractorImpl
 import ru.practicum.android.diploma.filters.domain.impl.FilterInteractorImpl
 import ru.practicum.android.diploma.search.domain.impl.SearchInteractor
-import ru.practicum.android.diploma.vacancy.domain.impl.DetailVacancyInteractor
 import ru.practicum.android.diploma.vacancy.domain.impl.SimilarVacancyInteractor
 
 val domainModule = module {
-    single {
+    factory {
         SearchInteractor(
             searchRepository = get()
         )
     }
 
-    single<FilterInteractor> {
+    factory<FilterInteractor> {
         FilterInteractorImpl(
-            filterRepository = get()
+            filterRepository = get(),
+            converter = get()
         )
     }
-    single<ChooseCountryInteractor> {
+    factory<ChooseCountryInteractor> {
         ChooseCountryInteractorImpl(
             repository = get()
         )
     }
-    single<ChooseRegionInteractor> {
+    factory<ChooseRegionInteractor> {
         ChooseRegionsInteractorImpl(
             repository = get()
         )
     }
-    single<ChooseIndustryInteractor> {
+    factory<ChooseIndustryInteractor> {
         ChooseIndustryInteractorImpl(
             repository = get()
         )
     }
-    single {
-        DetailVacancyInteractor(
-            detailVacancyRepository = get()
-        )
-    }
-    single {
+
+    factory {
         SimilarVacancyInteractor(
             similarVacancyRepository = get()
         )
     }
 
-    single<FavoriteInteractor> {
+    factory<FavoriteInteractor> {
         FavoriteInteractorImpl(
-            repository = get()
+            favoriterepository = get(),
+            detailVacancyRepository = get(),
         )
     }
 }

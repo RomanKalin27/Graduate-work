@@ -1,12 +1,16 @@
 package ru.practicum.android.diploma.filters.presentation.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
@@ -15,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.debounce
 import ru.practicum.android.diploma.databinding.FragmentRegionsBinding
 import ru.practicum.android.diploma.filters.domain.models.AreaDomain
@@ -117,21 +122,33 @@ class ChooseRegionFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
-        textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (hasInternet) {
-                    debounceSearch(p0.toString().trim())
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-
+        binding.iconSearch.setOnClickListener {
+            binding.regionEditText.text.clear()
         }
-        binding.regionEditText.addTextChangedListener(textWatcher)
+        binding.regionEditText.addTextChangedListener {
+            changeSearchField()
+            if (!binding.regionEditText.text.isNullOrEmpty() || hasInternet) {
+                debounceSearch(binding.regionEditText.text.toString())
+            }
+        }
+        binding.regionEditText.setOnFocusChangeListener { _, _ ->
+            changeSearchField()
+        }
+        binding.regionEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (!binding.regionEditText.text.isNullOrEmpty()) {
+                    debounceSearch(binding.regionEditText.text.toString())
+                }
+                binding.regionEditText.isFocusable = false
+                binding.regionEditText.isFocusableInTouchMode = true
+                val imm =
+                    requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view?.windowToken, 0)
+                true
+            } else {
+                false
+            }
+        }
     }
 
     private fun showErrorNothing() {
@@ -174,6 +191,10 @@ class ChooseRegionFragment : Fragment() {
                     }
                     regionList.addAll(regionListFilter)
                     regionAdapter.notifyDataSetChanged()
+                    binding.regionEditText.isFocusable = false
+                    binding.regionEditText.isFocusableInTouchMode = true
+                    val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(view?.windowToken, 0)
                 }
             })
     }
@@ -193,6 +214,20 @@ class ChooseRegionFragment : Fragment() {
                 ?: Areas.emptyArea)
         }
         return country
+    }
+    private fun changeSearchField() {
+        if (binding.regionEditText.text.isEmpty()) {
+            binding.iconSearch.setImageResource(R.drawable.ic_search)
+            binding.iconSearch.isEnabled = false
+        } else {
+            if (!binding.regionEditText.isFocused) {
+                binding.iconSearch.setImageResource(R.drawable.ic_search)
+                binding.iconSearch.isEnabled = false
+            } else {
+                binding.iconSearch.setImageResource(R.drawable.ic_clear)
+                binding.iconSearch.isEnabled = true
+            }
+        }
     }
 
     companion object {

@@ -35,7 +35,7 @@ class ModelConverter(private val context: Context) {
     }
 
     fun convertSalary(salary: Salary?): String {
-        if (salary == null) return context.getString(R.string.salary_not_specified)
+        if (salary == null) return context.getString(R.string.salary_not_specified_)
         val result = StringBuilder()
 
         salary.from?.let {
