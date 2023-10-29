@@ -41,7 +41,8 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private var timerJob: Job? = null
     private var savedText = ""
     private var doSearchAgain = true
-    private var doSearch = true
+    private var refreshList = true
+
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -53,6 +54,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
+
     }
 
     override fun onResume() {
@@ -61,6 +63,9 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         observeViewModel()
         setFragmentResultListener(SET_FILTERS_KEY) { _, bundle ->
             if (!binding.searchEditText.text.isNullOrEmpty()) {
+                clearUI()
+                refreshList = true
+                binding.recyclerView.scrollToPosition(0)
                 viewModel.newSearchVacancies(binding.searchEditText.text.toString())
             }
         }
@@ -69,6 +74,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private fun setupViews() {
         binding.iconFilter.setOnClickListener {
             doSearchAgain = false
+            refreshList = false
             findNavController().navigate(R.id.action_searchFragment_to_filtersFragment)
         }
         binding.iconSearch.setOnClickListener {
@@ -82,6 +88,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             CLICK_DEBOUNCE_DELAY_MILLIS, viewLifecycleOwner.lifecycleScope, false
         ) { item ->
             doSearchAgain = false
+            refreshList = false
             navigateToVacancyDetail(item.id)
         }
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -94,6 +101,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                     val itemsCount = vacancyAdapter.itemCount
                     if (pos >= itemsCount - 1) {
                         if (savedText != "") {
+                            refreshList = true
                             binding.progressBar.visibility = View.VISIBLE
                             viewModel.currentPageInc()
                             viewModel.searchVacancies(savedText)
@@ -110,10 +118,13 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     }
 
     private fun debounceSearch(p0: String) {
+        refreshList = true
         timerJob?.cancel()
         timerJob = viewLifecycleOwner.lifecycleScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
+            clearUI()
             viewModel.newSearchVacancies(p0)
+            binding.recyclerView.scrollToPosition(0)
             binding.progressBarLoader.visibility = View.VISIBLE
             binding.searchEditText.isFocusable = false
             binding.searchEditText.isFocusableInTouchMode = true
@@ -143,12 +154,10 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                     viewModel.isNextPageLoading = true
                     showVacancy(state.result.response.vacancies)
                 }
-
                 SearchVacancyResult.Loading -> updateUI(SearchUIState.LOADING)
                 else -> {}
             }
             setFilterIcon(state.isFilterOn)
-            doSearch = false
         }
     }
 
@@ -222,7 +231,9 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 chip.text = message
             }
         }
-        vacancyList.addAll(items)
+        if(refreshList) {
+            vacancyList.addAll(items)
+        }
         vacancyAdapter.notifyDataSetChanged()
     }
 
@@ -266,6 +277,9 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (!binding.searchEditText.text.isNullOrEmpty()) {
+                    refreshList = true
+                    clearUI()
+                    binding.recyclerView.scrollToPosition(0)
                     viewModel.newSearchVacancies(binding.searchEditText.text.toString())
                     timerJob?.cancel()
                 }
