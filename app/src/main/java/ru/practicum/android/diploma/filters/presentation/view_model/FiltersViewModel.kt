@@ -5,10 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.filters.data.converter.FilterModelConverter
 import ru.practicum.android.diploma.filters.domain.api.ChooseCountryInteractor
 import ru.practicum.android.diploma.filters.domain.api.ChooseIndustryInteractor
 import ru.practicum.android.diploma.filters.domain.api.ChooseRegionInteractor
 import ru.practicum.android.diploma.filters.domain.api.FilterInteractor
+import ru.practicum.android.diploma.filters.domain.models.AreaDomain
+import ru.practicum.android.diploma.filters.domain.models.Areas
 import ru.practicum.android.diploma.filters.domain.models.ChooseIndustryResult
 import ru.practicum.android.diploma.filters.domain.models.ChooseRegionsResult
 import ru.practicum.android.diploma.filters.domain.models.ChooseResult
@@ -19,9 +22,10 @@ class FiltersViewModel(
     private val chooseCountryInteractor: ChooseCountryInteractor,
     private val chooseRegionInteractor: ChooseRegionInteractor,
     private val chooseIndustryInteractor: ChooseIndustryInteractor,
+    private val converter: FilterModelConverter,
 ) : ViewModel() {
     private val _stateLiveData = MutableLiveData<FiltersState>()
-    private var emptyFilters = FiltersState(null, null, null, false, null)
+    private var emptyFilters = FiltersState(null, null, null, null, false)
     fun observeState(): LiveData<FiltersState> = _stateLiveData
 
     private val _chooseResult: MutableLiveData<ChooseResult> = MutableLiveData()
@@ -30,6 +34,8 @@ class FiltersViewModel(
     val chooseRegionResult: LiveData<ChooseRegionsResult> = _chooseRegionResult
     private val _chooseIndustryResult: MutableLiveData<ChooseIndustryResult> = MutableLiveData()
     val chooseIndustryResult: LiveData<ChooseIndustryResult> = _chooseIndustryResult
+    private val _convert: MutableLiveData<List<AreaDomain>> = MutableLiveData()
+    val convert: LiveData<List<AreaDomain>> = _convert
 
     init {
         loadFilters()
@@ -40,6 +46,16 @@ class FiltersViewModel(
             chooseCountryInteractor.execute().collect { result ->
                 _chooseResult.postValue(result)
             }
+        }
+    }
+
+    fun convert(areas: List<Areas>, country: Areas) {
+        if (country != Areas.emptyArea) {
+            val result = converter.regionDTOListToAreaList(areas.flatMap { it.areas }
+                .filter { it.parentId == country.id })
+            _convert.postValue(result)
+        } else {
+            _convert.postValue(converter.regionDTOListToAreaList(areas.flatMap { it.areas }))
         }
     }
 
@@ -60,8 +76,8 @@ class FiltersViewModel(
     }
 
     private fun loadFilters() {
-        emptyFilters.location = filterInteractor.getLocation()
-        emptyFilters.areaId = filterInteractor.getAreaId()
+        emptyFilters.country = filterInteractor.getCountry()
+        emptyFilters.region = filterInteractor.getRegion()
         emptyFilters.industry = filterInteractor.getIndustry()
         emptyFilters.lowestSalary = filterInteractor.getExpectedSalary()
         emptyFilters.removeNoSalary = filterInteractor.getRemoveNoSalary()
@@ -69,17 +85,15 @@ class FiltersViewModel(
     }
 
     fun saveFilters(
-        location: String?,
-        industry: String?,
         expectedSalary: String?,
         removeNoSalary: Boolean,
     ) {
         filterInteractor.saveFilters(
-            location,
-            industry,
+            emptyFilters.country,
+            emptyFilters.region,
+            emptyFilters.industry,
             expectedSalary,
             removeNoSalary,
-            emptyFilters.areaId,
         )
     }
 
@@ -88,9 +102,14 @@ class FiltersViewModel(
         loadFilters()
     }
 
-    fun getLocation(location: String?, areaId: String?) {
-        emptyFilters.location = location
-        emptyFilters.areaId = areaId
+    fun getLocation(countryJson: String?, regionJson: String?) {
+        emptyFilters.country = countryJson
+        emptyFilters.region = regionJson
+        _stateLiveData.postValue(emptyFilters)
+    }
+
+    fun getIndustry(industryJson: String?) {
+        emptyFilters.industry = industryJson
         _stateLiveData.postValue(emptyFilters)
     }
 }

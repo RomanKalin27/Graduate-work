@@ -1,14 +1,13 @@
 package ru.practicum.android.diploma.db.domain.api
 
 import kotlinx.coroutines.flow.Flow
-import ru.practicum.android.diploma.db.data.entity.VacancyEntity
-import ru.practicum.android.diploma.db.domain.models.Vacancy
-import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetails
+import ru.practicum.android.diploma.search.domain.models.Vacancy
+import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetailnfo
 
 interface VacancyDbRepository {
-    suspend fun insertFavouriteVacancy(vacancyEntity: VacancyEntity)
-    suspend fun getFavouriteVacancies(): Flow<List<Vacancy>>
-    suspend fun getFavouriteVacancyDetailsById(vacancyId: String): Flow<VacancyDetails?>
-    suspend fun getFavouriteVacancyById(vacancyId: String): Flow<Vacancy?>
-    suspend fun deleteFavouriteVacancyById(vacancyId: String)
+    suspend fun removeVacancyFromFavorite(id: String): Flow<Int>
+    suspend fun addVacancyToFavorite(vacancy: VacancyDetailnfo): Flow<Unit>
+    suspend fun isVacancyInFavs(id: String): Boolean
+    suspend fun getFavoritesById(id: String): Flow<VacancyDetailnfo>
+    suspend fun getFavsVacancies(): Flow<List<Vacancy>>
 }

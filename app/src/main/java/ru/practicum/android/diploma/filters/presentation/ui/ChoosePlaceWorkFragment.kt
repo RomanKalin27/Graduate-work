@@ -10,27 +10,32 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.ChangeTextFieldUtil
 import ru.practicum.android.diploma.databinding.FragmentSelectLocationBinding
-import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
+import ru.practicum.android.diploma.filters.domain.models.AreaDomain
+import ru.practicum.android.diploma.filters.domain.models.Areas
+import ru.practicum.android.diploma.filters.domain.models.ChooseRegionsResult
 import ru.practicum.android.diploma.filters.domain.models.ChooseResult
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.BUNDLE_KEY
+import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.FILTER_COUNTRY
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.KEY
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseRegionFragment.Companion.KEY_R
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseRegionFragment.Companion.REGION_KEY
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
-import ru.practicum.android.diploma.search.data.dto.response_models.Area
 
 class ChoosePlaceWorkFragment : Fragment() {
     private lateinit var binding: FragmentSelectLocationBinding
-    private var country: String = ""
-    private var region: Area = Area.emptyArea
+    private var country: Areas = Areas.emptyArea
+    private var region: AreaDomain = AreaDomain.emptyArea
     private val viewModel by viewModel<FiltersViewModel>()
-    private var areasList = ArrayList<AreasDTO>()
-    private var area = ArrayList<AreasDTO>()
+    private var areasList = ArrayList<Areas>()
+    private var areasRegionList = ArrayList<Areas>()
+    private var area = ArrayList<Areas>()
+    private var matchCountry = true
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,67 +49,93 @@ class ChoosePlaceWorkFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         getCountry()
-        setFilters()
+        getRegions()
         observeViewModel()
+        setSavedFilters()
+        setFilters()
         showChooseBtn()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getRegions()
         getCountry()
-        binding.btnBack.setOnClickListener {
-            findNavController().navigateUp()
-        }
-        binding.btnCountry.setOnClickListener {
-            findNavController().navigate(R.id.action_choosePlaceWorkFragment_to_chooseCountryFragment)
-        }
-        binding.countryClearBtn.setOnClickListener {
-            binding.countryEditText.text?.clear()
+        initListeners()
+    }
+    private fun setSavedFilters(){
+        setFragmentResultListener(COUNTRY_AND_REGION){_,bundle ->
+            matchCountry = false
+            country = (bundle.getString(COUNTRY_JSON_KEY)?.let {
+                Json.decodeFromString<Areas>(it)
+            }?: Areas.emptyArea)
+            if (country != Areas.emptyArea) {
+                binding.countryEditText.setText(country.name)
+            }
+            region = (bundle.getString(REGION_JSON_KEY)?.let {
+                Json.decodeFromString<AreaDomain>(it)
+            }?: AreaDomain.emptyArea)
+            if (region != AreaDomain.emptyArea) {
+
+                binding.regionEditText.setText(region.name)
+            }
             changeCountryField()
-            showChooseBtn()
-        }
-        binding.btnRegion.setOnClickListener {
-            findNavController().navigate(R.id.action_choosePlaceWorkFragment_to_chooseRegionFragment)
-        }
-        binding.regionClearBtn.setOnClickListener {
-            //binding.regionEditText.text?.clear()
-            region = Area.emptyArea
-            showChooseBtn()
             changeRegionField()
         }
-        binding.btnChoose.setOnClickListener {
-            chooseFilters()
-        }
+        setFragmentResult(
+            ChooseCountryFragment.FILTER_KEY,
+            bundleOf(FILTER_COUNTRY to Json.encodeToString(country))
+        )
     }
 
     private fun setFilters() {
         setFragmentResultListener(KEY)
         { _, bundle ->
-            country = bundle.getString(BUNDLE_KEY).orEmpty()
-            if (country.isNotEmpty()) {
-                binding.countryEditText.setText(country)
+            country = (bundle.getString(BUNDLE_KEY)?.let { Json.decodeFromString<Areas>(it) }
+                ?: Areas.emptyArea)
+            if (country != Areas.emptyArea) {
+                binding.countryEditText.setText(country.name)
+                region = AreaDomain.emptyArea
+                binding.regionEditText.setText("")
             }
         }
         setFragmentResultListener(KEY_R)
         { _, bundle ->
-            region = (bundle.getString(REGION_KEY)?.let { Json.decodeFromString<Area>(it) }
-                ?: Area.emptyArea)
-            if (region != Area.emptyArea) {
+            region = (bundle.getString(REGION_KEY)?.let { Json.decodeFromString<AreaDomain>(it) }
+                ?: AreaDomain.emptyArea)
+            if (region != AreaDomain.emptyArea) {
                 binding.regionEditText.setText(region.name)
             }
         }
-        if (region != Area.emptyArea) {
-            areasList.removeIf { it.id != region.parentId }
-            area.addAll(areasList)
-            binding.countryEditText.setText(area[0].name)
-            country = area[0].name
+        if(matchCountry) {
+            if (region != AreaDomain.emptyArea) {
+                area.clear()
+                if (region.parentId?.length!! <= 3) {
+                    areasList.removeIf { it.id != region.parentId }
+                    area.addAll(areasList)
+                } else {
+                    val a = areasRegionList.flatMap { it.areas }.filter { it.id == region.parentId }
+                    areasList.removeIf { it.id != a[0].parentId }
+                    area.addAll(areasList)
+                }
+                country = area[0]
+                binding.countryEditText.setText(area[0].name)
+                setFragmentResult(
+                    ChooseCountryFragment.FILTER_KEY,
+                    bundleOf(FILTER_COUNTRY to Json.encodeToString(country))
+                )
+            }
         }
         changeCountryField()
         changeRegionField()
+        matchCountry = true
     }
 
     private fun getCountry() {
         viewModel.getCountry()
+    }
+
+    private fun getRegions() {
+        viewModel.getRegions()
     }
 
     private fun changeCountryField() {
@@ -134,33 +165,70 @@ class ChoosePlaceWorkFragment : Fragment() {
                 is ChooseResult.Success -> areasList.addAll(state.response)
             }
         }
+        viewModel.chooseRegionResult.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                ChooseRegionsResult.EmptyResult -> {}
+                is ChooseRegionsResult.Error -> {}
+                ChooseRegionsResult.NoInternet -> {}
+                is ChooseRegionsResult.Success -> areasRegionList.addAll(state.response)
+            }
+        }
     }
 
     private fun chooseFilters() {
-        if (region == Area.emptyArea) {
-            setFragmentResult(
-                KEY_CHOOSE,
-                bundleOf(PLACE_WORK to country, AREA_ID to area[0].id)
-            )
-        } else {
-            val result = "$country,${region.name}"
-            setFragmentResult(
-                KEY_CHOOSE,
-                bundleOf(PLACE_WORK to result, AREA_ID to region.id)
-            )
+        var countryJson: String? = null
+        var regionJson: String? = null
+        if (binding.countryEditText.text.toString().isNotEmpty()) {
+            countryJson = Json.encodeToString(country)
         }
+        if (binding.regionEditText.text.toString().isNotEmpty()) {
+            regionJson = Json.encodeToString(region)
+        }
+        setFragmentResult(
+            KEY_CHOOSE,
+            bundleOf(COUNTRY_JSON_KEY to countryJson, REGION_JSON_KEY to regionJson)
+        )
         findNavController().navigateUp()
     }
 
     private fun showChooseBtn() {
-        //region = Area("", binding.regionEditText.text.toString(), "")
         binding.regionEditText.setText(region.name)
         binding.btnChoose.isVisible = !binding.countryEditText.text.isNullOrEmpty()
     }
 
+    private fun initListeners() {
+        binding.btnBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+        binding.btnCountry.setOnClickListener {
+            findNavController().navigate(R.id.action_choosePlaceWorkFragment_to_chooseCountryFragment)
+        }
+        binding.countryClearBtn.setOnClickListener {
+            binding.countryEditText.text?.clear()
+            setFragmentResult(
+                ChooseCountryFragment.FILTER_KEY,
+                bundleOf(FILTER_COUNTRY to Json.encodeToString(Areas.emptyArea))
+            )
+            changeCountryField()
+            showChooseBtn()
+        }
+        binding.btnRegion.setOnClickListener {
+            findNavController().navigate(R.id.action_choosePlaceWorkFragment_to_chooseRegionFragment)
+        }
+        binding.regionClearBtn.setOnClickListener {
+            region = AreaDomain.emptyArea
+            showChooseBtn()
+            changeRegionField()
+        }
+        binding.btnChoose.setOnClickListener {
+            chooseFilters()
+        }
+    }
+
     companion object {
         const val KEY_CHOOSE = "key_choose"
-        const val PLACE_WORK = "place_work"
-        const val AREA_ID = "AREA_ID"
+        const val COUNTRY_JSON_KEY = "COUNTRY_JSON_KEY"
+        const val REGION_JSON_KEY = "REGION_JSON_KEY"
+        const val COUNTRY_AND_REGION = "COUNTRY_AND_REGION"
     }
 }

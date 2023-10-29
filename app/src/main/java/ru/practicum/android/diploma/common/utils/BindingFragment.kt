@@ -17,7 +17,7 @@ abstract class BindingFragment<T : ViewBinding> : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = createBinding(inflater, container)
         return binding.root

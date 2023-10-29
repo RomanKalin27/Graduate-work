@@ -1,57 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/ripple"
     android:layout_marginHorizontal="@dimen/margin_16"
     android:layout_marginVertical="@dimen/margin_9">
 
-    <FrameLayout
-        android:layout_width="@dimen/margin_48"
-        android:layout_height="@dimen/margin_48"
-        android:background="@drawable/shape_item_search">
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="@dimen/pic_size_48"
+        android:layout_height="@dimen/pic_size_48"
+        android:src="@drawable/vacancy_placeholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:contentDescription="company_logo" />
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="1dp"
-            android:src="@drawable/vacancy_placeholder" />
-    </FrameLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/left_guideline_vacancy"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_12"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorOnPrimary"
-            android:fontFamily="@font/ys_display_medium"
-            android:textSize="@dimen/text_22sp"
-            tools:text="Разработчик iOS,  г. Урюпинск"/>
-        <TextView
-            android:id="@+id/company"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_3"
-            android:gravity="center_vertical"
-            android:textColor="?attr/colorOnPrimary"
-            android:fontFamily="@font/ys_display_regular"
-            android:textSize="@dimen/text_16sp"
-            tools:text="Microsoft"/>
-        <TextView
-            android:id="@+id/value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_3"
-            android:gravity="center_vertical"
-            android:textColor="?attr/colorOnPrimary"
-            android:fontFamily="@font/ys_display_regular"
-            android:textSize="@dimen/text_16sp"
-            tools:text="от 100 000 000 $"/>
-    </LinearLayout>
-</LinearLayout>
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="60dp" />
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/Text_Medium_22_500"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:singleLine="false"
+        android:text="@string/vacancy_placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/left_guideline_vacancy"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/company"
+        style="@style/Text_Regular_16_400"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:text="@string/departament"
+        app:layout_constraintStart_toEndOf="@+id/left_guideline_vacancy"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <TextView
+        android:id="@+id/value"
+        style="@style/Text_Regular_16_400"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/money"
+        app:layout_constraintStart_toEndOf="@+id/left_guideline_vacancy"
+        app:layout_constraintTop_toBottomOf="@id/company" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,10 @@
 package ru.practicum.android.diploma.core.di
 
 import org.koin.dsl.module
+import ru.practicum.android.diploma.db.data.impl.VacancyDbRepositoryImpl
+import ru.practicum.android.diploma.db.domain.api.VacancyDbRepository
+import ru.practicum.android.diploma.favorites.data.FavoriteRepositoryImpl
+import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyRepository
 import ru.practicum.android.diploma.filters.data.repository.ChooseCountryRepositoryImpl
 import ru.practicum.android.diploma.filters.data.repository.ChooseIndustryRepositoryImpl
 import ru.practicum.android.diploma.filters.data.repository.ChooseRegionRepositoryImpl
@@ -11,6 +15,10 @@ import ru.practicum.android.diploma.filters.domain.api.ChooseRegionRepository
 import ru.practicum.android.diploma.filters.domain.api.FilterRepository
 import ru.practicum.android.diploma.search.data.impl.SearchRepositoryImpl
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
+import ru.practicum.android.diploma.vacancy.data.impl.DetailVacancyRepositoryImpl
+import ru.practicum.android.diploma.vacancy.data.impl.SimilarVacancyRepositoryImpl
+import ru.practicum.android.diploma.vacancy.domain.api.DetailVacancyRepository
+import ru.practicum.android.diploma.vacancy.domain.api.SimilarVacancyRepository
 
 val repositoryModule = module {
 
@@ -32,7 +40,8 @@ val repositoryModule = module {
     single<ChooseCountryRepository> {
         ChooseCountryRepositoryImpl(
             apiService = get(),
-            networkControl = get()
+            networkControl = get(),
+            converter = get()
         )
     }
 
@@ -40,7 +49,7 @@ val repositoryModule = module {
         ChooseRegionRepositoryImpl(
             apiService = get(),
             networkControl = get(),
-            convertor = get()
+            converter = get()
         )
     }
     single<ChooseIndustryRepository> {
@@ -48,6 +57,36 @@ val repositoryModule = module {
             apiService = get(),
             networkControl = get(),
             filterModelConverter = get()
+        )
+    }
+
+    single<VacancyDbRepository> {
+        VacancyDbRepositoryImpl(
+            appDataBase = get(),
+            vacancyDbConverter = get()
+        )
+    }
+
+    single<DetailVacancyRepository> {
+        DetailVacancyRepositoryImpl(
+            apiService = get(),
+            networkControl = get(),
+            converter = get(),
+            vacancyDb = get()
+        )
+    }
+    single<SimilarVacancyRepository> {
+        SimilarVacancyRepositoryImpl(
+            apiService = get(),
+            networkControl = get(),
+            converter = get(),
+        )
+    }
+
+    single<FavoriteVacancyRepository> {
+        FavoriteRepositoryImpl(
+            converter = get(),
+            appDataBase = get()
         )
     }
 }

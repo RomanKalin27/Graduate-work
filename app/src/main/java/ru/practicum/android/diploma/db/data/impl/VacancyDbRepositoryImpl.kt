@@ -1,56 +1,41 @@
 package ru.practicum.android.diploma.db.data.impl
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import ru.practicum.android.diploma.db.data.converter.VacancyDbConverter
-import ru.practicum.android.diploma.db.data.entity.VacancyEntity
+import kotlinx.coroutines.flow.mapNotNull
 import ru.practicum.android.diploma.db.domain.AppDB
 import ru.practicum.android.diploma.db.domain.api.VacancyDbRepository
-import ru.practicum.android.diploma.db.domain.models.Vacancy
-//import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetails
+import ru.practicum.android.diploma.search.data.network.ModelConverter
+import ru.practicum.android.diploma.search.domain.models.Vacancy
+import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetailnfo
 
-abstract class VacancyDbRepositoryImpl(
+class VacancyDbRepositoryImpl(
     private val appDataBase: AppDB,
-    private val vacancyDbConverter: VacancyDbConverter,
+    private val vacancyDbConverter: ModelConverter,
 ) : VacancyDbRepository {
-    override suspend fun insertFavouriteVacancy(vacancyEntity: VacancyEntity) {
-        appDataBase.vacancyDao().insertFavouriteVacancy(vacancyEntity)
+
+    override suspend fun removeVacancyFromFavorite(id: String): Flow<Int> {
+        return flowOf(appDataBase.vacancyDao().delete(id))
     }
 
-    override suspend fun getFavouriteVacancies(): Flow<List<Vacancy>> {
-        return appDataBase.vacancyDao().getFavouriteVacancies()
-            .map { convertFromListVacancyEntityToListVacancy(it) }
+    override suspend fun addVacancyToFavorite(vacancy: VacancyDetailnfo): Flow<Unit> {
+        return flowOf(
+            appDataBase.vacancyDao()
+                .insertFavouriteVacancy(vacancyDbConverter.toFullInfoEntity(vacancy))
+        )
     }
 
-//    override suspend fun getFavouriteVacancyDetailsById(vacancyId: String): Flow<VacancyDetails?> {
-//        return appDataBase.vacancyDao().getFavouriteVacancyById(vacancyId)
-//            .map { convertFromVacancyEntityToVacancyDetails(it) }
-//    }
-
-    override suspend fun getFavouriteVacancyById(vacancyId: String): Flow<Vacancy?> {
-        return appDataBase.vacancyDao().getFavouriteVacancyById(vacancyId)
-            .map { convertFromVacancyEntityToVacancy(it) }
+    override suspend fun isVacancyInFavs(id: String): Boolean {
+        return appDataBase.vacancyDao().isVacancyInFavs(id)
     }
 
-    override suspend fun deleteFavouriteVacancyById(vacancyId: String) {
-        appDataBase.vacancyDao().deleteFavouriteVacancyById(vacancyId)
+    override suspend fun getFavoritesById(id: String): Flow<VacancyDetailnfo> {
+        return appDataBase.vacancyDao().getFavoritesById(id)
+            .mapNotNull { vacancyDbConverter.entityToModel(it) }
     }
 
-//    private fun convertFromVacancyEntityToVacancyDetails(vacancyEntity: VacancyEntity?): VacancyDetails? {
-//        return if (vacancyEntity != null)
-//            vacancyDbConverter.mapDetail(vacancyEntity)
-//        else
-//            null
-//    }
-
-    private fun convertFromVacancyEntityToVacancy(vacancyEntity: VacancyEntity?): Vacancy? {
-        return if (vacancyEntity != null)
-            vacancyDbConverter.map(vacancyEntity)
-        else
-            null
-    }
-
-    private fun convertFromListVacancyEntityToListVacancy(listVacancyEntity: List<VacancyEntity>): List<Vacancy> {
-        return listVacancyEntity.map { vacancyDbConverter.map(it) }
+    override suspend fun getFavsVacancies(): Flow<List<Vacancy>> {
+        return appDataBase.vacancyDao().getFavorites().map { vacancyDbConverter.mapToVacancies(it) }
     }
 }

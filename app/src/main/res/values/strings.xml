@@ -32,9 +32,9 @@
     <string name="reset">Сбросить</string>
 
     //Зарплата
-    <string name="expected_selary">Ожидаемая ЗП</string>
+    <string name="expected_selary">Ожидаемая зарплата</string>
     <string name="enter_amount">Введите сумму</string>
-    <string name="do_not_show_without_salary">Не показывать без ЗП</string>
+    <string name="do_not_show_without_salary">Не показывать без зарплаты</string>
 
     //Детали выкансии
     <string name="vacancy">Вакансия</string>
@@ -67,9 +67,10 @@
 
     //Плейсхолдеры ошибок
     <string name="error_no_internet">Нет интернета</string>
-    <string name="error_no_vacancies">Не удалось получить список вакансий</string>
-    <string name="error_get_list">Не удалось получить \n список</string>
+    <string name="error_no_vacancies">Не удалось получить\nсписок вакансий</string>
+    <string name="error_get_list">Не удалось получить\nсписок</string>
     <string name="error_wrong_region">Такого региона нет</string>
+    <string name="error_wrong_industry">Такой отрасли нет</string>
     <string name="server_error">Ошибка сервера</string>
     <string name="from">от</string>
     <string name="to">до</string>
@@ -77,13 +78,14 @@
     <string name="salary_not_specified_">Зарплата не указана</string>
 
     <string name="salary_not_specified">ЗП не указана</string>
-    <string name="no_data">Нет днных[</string>
+    <string name="no_data">Нет данных[</string>
 
     <string name="write_to_email">Хотите написать на этот email?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="delete_vacancy">Удалить вакансию из избранного?</string>
 
-    <plurals name="search_result_number">
+    <plurals name="search_result_count">
         <item quantity="zero">Найдено %d вакансий</item>
         <item quantity="one">Найдена %d вакансия</item>
         <item quantity="two">Найдено %d вакансии</item>

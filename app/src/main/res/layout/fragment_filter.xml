@@ -25,7 +25,6 @@
         android:text="@string/set_filter"
         android:textColor="?attr/text_color"
         style="@style/Text_Medium_22_500"
-        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/btn_back"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -180,21 +179,21 @@
         android:id="@+id/btn_choose"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_60"
-        android:layout_marginHorizontal="@dimen/margin_16"
-        android:layout_marginBottom="@dimen/margin_72"
+        android:layout_marginHorizontal="@dimen/margin_17"
+        android:layout_marginBottom="@dimen/margin_24"
         android:background="@drawable/select_btn_background"
         style="@style/Text_Medium_16_500"
         android:text="@string/select"
         android:textColor="@color/yp_white"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_remove"
+        app:layout_constraintBottom_toTopOf="@+id/btn_remove"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_remove"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_60"
-        android:layout_marginHorizontal="@dimen/margin_16"
-        android:layout_marginBottom="@dimen/margin_72"
+        android:layout_marginHorizontal="@dimen/margin_17"
+        android:layout_marginBottom="@dimen/margin_24"
         android:backgroundTint="@color/transparent"
         style="@style/Text_Medium_16_500"
         android:text="@string/reset"

@@ -5,10 +5,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.AREA_ID_KEY
+import kotlinx.serialization.json.Json
+import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.COUNTRY_KEY
 import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.EXPECTED_SALARY_KEY
 import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.FILTERS_ON_KEY
+import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.INDUSTRY_KEY
 import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.NO_SALARY_KEY
+import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl.Companion.REGION_KEY
+import ru.practicum.android.diploma.filters.domain.models.Areas
+import ru.practicum.android.diploma.filters.domain.models.Industry
+import ru.practicum.android.diploma.search.data.dto.response_models.Area
 import ru.practicum.android.diploma.search.data.network.ApiService
 import ru.practicum.android.diploma.search.data.network.ConnectivityHelper
 import ru.practicum.android.diploma.search.data.network.ModelConverter
@@ -21,10 +27,9 @@ class SearchRepositoryImpl(
     private val converter: ModelConverter,
     private val sharedPreferences: SharedPreferences,
 ) : SearchRepository {
-    override suspend fun searchVacancies(query: String): Flow<SearchVacancyResult> =
+    override suspend fun searchVacancies(query: String, page: Int): Flow<SearchVacancyResult> =
         flow {
-            //val queryParams = (mapOf("text" to "${query}", "per_page" to "50"))
-            val queryParams = requestMaker(query)
+            val queryParams = requestMaker(query, page)
             try {
                 if (!networkControl.isInternetAvailable()) {
                     emit(SearchVacancyResult.NoInternet)
@@ -33,7 +38,6 @@ class SearchRepositoryImpl(
                 val response = apiService.searchVacancies(queryParams)
 
                 if (response.items.isEmpty()) {
-                    4
                     emit(SearchVacancyResult.EmptyResult)
                 } else {
                     val convertedResponse = converter.convertVacanciesResponse(response)
@@ -45,18 +49,31 @@ class SearchRepositoryImpl(
         }.flowOn(Dispatchers.IO)
 
 
-    private fun requestMaker(query: String): Map<String, String> {
-        var params = (mapOf("text" to "${query}", "per_page" to "50"))
-        val areaId = sharedPreferences.getString(AREA_ID_KEY, null)
-        if (!areaId.isNullOrEmpty()) {
-            params += Pair("area", areaId)
+    private fun requestMaker(query: String, page: Int): Map<String, String> {
+        var params = (mutableMapOf("text" to "${query}", "per_page" to "20"))
+        params += Pair("page", page.toString())
+        val country = sharedPreferences.getString(COUNTRY_KEY, null)
+        val region = sharedPreferences.getString(REGION_KEY, null)
+        if (!country.isNullOrEmpty()) {
+            if (!region.isNullOrEmpty()) {
+                val regionId = Json.decodeFromString<Area>(region).id
+                params["area"] = regionId ?: ""
+            } else {
+                val countryId = Json.decodeFromString<Areas>(country).id
+                params["area"] = countryId ?: ""
+            }
+        }
+        val industry = sharedPreferences.getString(INDUSTRY_KEY, null)
+        if (!industry.isNullOrEmpty()) {
+            val industryId = Json.decodeFromString<Industry>(industry).id
+            params["industry"] = industryId
         }
         val salary = sharedPreferences.getString(EXPECTED_SALARY_KEY, null)
         if (!salary.isNullOrEmpty()) {
-            params += Pair("salary", salary)
+            params["salary"] = salary
         }
         val noSalary = sharedPreferences.getBoolean(NO_SALARY_KEY, false)
-        params += Pair("only_with_salary", "$noSalary")
+        params["only_with_salary"] = "$noSalary"
         return params
     }
 
