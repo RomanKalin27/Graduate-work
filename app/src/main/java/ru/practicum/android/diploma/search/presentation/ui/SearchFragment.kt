@@ -157,7 +157,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                     showVacancy(state.result.response.vacancies)
                 }
                 SearchVacancyResult.Loading -> updateUI(SearchUIState.LOADING)
-                else -> {}
+                else -> Unit
             }
             setFilterIcon(state.isFilterOn)
         }
