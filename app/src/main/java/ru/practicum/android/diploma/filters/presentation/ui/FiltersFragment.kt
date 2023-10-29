@@ -97,6 +97,7 @@ class FiltersFragment : Fragment() {
                 binding.salaryEditText.isFocusableInTouchMode = true
                 val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view.windowToken, 0)
+                vm.getSalary(binding.salaryEditText.text.toString())
                 true
             } else {
                 false
@@ -108,6 +109,7 @@ class FiltersFragment : Fragment() {
         binding.noSalaryLayout.setOnClickListener {
             isChecked = !isChecked
             changeCheckBox()
+            vm.getRemoveNoSalary(isChecked)
         }
         binding.btnChoose.setOnClickListener {
             vm.saveFilters(

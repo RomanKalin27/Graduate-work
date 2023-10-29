@@ -109,4 +109,12 @@ class FiltersViewModel(
         emptyFilters.industry = industryJson
         _stateLiveData.postValue(emptyFilters)
     }
+    fun getSalary(salary: String?) {
+        emptyFilters.lowestSalary = salary
+        _stateLiveData.postValue(emptyFilters)
+    }
+    fun getRemoveNoSalary(removeNoSalary: Boolean) {
+        emptyFilters.removeNoSalary = removeNoSalary
+        _stateLiveData.postValue(emptyFilters)
+    }
 }

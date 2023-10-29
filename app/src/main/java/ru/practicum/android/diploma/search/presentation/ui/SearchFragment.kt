@@ -71,10 +71,14 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        doSearchAgain = false
+        refreshList = false
+    }
+
     private fun setupViews() {
         binding.iconFilter.setOnClickListener {
-            doSearchAgain = false
-            refreshList = false
             findNavController().navigate(R.id.action_searchFragment_to_filtersFragment)
         }
         binding.iconSearch.setOnClickListener {
@@ -87,8 +91,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         onVacancyClickDebounce = debounce(
             CLICK_DEBOUNCE_DELAY_MILLIS, viewLifecycleOwner.lifecycleScope, false
         ) { item ->
-            doSearchAgain = false
-            refreshList = false
             navigateToVacancyDetail(item.id)
         }
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
