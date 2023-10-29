@@ -266,10 +266,8 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         binding.searchEditText.addTextChangedListener {
             changeSearchField()
             savedText = binding.searchEditText.text.toString()
-            if (!binding.searchEditText.text.isNullOrEmpty()) {
-                if (doSearchAgain) {
-                    debounceSearch(binding.searchEditText.text.toString())
-                }
+            if (!binding.searchEditText.text.isNullOrEmpty() && doSearchAgain) {
+                debounceSearch(binding.searchEditText.text.toString())
             }
             doSearchAgain = true
         }
