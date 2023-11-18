@@ -2,8 +2,6 @@ package ru.practicum.android.diploma.filters.presentation.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +12,15 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.debounce
+import ru.practicum.android.diploma.core.application.App
+import ru.practicum.android.diploma.core.application.appComponent
 import ru.practicum.android.diploma.databinding.FragmentRegionsBinding
 import ru.practicum.android.diploma.filters.domain.models.AreaDomain
 import ru.practicum.android.diploma.filters.domain.models.Areas
@@ -29,19 +29,26 @@ import ru.practicum.android.diploma.filters.presentation.rv.RegionAdapter
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.FILTER_COUNTRY
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.FILTER_KEY
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
+import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModelFactory
+import javax.inject.Inject
 
 
 class ChooseRegionFragment : Fragment() {
     private lateinit var binding: FragmentRegionsBinding
     private lateinit var regionAdapter: RegionAdapter
-    private lateinit var textWatcher: TextWatcher
     private var debounce: ((String) -> Unit)? = null
-    private val viewModel by viewModel<FiltersViewModel>()
+    @Inject
+    lateinit var vmFactory: FiltersViewModelFactory
+    lateinit var viewModel: FiltersViewModel
     private var regionList = ArrayList<AreaDomain>()
     private var regionListSaved = ArrayList<AreaDomain>()
     private var regionListFilter = ArrayList<AreaDomain>()
     private var country: Areas = Areas.emptyArea
     private var hasInternet: Boolean = false
+    override fun onAttach(context: Context) {
+        context.appComponent.injectChooseRegionFragment(this)
+        super.onAttach(context)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,6 +61,7 @@ class ChooseRegionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this, vmFactory)[FiltersViewModel::class.java]
         debounce()
         initCountryAdapter()
         getRegions()

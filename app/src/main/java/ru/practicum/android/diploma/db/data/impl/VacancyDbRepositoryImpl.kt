@@ -9,8 +9,9 @@ import ru.practicum.android.diploma.db.domain.api.VacancyDbRepository
 import ru.practicum.android.diploma.search.data.network.ModelConverter
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetailnfo
+import javax.inject.Inject
 
-class VacancyDbRepositoryImpl(
+class VacancyDbRepositoryImpl @Inject constructor(
     private val appDataBase: AppDB,
     private val vacancyDbConverter: ModelConverter,
 ) : VacancyDbRepository {

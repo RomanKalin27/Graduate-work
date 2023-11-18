@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.vacancy.presentation.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,14 +8,16 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.BindingFragment
 import ru.practicum.android.diploma.common.utils.Constants
 import ru.practicum.android.diploma.common.utils.debounce
+import ru.practicum.android.diploma.core.application.App
+import ru.practicum.android.diploma.core.application.appComponent
 import ru.practicum.android.diploma.core.root.RootActivity
 import ru.practicum.android.diploma.databinding.FragmentSimilarVacanciesBinding
 import ru.practicum.android.diploma.search.domain.models.SearchVacancyResult
@@ -22,9 +25,13 @@ import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.search.presentation.models.SearchUIState
 import ru.practicum.android.diploma.search.presentation.rv.VacancyAdapter
 import ru.practicum.android.diploma.vacancy.presentation.view_model.SimilarVacanciesViewModel
+import ru.practicum.android.diploma.vacancy.presentation.view_model.SimilarVacancyViewModelFactory
+import javax.inject.Inject
 
 class SimilarVacancyFragment : BindingFragment<FragmentSimilarVacanciesBinding>() {
-    private val viewModel by viewModel<SimilarVacanciesViewModel>()
+   @Inject
+    lateinit var vmFactory: SimilarVacancyViewModelFactory
+    lateinit var viewModel: SimilarVacanciesViewModel
     private val similarVacancyList = ArrayList<Vacancy>()
     private lateinit var onVacancyClickDebounce: (Vacancy) -> Unit
     private val vacancyAdapter = VacancyAdapter(similarVacancyList)
@@ -34,9 +41,14 @@ class SimilarVacancyFragment : BindingFragment<FragmentSimilarVacanciesBinding>(
     ): FragmentSimilarVacanciesBinding {
         return FragmentSimilarVacanciesBinding.inflate(inflater, container, false)
     }
+    override fun onAttach(context: Context) {
+        context.appComponent.injectSimilarVacancyFragment(this)
+        super.onAttach(context)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this, vmFactory)[SimilarVacanciesViewModel::class.java]
         setupViews()
         observeViewModel()
         onVacancyClickDebounce = debounce(

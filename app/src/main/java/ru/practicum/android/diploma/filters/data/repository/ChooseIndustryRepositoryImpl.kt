@@ -9,8 +9,9 @@ import ru.practicum.android.diploma.filters.domain.api.ChooseIndustryRepository
 import ru.practicum.android.diploma.filters.domain.models.ChooseIndustryResult
 import ru.practicum.android.diploma.search.data.network.ApiService
 import ru.practicum.android.diploma.search.data.network.ConnectivityHelper
+import javax.inject.Inject
 
-class ChooseIndustryRepositoryImpl(
+class ChooseIndustryRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val networkControl: ConnectivityHelper,
     private val filterModelConverter: FilterModelConverter,

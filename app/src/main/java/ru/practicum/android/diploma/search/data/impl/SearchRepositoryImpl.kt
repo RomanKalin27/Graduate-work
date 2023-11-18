@@ -21,7 +21,7 @@ import ru.practicum.android.diploma.search.data.network.ModelConverter
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
 import ru.practicum.android.diploma.search.domain.models.SearchVacancyResult
 
-class SearchRepositoryImpl(
+class SearchRepositoryImpl (
     private val apiService: ApiService,
     private val networkControl: ConnectivityHelper,
     private val converter: ModelConverter,
@@ -50,7 +50,7 @@ class SearchRepositoryImpl(
 
 
     private fun requestMaker(query: String, page: Int): Map<String, String> {
-        var params = (mutableMapOf("text" to "${query}", "per_page" to "20"))
+        val params = (mutableMapOf("text" to query, "per_page" to "20"))
         params += Pair("page", page.toString())
         val country = sharedPreferences.getString(COUNTRY_KEY, null)
         val region = sharedPreferences.getString(REGION_KEY, null)
@@ -60,7 +60,7 @@ class SearchRepositoryImpl(
                 params["area"] = regionId ?: ""
             } else {
                 val countryId = Json.decodeFromString<Areas>(country).id
-                params["area"] = countryId ?: ""
+                params["area"] = countryId
             }
         }
         val industry = sharedPreferences.getString(INDUSTRY_KEY, null)

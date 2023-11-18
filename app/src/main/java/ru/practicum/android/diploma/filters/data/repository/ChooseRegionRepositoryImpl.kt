@@ -9,8 +9,9 @@ import ru.practicum.android.diploma.filters.domain.models.ChooseRegionsResult
 import ru.practicum.android.diploma.search.data.network.ApiService
 import ru.practicum.android.diploma.search.data.network.ConnectivityHelper
 import ru.practicum.android.diploma.search.data.network.ModelConverter
+import javax.inject.Inject
 
-class ChooseRegionRepositoryImpl(
+class ChooseRegionRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val networkControl: ConnectivityHelper,
     private val converter: ModelConverter

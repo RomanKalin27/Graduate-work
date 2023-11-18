@@ -1,27 +1,34 @@
 package ru.practicum.android.diploma.favorites.presentation.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.BindingFragment
 import ru.practicum.android.diploma.common.utils.Constants.CLICK_DEBOUNCE_DELAY_MILLIS
 import ru.practicum.android.diploma.common.utils.debounce
+import ru.practicum.android.diploma.core.application.App
+import ru.practicum.android.diploma.core.application.appComponent
 import ru.practicum.android.diploma.databinding.FragmentFavoriteBinding
 import ru.practicum.android.diploma.favorites.presentation.adapters.FavoritesAdapter
 import ru.practicum.android.diploma.favorites.presentation.models.FavoritesScreenState
 import ru.practicum.android.diploma.favorites.presentation.view_model.FavoriteViewModel
+import ru.practicum.android.diploma.favorites.presentation.view_model.FavoriteViewModelFactory
 import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.vacancy.presentation.ui.VacancyFragment
+import javax.inject.Inject
 
 class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
-    private val viewModel by viewModel<FavoriteViewModel>()
+    @Inject
+    lateinit var vmFactory: FavoriteViewModelFactory
+    lateinit var viewModel: FavoriteViewModel
     private val vacancyList = ArrayList<Vacancy>()
     private var favoriteAdapter = FavoritesAdapter(vacancyList)
     private var onVacancyClickDebounce: ((Vacancy) -> Unit)? = null
@@ -33,13 +40,17 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
     ): FragmentFavoriteBinding {
         return FragmentFavoriteBinding.inflate(inflater, container, false)
     }
+    override fun onAttach(context: Context) {
+        context.appComponent.injectFavoriteFragment(this)
+        super.onAttach(context)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this, vmFactory)[FavoriteViewModel::class.java]
         observeOnContentState()
         initAdapter()
         initListeners()
-
     }
 
     private fun observeOnContentState() {

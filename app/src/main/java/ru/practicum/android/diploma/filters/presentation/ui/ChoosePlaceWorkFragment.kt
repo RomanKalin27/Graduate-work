@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.filters.presentation.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +10,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.ChangeTextFieldUtil
+import ru.practicum.android.diploma.core.application.App
+import ru.practicum.android.diploma.core.application.appComponent
 import ru.practicum.android.diploma.databinding.FragmentSelectLocationBinding
 import ru.practicum.android.diploma.filters.domain.models.AreaDomain
 import ru.practicum.android.diploma.filters.domain.models.Areas
@@ -26,16 +29,24 @@ import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragmen
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseRegionFragment.Companion.KEY_R
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseRegionFragment.Companion.REGION_KEY
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
+import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModelFactory
+import javax.inject.Inject
 
 class ChoosePlaceWorkFragment : Fragment() {
     private lateinit var binding: FragmentSelectLocationBinding
     private var country: Areas = Areas.emptyArea
     private var region: AreaDomain = AreaDomain.emptyArea
-    private val viewModel by viewModel<FiltersViewModel>()
+    @Inject
+    lateinit var vmFactory: FiltersViewModelFactory
+    lateinit var viewModel: FiltersViewModel
     private var areasList = ArrayList<Areas>()
     private var areasRegionList = ArrayList<Areas>()
     private var area = ArrayList<Areas>()
     private var matchCountry = true
+    override fun onAttach(context: Context) {
+        context.appComponent.injectChoosePlaceWorkFragment(this)
+        super.onAttach(context)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,6 +69,7 @@ class ChoosePlaceWorkFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this, vmFactory)[FiltersViewModel::class.java]
         getRegions()
         getCountry()
         initListeners()

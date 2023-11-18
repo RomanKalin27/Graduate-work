@@ -7,8 +7,9 @@ import ru.practicum.android.diploma.db.domain.AppDB
 import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyRepository
 import ru.practicum.android.diploma.search.data.network.ModelConverter
 import ru.practicum.android.diploma.search.domain.models.Vacancy
+import javax.inject.Inject
 
-class FavoriteRepositoryImpl(
+class FavoriteRepositoryImpl @Inject constructor(
     private val converter: ModelConverter,
     private val appDataBase: AppDB,
 ) : FavoriteVacancyRepository {

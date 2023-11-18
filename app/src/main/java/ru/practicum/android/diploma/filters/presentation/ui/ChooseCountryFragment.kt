@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.filters.presentation.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,15 +8,19 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.core.application.App
+import ru.practicum.android.diploma.core.application.appComponent
 import ru.practicum.android.diploma.databinding.FragmentSelectCountryBinding
 import ru.practicum.android.diploma.filters.domain.models.Areas
 import ru.practicum.android.diploma.filters.domain.models.ChooseResult
 import ru.practicum.android.diploma.filters.presentation.rv.CountryAdapter
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
+import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModelFactory
+import javax.inject.Inject
 
 class ChooseCountryFragment : Fragment() {
     companion object {
@@ -27,8 +32,14 @@ class ChooseCountryFragment : Fragment() {
 
     private lateinit var binding: FragmentSelectCountryBinding
     private lateinit var countryAdapter: CountryAdapter
-    private val viewModel by viewModel<FiltersViewModel>()
+    @Inject
+    lateinit var vmFactory: FiltersViewModelFactory
+    lateinit var viewModel: FiltersViewModel
     private var countryList = ArrayList<Areas>()
+    override fun onAttach(context: Context) {
+        context.appComponent.injectChooseCountryFragment(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +53,7 @@ class ChooseCountryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this, vmFactory)[FiltersViewModel::class.java]
         initCountryAdapter()
         getCountry()
         observeViewModel()

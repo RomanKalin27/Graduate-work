@@ -14,11 +14,13 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kotlinx.serialization.json.Json
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.ChangeTextFieldUtil
+import ru.practicum.android.diploma.core.application.App
+import ru.practicum.android.diploma.core.application.appComponent
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.filters.domain.models.AreaDomain
 import ru.practicum.android.diploma.filters.domain.models.Areas
@@ -28,6 +30,8 @@ import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragm
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.KEY_CHOOSE
 import ru.practicum.android.diploma.filters.presentation.ui.ChoosePlaceWorkFragment.Companion.REGION_JSON_KEY
 import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
+import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModelFactory
+import javax.inject.Inject
 
 class FiltersFragment : Fragment() {
     private lateinit var binding: FragmentFilterBinding
@@ -35,7 +39,13 @@ class FiltersFragment : Fragment() {
     private var country: Areas = Areas.emptyArea
     private var region: AreaDomain = AreaDomain.emptyArea
     private var industry: Industry = Industry.emptyIndustry
-    private val vm by viewModel<FiltersViewModel>()
+    @Inject
+    lateinit var vmFactory: FiltersViewModelFactory
+    lateinit var vm: FiltersViewModel
+    override fun onAttach(context: Context) {
+        context.appComponent.injectFiltersFragment(this)
+        super.onAttach(context)
+    }
 
     companion object {
         const val SET_FILTERS_KEY = "SET_FILTERS_KEY"
@@ -61,6 +71,7 @@ class FiltersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        vm = ViewModelProvider(this, vmFactory)[FiltersViewModel::class.java]
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }

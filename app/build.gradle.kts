@@ -70,6 +70,11 @@ dependencies {
     implementation("io.insert-koin:koin-android:3.4.3")
     implementation("io.insert-koin:koin-core:3.4.3")
 
+    //Dagger
+    implementation ("com.google.dagger:dagger:2.48.1")
+    kapt ("com.google.dagger:dagger-compiler:2.48.1")
+   // implementation ("javax.inject:javax.inject:1")
+
     //Jetpack Navigation Component Fragments
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.3")

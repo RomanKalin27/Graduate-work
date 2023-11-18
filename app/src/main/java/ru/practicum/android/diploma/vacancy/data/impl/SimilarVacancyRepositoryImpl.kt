@@ -9,8 +9,9 @@ import ru.practicum.android.diploma.search.data.network.ConnectivityHelper
 import ru.practicum.android.diploma.search.data.network.ModelConverter
 import ru.practicum.android.diploma.search.domain.models.SearchVacancyResult
 import ru.practicum.android.diploma.vacancy.domain.api.SimilarVacancyRepository
+import javax.inject.Inject
 
-class SimilarVacancyRepositoryImpl(
+class SimilarVacancyRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val networkControl: ConnectivityHelper,
     private val converter: ModelConverter,

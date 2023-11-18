@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.vacancy.presentation.ui
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,12 +12,14 @@ import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.BindingFragment
+import ru.practicum.android.diploma.core.application.App
+import ru.practicum.android.diploma.core.application.appComponent
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.vacancy.domain.models.DetailVacancyResult
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetailnfo
@@ -24,9 +27,13 @@ import ru.practicum.android.diploma.vacancy.presentation.models.DetailsVacancySc
 import ru.practicum.android.diploma.vacancy.presentation.ui.SimilarVacancyFragment.Companion.SIMILAR_VACANCY
 import ru.practicum.android.diploma.vacancy.presentation.ui.SimilarVacancyFragment.Companion.SIMILAR_VACANCY_KEY
 import ru.practicum.android.diploma.vacancy.presentation.view_model.DetailVacancyViewModel
+import ru.practicum.android.diploma.vacancy.presentation.view_model.DetailVacancyViewModelFactory
+import javax.inject.Inject
 
 class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
-    private val viewModel by viewModel<DetailVacancyViewModel>()
+    @Inject
+    lateinit var vmFactory: DetailVacancyViewModelFactory
+    lateinit var viewModel: DetailVacancyViewModel
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -34,7 +41,10 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
     ): FragmentVacancyBinding {
         return FragmentVacancyBinding.inflate(inflater, container, false)
     }
-
+    override fun onAttach(context: Context) {
+        context.appComponent.injectVacancyFragment(this)
+        super.onAttach(context)
+    }
     override fun onResume() {
         super.onResume()
         viewModel.showDetailVacancy(retrieveVacancy())
@@ -43,6 +53,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this, vmFactory)[DetailVacancyViewModel::class.java]
         viewModel.showDetailVacancy(retrieveVacancy())
         binding.group.visibility = View.GONE
         observeViewModel()

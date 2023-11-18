@@ -2,8 +2,9 @@ package ru.practicum.android.diploma.filters.data.repository
 
 import android.content.SharedPreferences
 import ru.practicum.android.diploma.filters.domain.api.FilterRepository
+import javax.inject.Inject
 
-class FilterRepositoryImpl(
+class FilterRepositoryImpl @Inject constructor(
     private val sharedPrefs: SharedPreferences,
 ) : FilterRepository {
     override fun saveFilters(
