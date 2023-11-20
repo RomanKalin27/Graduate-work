@@ -14,7 +14,6 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.BindingFragment
 import ru.practicum.android.diploma.common.utils.Constants.CLICK_DEBOUNCE_DELAY_MILLIS
 import ru.practicum.android.diploma.common.utils.debounce
-import ru.practicum.android.diploma.core.application.App
 import ru.practicum.android.diploma.core.application.appComponent
 import ru.practicum.android.diploma.databinding.FragmentFavoriteBinding
 import ru.practicum.android.diploma.favorites.presentation.adapters.FavoritesAdapter
@@ -43,6 +42,11 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
     override fun onAttach(context: Context) {
         context.appComponent.injectFavoriteFragment(this)
         super.onAttach(context)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fillData()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -137,7 +141,4 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
         )
     }
 
-    private fun goBack() {
-        findNavController().navigateUp()
-    }
 }

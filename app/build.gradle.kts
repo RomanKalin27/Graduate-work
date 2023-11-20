@@ -44,6 +44,10 @@ android {
     }
 }
 
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
 dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
@@ -64,6 +68,7 @@ dependencies {
 
     //Glide
     implementation("com.github.bumptech.glide:glide:4.15.1")
+    implementation("androidx.media3:media3-common:1.2.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
 
     //Koin
@@ -97,11 +102,15 @@ dependencies {
 
     //Tests
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     testImplementation("io.insert-koin:koin-test:3.4.3")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation ("org.mockito.kotlin:mockito-kotlin:5.1.0")
+    testImplementation ("org.mockito:mockito-core:5.1.0")
 
     //Seriazable
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
 
 }

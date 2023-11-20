@@ -5,11 +5,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import ru.practicum.android.diploma.db.data.impl.VacancyDbRepositoryImpl
-import ru.practicum.android.diploma.db.domain.AppDB
 import ru.practicum.android.diploma.db.domain.api.VacancyDbRepository
 import ru.practicum.android.diploma.favorites.data.FavoriteRepositoryImpl
 import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyRepository
-import ru.practicum.android.diploma.filters.data.converter.FilterModelConverter
 import ru.practicum.android.diploma.filters.data.repository.ChooseCountryRepositoryImpl
 import ru.practicum.android.diploma.filters.data.repository.ChooseIndustryRepositoryImpl
 import ru.practicum.android.diploma.filters.data.repository.ChooseRegionRepositoryImpl
@@ -17,9 +15,7 @@ import ru.practicum.android.diploma.filters.data.repository.FilterRepositoryImpl
 import ru.practicum.android.diploma.filters.domain.api.ChooseCountryRepository
 import ru.practicum.android.diploma.filters.domain.api.ChooseIndustryRepository
 import ru.practicum.android.diploma.filters.domain.api.ChooseRegionRepository
-import ru.practicum.android.diploma.filters.domain.api.FilterInteractor
 import ru.practicum.android.diploma.filters.domain.api.FilterRepository
-import ru.practicum.android.diploma.filters.domain.impl.FilterInteractorImpl
 import ru.practicum.android.diploma.search.data.impl.SearchRepositoryImpl
 import ru.practicum.android.diploma.search.data.network.ApiService
 import ru.practicum.android.diploma.search.data.network.ConnectivityHelper
@@ -144,30 +140,37 @@ interface RepositoryBindModule{
         filterRepositoryImpl: FilterRepositoryImpl
     ) : FilterRepository
 
+    @Suppress("FunctionName")
     @Binds
     fun bindChooseCountryRepositoryImpl_to_ChooseCountryRepository(
         chooseCountryRepositoryImpl: ChooseCountryRepositoryImpl
     ) : ChooseCountryRepository
+    @Suppress("FunctionName")
     @Binds
     fun bindChooseRegionRepositoryImpl_to_ChooseRegionRepository(
         chooseRegionRepositoryImpl: ChooseRegionRepositoryImpl
     ) : ChooseRegionRepository
+    @Suppress("FunctionName")
     @Binds
     fun bindChooseIndustryRepositoryImpl_to_ChooseIndustryRepository(
         chooseIndustryRepositoryImpl: ChooseIndustryRepositoryImpl
     ) : ChooseIndustryRepository
+    @Suppress("FunctionName")
     @Binds
     fun bindVacancyDbRepositoryImpl_to_VacancyDbRepository(
         vacancyDbRepositoryImpl: VacancyDbRepositoryImpl
     ) : VacancyDbRepository
+    @Suppress("FunctionName")
     @Binds
     fun bindDetailVacancyRepositoryImpl_to_DetailVacancyRepository(
         detailVacancyRepositoryImpl: DetailVacancyRepositoryImpl
     ) : DetailVacancyRepository
+    @Suppress("FunctionName")
     @Binds
     fun bindSimilarVacancyRepositoryImpl_to_SimilarVacancyRepository(
         similarVacancyRepositoryImpl: SimilarVacancyRepositoryImpl
     ) : SimilarVacancyRepository
+    @Suppress("FunctionName")
     @Binds
     fun bindFavoriteRepositoryImpl_to_FavoriteRepository(
         favoriteRepositoryImpl: FavoriteRepositoryImpl

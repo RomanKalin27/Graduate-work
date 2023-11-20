@@ -3,12 +3,9 @@ package ru.practicum.android.diploma.core.di
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
-import org.koin.dsl.module
-import ru.practicum.android.diploma.favorites.domain.api.FavoriteInteractor
 import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyRepository
 import ru.practicum.android.diploma.favorites.domain.impl.FavoriteInteractorImpl
 import ru.practicum.android.diploma.filters.data.converter.FilterModelConverter
-import ru.practicum.android.diploma.filters.data.repository.ChooseCountryRepositoryImpl
 import ru.practicum.android.diploma.filters.domain.api.ChooseCountryInteractor
 import ru.practicum.android.diploma.filters.domain.api.ChooseCountryRepository
 import ru.practicum.android.diploma.filters.domain.api.ChooseIndustryInteractor
@@ -26,6 +23,7 @@ import ru.practicum.android.diploma.search.domain.impl.SearchInteractor
 import ru.practicum.android.diploma.vacancy.domain.api.DetailVacancyRepository
 import ru.practicum.android.diploma.vacancy.domain.api.SimilarVacancyRepository
 import ru.practicum.android.diploma.vacancy.domain.impl.SimilarVacancyInteractor
+import ru.practicum.android.diploma.favorites.domain.api.FavoriteInteractor
 
 @Module(includes = [DomainBindModule::class])
 class DomainModule {
@@ -89,18 +87,22 @@ interface DomainBindModule {
     fun bindFilterInteractorImpl_to_FilterInteractor(
         filterInteractorImpl: FilterInteractorImpl
     ) : FilterInteractor
+    @Suppress("FunctionName")
     @Binds
     fun bindChooseCountryInteractorImpl_to_ChooseCountryInteractor(
         chooseCountryInteractorImpl: ChooseCountryInteractorImpl
     ) : ChooseCountryInteractor
+    @Suppress("FunctionName")
     @Binds
     fun bindChooseRegionsInteractorImpl_to_ChooseRegionsInteractor(
         chooseRegionsInteractorImpl: ChooseRegionsInteractorImpl
     ) : ChooseRegionInteractor
+    @Suppress("FunctionName")
     @Binds
     fun bindChooseIndustryInteractorImpl_to_ChooseIndustryInteractor(
         chooseIndustryInteractorImpl: ChooseIndustryInteractorImpl
     ) : ChooseIndustryInteractor
+    @Suppress("FunctionName")
     @Binds
     fun bindFavoriteInteractorImpl_to_FavoriteInteractor(
         favoriteInteractorImpl: FavoriteInteractorImpl

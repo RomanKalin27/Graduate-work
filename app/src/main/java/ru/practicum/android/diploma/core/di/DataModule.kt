@@ -6,8 +6,6 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
-import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.core.application.App.Companion.SHARED_PREFS
